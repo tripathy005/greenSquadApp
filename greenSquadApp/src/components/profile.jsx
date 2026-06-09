@@ -1,5 +1,5 @@
 import React from 'react'
-import profileimg from '../assets/profileimg.png'
+import profileimg from '../assets/dp/profileimg.png'
 
 export default function profile() {
   return (
