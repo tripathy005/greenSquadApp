@@ -3,3 +3,34 @@
 body {
   font-family: 'Inter', sans-serif;
 }
+
+.your-element-class {
+    overflow: auto;
+    
+    /* Standard CSS (Firefox and modern browsers) */
+    scrollbar-color: #3b82f6 #f3f4f6; /* thumb color | track color */
+    scrollbar-width: auto; /* Options: auto, thin */
+}
+
+/* Chrome, Safari, and Edge */
+.your-element-class::-webkit-scrollbar {
+    width: 10px; /* Width of the vertical scrollbar */
+    height: 10px; /* Height of the horizontal scrollbar */
+}
+
+/* The background track */
+.your-element-class::-webkit-scrollbar-track {
+    background: #f3f4f6; /* Change to your interest */
+    border-radius: 8px;
+}
+
+/* The draggable handle */
+.your-element-class::-webkit-scrollbar-thumb {
+    background: #3b82f6; /* Change to your interest */
+    border-radius: 8px;
+}
+
+/* Optional: Color change when hovering over the scrollbar */
+.your-element-class::-webkit-scrollbar-thumb:hover {
+    background: #1d4ed8; 
+}
