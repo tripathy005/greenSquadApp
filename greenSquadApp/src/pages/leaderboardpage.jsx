@@ -3,9 +3,9 @@ import Navbar from '../components/navbar.jsx'
 
 import dimon from '../assets/icon/Dimon.png'
 import squadDP from '../assets/groupdp/greenCore.png'
-import Pl1 from '../assets/awards/pl1.png'
-import Pl2 from '../assets/awards/pl2.png'
-import Pl3 from '../assets/awards/pl3.png'
+import Pl1 from '../assets/awards/place1.png'
+import Pl2 from '../assets/awards/place2.png'
+import Pl3 from '../assets/awards/place3.png'
 import Logo2 from '../assets/logo/greenSquad1.png'
 
 
@@ -18,12 +18,12 @@ const leaderboard = () => {
         <div className=' w-full lg:w-[43%] '>
 
           <div className=' h-13 md:h-26.25 w-full bg-white rounded-[15px] md:rounded-[30px] flex items-center justify-center '>
-            <h1 className=' text-[30px] md:text-[49px] text-[#249138] font-extrabold  '>Leader Board</h1>
+            <h1 className=' text-[30px] md:text-[49px] text-[#249138] font-extrabold   '>Leader Board</h1>
           </div>
 
-          <div className='w-full bg-white rounded-[15px] md:rounded-[30px] flex items-center justify-around mt-2 md:mt-4 py-4'>
+          <div className='w-full bg-white rounded-[15px] md:rounded-[30px] flex items-center justify-around mt-2 md:mt-4 py-4 px-2'>
 
-            <div className=' h-57 w-29 md:h-70 md:w-39 bg-[linear-gradient(to_bottom,#ffffff_71%,#249138_100%)] rounded-[15px] md:rounded-[30px] flex flex-col justify-center items-center space-y-5 '>
+            <div className=' h-57 w-25 md:h-70 md:w-39  bg-[linear-gradient(to_bottom,#ffffff_71%,#249138_100%)] rounded-[15px] md:rounded-[30px] flex flex-col justify-center items-center space-y-5 '>
               <div className='flex items-center justify-center  mt-1 md:mt-2 bg-[#D9D9D944] w-25 md:w-34 h-8 md:h-10 rounded-[10px] md:rounded-[15px] mx-auto'>
                 <img src={dimon} className='h-4.25 w-4 md:h-6.5 md:w-6 mr-1 md:mr-2' />
                 <p className='text-[18px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
@@ -35,7 +35,7 @@ const leaderboard = () => {
               <img src={Pl3} alt="1st place" className=' h-19.25 w-19.25 ' />
 
             </div>
-            <div className='h-57 w-29 md:h-70 md:w-39 bg-[linear-gradient(to_bottom,#ffffff_30%,#249138_100%)] rounded-[15px] md:rounded-[30px] flex flex-col justify-center items-center space-y-5 '>
+            <div className='h-57 w-25 md:h-70 md:w-39  bg-[linear-gradient(to_bottom,#ffffff_30%,#249138_100%)] rounded-[15px] md:rounded-[30px] flex flex-col justify-center items-center space-y-5 '>
               <div className='flex items-center justify-center  mt-1 md:mt-2 bg-[#D9D9D944] w-25 md:w-34 h-8 md:h-10 rounded-[10px] md:rounded-[15px] mx-auto'>
                 <img src={dimon} className='h-4.25 w-4 md:h-6.5 md:w-6 mr-1 md:mr-2' />
                 <p className='text-[18px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
@@ -47,7 +47,7 @@ const leaderboard = () => {
               <img src={Pl1} alt="1st place" className=' h-19.25 w-19.25 ' />
 
             </div>
-            <div className=' h-57 w-29 md:h-70 md:w-39 bg-[linear-gradient(to_bottom,#ffffff_50%,#249138_100%)] rounded-[15px] md:rounded-[30px] flex flex-col justify-center items-center space-y-5 '>
+            <div className=' h-57 w-25 md:h-70 md:w-39  bg-[linear-gradient(to_bottom,#ffffff_50%,#249138_100%)] rounded-[15px] md:rounded-[30px] flex flex-col justify-center items-center space-y-5 '>
               <div className='flex items-center justify-center  mt-1 md:mt-2 bg-[#D9D9D944] w-25 md:w-34 h-8 md:h-10 rounded-[10px] md:rounded-[15px] mx-auto'>
                 <img src={dimon} className='h-4.25 w-4 md:h-6.5 md:w-6 mr-1 md:mr-2' />
                 <p className='text-[18px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>

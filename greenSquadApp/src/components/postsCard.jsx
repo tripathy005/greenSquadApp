@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import post from '../assets/post/ChatGPT Image Feb 12, 2026, 11_49_43 AM.png'
+import post from '../assets/post/post3.png'
 
 import dp from '../assets/dp/Kunal Verma.png'
-import likeIcon from '../assets/post/like.png'
-import dislikeIcon from '../assets/post/dislike.png'
+import likeIcon from '../assets/icon/like.png'
+import dislikeIcon from '../assets/icon/dislike.png'
 
 export default function Posts() {
 
