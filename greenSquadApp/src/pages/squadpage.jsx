@@ -1,8 +1,16 @@
 import React from 'react'
 import Navbar from '../components/navbar.jsx'
 import squadDP from '../assets/groupdp/greenCore.png'
-import dimon from '../assets/icon/Dimon.png'
+import Diamond from '../assets/icon/Diamond.png'
+import dp from '../assets/dp/Kunal Verma.png'
 import { MdEditSquare } from "react-icons/md";
+
+
+const members = Array(16).fill({
+    name: "Kunal Verma",
+    score: 1123
+});
+
 
 
 
@@ -24,7 +32,7 @@ function squadpage() {
                                 </div>
 
                                 <div className='flex items-center justify-center bg-[#D9D9D944] w-20 md:w-34 h-7 md:h-10 rounded-[10px] md:rounded-[15px] md:mt-5 '>
-                                    <img src={dimon} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
+                                    <img src={Diamond} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
                                     <p className='text-[12px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
                                     <p className='text-[9px]/[24px] md:text-[14px]/[28px] text-[#249138] font-extrabold  '>+ </p>
                                 </div>
@@ -48,9 +56,75 @@ function squadpage() {
                             </button>
                         </div>
                     </div>
-                    <div className='  w-full h-90 md:h-120 lg:h-[77vh] lg:w-[32vw] mt-2 md:mt-4 lg:mt-0  rounded-[15px] md:rounded-[30px] bg-white'>
+
+
+                    {/* <div className='  w-full h-90 md:h-120 lg:h-[77vh] lg:w-[32vw] mt-2 md:mt-4 lg:mt-0  rounded-[15px] md:rounded-[30px] bg-white'>
                         <h2 className='bg-[#538e3c] md:text-[25px] lg:text-[18px] text-white font-extrabold text-center p-3 md:p-4 lg:p-3 rounded-tl-[15px] rounded-tr-[15px] md:rounded-tl-[30px] md:rounded-tr-[30px] '>Crew Members</h2>
-                        <div className='p-5 md:p-10 lg:py-5'>khbhjbkb,jbj</div>
+                        <div className='p-5 md:p-10 lg:py-5'>
+                        
+                        </div>
+                    </div> */}
+                    <div className="bg-white rounded-[30px] overflow-hidden w-full h-90 md:h-120 lg:h-[77vh] lg:w-[32vw] mt-2 md:mt-4 lg:mt-0 ">
+
+                        <h2 className='bg-[#538e3c] md:text-[25px] lg:text-[18px] text-white font-extrabold text-center p-3 md:p-4 lg:p-3 rounded-tl-[15px] rounded-tr-[15px] md:rounded-tl-[30px] md:rounded-tr-[30px] '>Crew Members</h2>
+
+
+                        <div className="p-4 space-y-5 lg:h-160 
+                        overflow-y-auto 
+                        [&::-webkit-scrollbar]:w-2 
+                        [&::-webkit-scrollbar-track]:my-5 
+                        [&::-webkit-scrollbar-track]:bg-[#D9D9D9] 
+                        [&::-webkit-scrollbar-thumb]:bg-[#249138]/60 
+                        [&::-webkit-scrollbar-thumb]:rounded-full 
+                        [&::-webkit-scrollbar-track]:rounded-full">
+
+                            {members.map((member, index) => (
+
+                                <div
+                                    key={index}
+                                    className="flex justify-between items-center"
+                                >
+
+                                    <div className="flex items-center gap-3">
+
+                                        <img
+                                            src={dp}
+                                            className="w-12 h-12 rounded-full"
+                                        />
+
+                                        <div>
+
+                                            <p className="font-bold">
+                                                {member.name}
+                                            </p>
+
+                                            <p className="text-xs text-gray-500">
+                                                Crew Member
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div className="flex items-center">
+
+                                        <img
+                                            src={Diamond}
+                                            className="w-4 mr-1"
+                                        />
+
+                                        <span className="text-[#249138] font-bold">
+                                            {member.score}
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            ))}
+
+                        </div>
+
                     </div>
                 </div>
 

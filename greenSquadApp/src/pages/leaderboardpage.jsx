@@ -1,12 +1,12 @@
 import React from 'react'
 import Navbar from '../components/navbar.jsx'
 
-import dimon from '../assets/icon/Dimon.png'
+import Diamond from '../assets/icon/Diamond.png'
 import squadDP from '../assets/groupdp/greenCore.png'
 import Pl1 from '../assets/awards/place1.png'
 import Pl2 from '../assets/awards/place2.png'
 import Pl3 from '../assets/awards/place3.png'
-import Logo2 from '../assets/logo/greenSquad1.png'
+import Logo2 from '../assets/logo/logo3.png'
 
 
 
@@ -25,7 +25,7 @@ const leaderboard = () => {
 
             <div className=' h-57 w-25 md:h-70 md:w-39  bg-[linear-gradient(to_bottom,#ffffff_71%,#249138_100%)] rounded-[15px] md:rounded-[30px] flex flex-col justify-center items-center space-y-5 '>
               <div className='flex items-center justify-center  mt-1 md:mt-2 bg-[#D9D9D944] w-25 md:w-34 h-8 md:h-10 rounded-[10px] md:rounded-[15px] mx-auto'>
-                <img src={dimon} className='h-4.25 w-4 md:h-6.5 md:w-6 mr-1 md:mr-2' />
+                <img src={Diamond} className='h-4.25 w-4 md:h-6.5 md:w-6 mr-1 md:mr-2' />
                 <p className='text-[18px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
                 <p className='text-[13px]/[24px] md:text-[14px]/[28px] text-[#249138] font-extrabold  '>+ </p>
               </div>
@@ -37,7 +37,7 @@ const leaderboard = () => {
             </div>
             <div className='h-57 w-25 md:h-70 md:w-39  bg-[linear-gradient(to_bottom,#ffffff_30%,#249138_100%)] rounded-[15px] md:rounded-[30px] flex flex-col justify-center items-center space-y-5 '>
               <div className='flex items-center justify-center  mt-1 md:mt-2 bg-[#D9D9D944] w-25 md:w-34 h-8 md:h-10 rounded-[10px] md:rounded-[15px] mx-auto'>
-                <img src={dimon} className='h-4.25 w-4 md:h-6.5 md:w-6 mr-1 md:mr-2' />
+                <img src={Diamond} className='h-4.25 w-4 md:h-6.5 md:w-6 mr-1 md:mr-2' />
                 <p className='text-[18px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
                 <p className='text-[13px]/[24px] md:text-[14px]/[28px] text-[#249138] font-extrabold  '>+ </p>
               </div>
@@ -49,7 +49,7 @@ const leaderboard = () => {
             </div>
             <div className=' h-57 w-25 md:h-70 md:w-39  bg-[linear-gradient(to_bottom,#ffffff_50%,#249138_100%)] rounded-[15px] md:rounded-[30px] flex flex-col justify-center items-center space-y-5 '>
               <div className='flex items-center justify-center  mt-1 md:mt-2 bg-[#D9D9D944] w-25 md:w-34 h-8 md:h-10 rounded-[10px] md:rounded-[15px] mx-auto'>
-                <img src={dimon} className='h-4.25 w-4 md:h-6.5 md:w-6 mr-1 md:mr-2' />
+                <img src={Diamond} className='h-4.25 w-4 md:h-6.5 md:w-6 mr-1 md:mr-2' />
                 <p className='text-[18px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
                 <p className='text-[13px]/[24px] md:text-[14px]/[28px] text-[#249138] font-extrabold  '>+ </p>
               </div>
@@ -79,7 +79,7 @@ const leaderboard = () => {
               <p className='text-[#249138] text-[12px] md:text-[12px]'>{999 + " Members"}</p>
             </div>
             <div className='flex items-center justify-center bg-white w-20 md:w-34 h-7 md:h-10 rounded-[10px] md:rounded-[15px] ml-auto '>
-              <img src={dimon} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
+              <img src={Diamond} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
               <p className='text-[12px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
               <p className='text-[9px]/[24px] md:text-[14px]/[28px] text-[#249138] font-extrabold  '>+ </p>
             </div>
@@ -92,7 +92,7 @@ const leaderboard = () => {
               <p className='text-[#249138] text-[12px] md:text-[12px]'>{999 + " Members"}</p>
             </div>
             <div className='flex items-center justify-center bg-white w-20 md:w-34 h-7 md:h-10 rounded-[10px] md:rounded-[15px] ml-auto '>
-              <img src={dimon} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
+              <img src={Diamond} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
               <p className='text-[12px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
               <p className='text-[9px]/[24px] md:text-[14px]/[28px] text-[#249138] font-extrabold  '>+ </p>
             </div>
@@ -105,7 +105,7 @@ const leaderboard = () => {
               <p className='text-[#249138] text-[12px] md:text-[12px]'>{999 + " Members"}</p>
             </div>
             <div className='flex items-center justify-center bg-white w-20 md:w-34 h-7 md:h-10 rounded-[10px] md:rounded-[15px] ml-auto '>
-              <img src={dimon} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
+              <img src={Diamond} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
               <p className='text-[12px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
               <p className='text-[9px]/[24px] md:text-[14px]/[28px] text-[#249138] font-extrabold  '>+ </p>
             </div>
@@ -118,7 +118,7 @@ const leaderboard = () => {
               <p className='text-[#249138] text-[12px] md:text-[12px]'>{999 + " Members"}</p>
             </div>
             <div className='flex items-center justify-center bg-white w-20 md:w-34 h-7 md:h-10 rounded-[10px] md:rounded-[15px] ml-auto '>
-              <img src={dimon} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
+              <img src={Diamond} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
               <p className='text-[12px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
               <p className='text-[9px]/[24px] md:text-[14px]/[28px] text-[#249138] font-extrabold  '>+ </p>
             </div>
@@ -131,7 +131,7 @@ const leaderboard = () => {
               <p className='text-[#249138] text-[12px] md:text-[12px]'>{999 + " Members"}</p>
             </div>
             <div className='flex items-center justify-center bg-white w-20 md:w-34 h-7 md:h-10 rounded-[10px] md:rounded-[15px] ml-auto '>
-              <img src={dimon} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
+              <img src={Diamond} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
               <p className='text-[12px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
               <p className='text-[9px]/[24px] md:text-[14px]/[28px] text-[#249138] font-extrabold  '>+ </p>
             </div>
@@ -144,7 +144,7 @@ const leaderboard = () => {
               <p className='text-[#249138] text-[12px] md:text-[12px]'>{999 + " Members"}</p>
             </div>
             <div className='flex items-center justify-center bg-white w-20 md:w-34 h-7 md:h-10 rounded-[10px] md:rounded-[15px] ml-auto '>
-              <img src={dimon} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
+              <img src={Diamond} className='h-3.25 w-3 md:h-6.5 md:w-6 mr-1 md:mr-2' />
               <p className='text-[12px]/[24px] md:text-[25px]/[28px] text-[#249138] font-extrabold tracking-[2px] md:tracking-[4px] '>1234 </p>
               <p className='text-[9px]/[24px] md:text-[14px]/[28px] text-[#249138] font-extrabold  '>+ </p>
             </div>
