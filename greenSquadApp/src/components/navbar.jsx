@@ -23,8 +23,8 @@ export default function navbar() {
           <NavOfWeb />
 
 
-          <LoginBtn/>
-          {/* <Profile /> */}
+          {/* <LoginBtn/> */}
+          <Profile />
 
         </div>
 

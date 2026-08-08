@@ -58,12 +58,7 @@ function squadpage() {
                     </div>
 
 
-                    {/* <div className='  w-full h-90 md:h-120 lg:h-[77vh] lg:w-[32vw] mt-2 md:mt-4 lg:mt-0  rounded-[15px] md:rounded-[30px] bg-white'>
-                        <h2 className='bg-[#538e3c] md:text-[25px] lg:text-[18px] text-white font-extrabold text-center p-3 md:p-4 lg:p-3 rounded-tl-[15px] rounded-tr-[15px] md:rounded-tl-[30px] md:rounded-tr-[30px] '>Crew Members</h2>
-                        <div className='p-5 md:p-10 lg:py-5'>
-                        
-                        </div>
-                    </div> */}
+                   
                     <div className="bg-white rounded-[30px] overflow-hidden w-full h-90 md:h-120 lg:h-[77vh] lg:w-[32vw] mt-2 md:mt-4 lg:mt-0 ">
 
                         <h2 className='bg-[#538e3c] md:text-[25px] lg:text-[18px] text-white font-extrabold text-center p-3 md:p-4 lg:p-3 rounded-tl-[15px] rounded-tr-[15px] md:rounded-tl-[30px] md:rounded-tr-[30px] '>Crew Members</h2>

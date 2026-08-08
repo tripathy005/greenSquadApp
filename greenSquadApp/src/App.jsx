@@ -6,6 +6,7 @@ import LeaderBoard from './pages/leaderboardpage.jsx'
 import SquadPage from './pages/squadpage.jsx'
 import LoginPage from './pages/loginpage.jsx'
 import RegisterPage from './pages/registerpage.jsx'
+import AboutPage from './pages/aboutpage.jsx'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/squad" element={<SquadPage  />} />
         <Route path="/login" element={<LoginPage  />} />
         <Route path="/register" element={<RegisterPage  />} />
+        <Route path="/about" element={<AboutPage  />} />
         
         {/* <Route path="*" element={<Navigate to="/" />} /> */}
       </Routes>
