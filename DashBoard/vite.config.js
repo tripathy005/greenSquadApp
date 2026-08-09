@@ -9,11 +9,11 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-   basicSsl(),
+    basicSsl(),
   ],
   server: {
-    host: 'localhost',  
-    port: 6000,         
-    open: false,       
+    host: true,
+    port: 6999,
+    open: false,
   },
 })
