@@ -14,7 +14,7 @@ const leaderboard = () => {
   return (
     <>
       <Navbar />
-      <div className='w-full h-auto lg:h-[91vh]  p-2 md:p-3 xl:p-4 flex flex-col lg:flex-row justify-between overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:my-1 [&::-webkit-scrollbar-track]:bg-[#D9D9D9] [&::-webkit-scrollbar-thumb]:bg-[#249138]/60 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full bg-[linear-gradient(to_top,#E6FFE1_0%,#ABD3A4_100%)]'>
+      <div className='w-full h-auto lg:h-[90vh]  p-2 md:p-3 xl:p-4 flex flex-col lg:flex-row justify-between overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:my-1 [&::-webkit-scrollbar-track]:bg-[#D9D9D9] [&::-webkit-scrollbar-thumb]:bg-[#249138]/60 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full bg-[linear-gradient(to_top,#E6FFE1_0%,#ABD3A4_100%)]'>
         <div className=' w-full lg:w-[43%] '>
 
           <div className=' h-13 md:h-26.25 w-full bg-white rounded-[15px] md:rounded-[30px] flex items-center justify-center '>

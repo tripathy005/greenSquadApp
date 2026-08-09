@@ -7,6 +7,12 @@ const posts = () => {
     <PostCard />
     <PostCard />
     <PostCard />
+    <PostCard />
+    <PostCard />
+    <PostCard />
+    <PostCard />
+    <PostCard />
+    <PostCard />
       
     </>
   )
