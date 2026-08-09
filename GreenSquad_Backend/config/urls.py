@@ -25,6 +25,12 @@ urlpatterns = [
         "api/auth/",
         include("authentication.urls"),
     ),
+    path(
+    "api/posts/",
+    include("posts.urls")
+    ),
+
+
 ]
 
 if settings.DEBUG:

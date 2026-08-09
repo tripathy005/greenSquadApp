@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Post, PostMedia, DuplicatePost
+
+
+admin.site.register(Post)
+admin.site.register(PostMedia)
+admin.site.register(DuplicatePost)
