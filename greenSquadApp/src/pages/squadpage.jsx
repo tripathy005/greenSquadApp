@@ -21,7 +21,9 @@ function squadpage() {
 
 
             <div className='p-2 md:p-3 lg:p-4 bg-[linear-gradient(to_top,#E6FFE1_0%,#ABD3A4_100%)] overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:my-1 [&::-webkit-scrollbar-track]:bg-[#D9D9D9] [&::-webkit-scrollbar-thumb]:bg-[#249138]/60 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full'>
+
                 <div className='w-full flex flex-col lg:flex-row justify-between '>
+                    {/* top left section */}
                     <div className=' w-full lg:w-[65vw] lg:h-[77vh] p-5 md:p-10 lg:py-5 rounded-[15px] md:rounded-[30px] bg-white '>
                         <div className='flex items-center'>
                             <img src={squadDP} alt="Squad name" className='w-20 h-20 md:w-60 md:h-60 my-3 object-cover rounded-full border-3 border-[#249138] ' />
@@ -58,14 +60,13 @@ function squadpage() {
                     </div>
 
 
-                   
-                    <div className="bg-white rounded-[30px] overflow-hidden w-full h-90 md:h-120 lg:h-[77vh] lg:w-[32vw] mt-2 md:mt-4 lg:mt-0 ">
+                   {/* top right section */}
+                    <div className="bg-white rounded-[30px] overflow-hidden w-full h-100 md:h-120 lg:h-[77vh] lg:w-[32vw] mt-2 md:mt-4 lg:mt-0 ">
 
                         <h2 className='bg-[#538e3c] md:text-[25px] lg:text-[18px] text-white font-extrabold text-center p-3 md:p-4 lg:p-3 rounded-tl-[15px] rounded-tr-[15px] md:rounded-tl-[30px] md:rounded-tr-[30px] '>Crew Members</h2>
 
 
-                        <div className="p-4 space-y-5 lg:h-160 
-                        overflow-y-auto 
+                        <div className="p-4 space-y-5 h-full overflow-y-auto 
                         [&::-webkit-scrollbar]:w-2 
                         [&::-webkit-scrollbar-track]:my-5 
                         [&::-webkit-scrollbar-track]:bg-[#D9D9D9] 
@@ -79,51 +80,27 @@ function squadpage() {
                                     key={index}
                                     className="flex justify-between items-center"
                                 >
-
                                     <div className="flex items-center gap-3">
-
-                                        <img
-                                            src={dp}
-                                            className="w-12 h-12 rounded-full"
-                                        />
-
+                                        <img src={dp} className="w-12 h-12 rounded-full" />
                                         <div>
-
-                                            <p className="font-bold">
-                                                {member.name}
-                                            </p>
-
-                                            <p className="text-xs text-gray-500">
-                                                Crew Member
-                                            </p>
-
+                                            <p className="font-bold"> {member.name} </p>
+                                            <p className="text-xs text-gray-500"> Crew Member </p>
                                         </div>
-
                                     </div>
 
                                     <div className="flex items-center">
-
-                                        <img
-                                            src={Diamond}
-                                            className="w-4 mr-1"
-                                        />
-
-                                        <span className="text-[#249138] font-bold">
-                                            {member.score}
-                                        </span>
-
+                                        <img src={Diamond} className="w-4 mr-1"/>
+                                        <span className="text-[#249138] font-bold"> {member.score} </span>
                                     </div>
-
                                 </div>
-
                             ))}
-
                         </div>
-
                     </div>
                 </div>
+                {/* bottom section */}
 
                 <div>
+                
                 </div>
             </div>
 
