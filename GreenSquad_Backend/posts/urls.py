@@ -5,6 +5,8 @@ from .views import (
     PostListView,
     PostDetailView,
     MyPostsView,
+    SelfResolvePostView,
+    PostDeleteView,
 )
 
 
@@ -32,5 +34,17 @@ urlpatterns = [
         "<int:pk>/",
         PostDetailView.as_view(),
         name="post-detail"
+    ),
+
+    path(
+    "<int:pk>/resolve/",
+    SelfResolvePostView.as_view(),
+    name="self-resolve"
+    ),
+
+    path(
+    "<int:pk>/delete/",
+    PostDeleteView.as_view(),
+    name="post-delete"
     ),
 ]

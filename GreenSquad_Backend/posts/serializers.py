@@ -3,6 +3,18 @@ from rest_framework import serializers
 from .models import Post, PostMedia
 
 
+class PostMediaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PostMedia
+        fields = [
+            "id",
+            "image",
+            "media_type",
+            "uploaded_at",
+        ]
+
+
 class PostSerializer(serializers.ModelSerializer):
 
     image = serializers.ImageField(write_only=True)
@@ -11,6 +23,8 @@ class PostSerializer(serializers.ModelSerializer):
     choices=Post.ACTION_CHOICES,
     required=True
     )
+
+    media = PostMediaSerializer(many=True,read_only=True)
 
     class Meta:
         model = Post
@@ -22,6 +36,7 @@ class PostSerializer(serializers.ModelSerializer):
             "longitude",
             "action",
             "image",
+            "media",
             "posted_at",
             "ai_verified",
             "is_duplicate",
@@ -56,3 +71,23 @@ class PostSerializer(serializers.ModelSerializer):
         )
 
         return post
+
+class CleanupImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PostMedia
+        fields = ["image"]
+
+    def create(self, validated_data):
+
+        post = self.context["post"]
+
+        return PostMedia.objects.create(
+            post=post,
+            image=validated_data["image"],
+            media_type="cleanup"
+        )
+
+
+
+        

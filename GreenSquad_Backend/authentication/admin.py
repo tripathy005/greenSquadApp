@@ -7,6 +7,8 @@ from .models import User
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
 
+    model = User
+
     list_display = (
         "id",
         "username",
@@ -15,15 +17,57 @@ class CustomUserAdmin(UserAdmin):
         "role",
     )
 
-    fieldsets = UserAdmin.fieldsets + (
-        (
-            "GreenSquad",
-            {
-                "fields": (
-                    "full_name",
-                    "role",
-                    "profile_photo",
-                )
-            },
-        ),
+    fieldsets = (
+        (None, {
+            "fields": (
+                "username",
+                "password",
+            )
+        }),
+
+        ("Personal Information", {
+            "fields": (
+                "full_name",
+                "email",
+                "profile_photo",
+            )
+        }),
+
+        ("Role", {
+            "fields": (
+                "role",
+            )
+        }),
+
+        ("Permissions", {
+            "fields": (
+                "is_staff",
+                "is_superuser",
+                "groups",
+                "user_permissions",
+            )
+        }),
     )
+
+    add_fieldsets = (
+        (None, {
+            "classes": ("wide",),
+            "fields": (
+                "username",
+                "full_name",
+                "email",
+                "profile_photo",
+                "role",
+                "password1",
+                "password2",
+            ),
+        }),
+    )
+
+    search_fields = (
+        "username",
+        "full_name",
+        "email",
+    )
+
+    ordering = ("id",)
