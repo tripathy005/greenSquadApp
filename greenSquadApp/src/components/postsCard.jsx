@@ -93,22 +93,7 @@ export default function Posts() {
 
   return (
     <div
-      className="
-                w-full
-                h-auto
-                flex
-                flex-col
-                lg:flex-row
-                gap-4
-                bg-white
-                rounded-[15px]
-                md:rounded-[30px]
-                shadow-md
-                p-2
-                md:p-4
-                mt-2
-                md:mt-4
-            "
+      className="w-full h-auto flex flex-col lg:flex-row gap-4 bg-white rounded-[15px] md:rounded-[30px] shadow-md p-2 md:p-4 mt-2 md:mt-4"
     >
 
       {/* ================= IMAGE SLIDER ================= */}
@@ -116,27 +101,11 @@ export default function Posts() {
 
 
       <div
-        className="
-        relative
-        w-full
-        lg:w-123
-        aspect-4/3
-        overflow-hidden
-        rounded-[15px]
-        md:rounded-[30px]
-        bg-black
-    "
+        className="relative w-full lg:w-123 aspect-4/3 overflow-hidden rounded-[15px] md:rounded-[30px] bg-black"
       >
         {/* Images */}
         <div
-          className="
-            flex
-            h-full
-            w-full
-            transition-transform
-            duration-500
-            ease-in-out
-        "
+          className="flex h-full w-full transition-transform duration-500 ease-in-out"
           style={{
             transform: `translateX(-${currentImage * 100}%)`,
           }}
@@ -144,21 +113,12 @@ export default function Posts() {
           {images.map((image, index) => (
             <div
               key={index}
-              className="
-                    h-full
-                    w-full
-                    min-w-full
-                    shrink-0
-                "
+              className="h-full w-full min-w-full shrink-0"
             >
               <img
                 src={image}
                 alt={`Post ${index + 1}`}
-                className="
-                        h-full
-                        w-full
-                        object-cover
-                    "
+                className="h-full w-full object-cover"
               />
             </div>
           ))}
@@ -169,26 +129,7 @@ export default function Posts() {
           <button
             type="button"
             onClick={previousImage}
-            className="
-                absolute
-                left-3
-                top-1/2
-                -translate-y-1/2
-                z-10
-                flex
-                h-9
-                w-9
-                items-center
-                justify-center
-                rounded-full
-                bg-black/40
-                text-xl
-                font-bold
-                text-white
-                backdrop-blur-sm
-                transition
-                hover:bg-black/60
-            "
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-xl font-bold text-white backdrop-blur-sm transition hover:bg-black/60"
           >
             ‹
           </button>
@@ -199,26 +140,7 @@ export default function Posts() {
           <button
             type="button"
             onClick={nextImage}
-            className="
-                absolute
-                right-3
-                top-1/2
-                -translate-y-1/2
-                z-10
-                flex
-                h-9
-                w-9
-                items-center
-                justify-center
-                rounded-full
-                bg-black/40
-                text-xl
-                font-bold
-                text-white
-                backdrop-blur-sm
-                transition
-                hover:bg-black/60
-            "
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-xl font-bold text-white backdrop-blur-sm transition hover:bg-black/60"
           >
             ›
           </button>
@@ -226,30 +148,14 @@ export default function Posts() {
 
         {/* Dots */}
         <div
-          className="
-            absolute
-            bottom-3
-            left-1/2
-            z-10
-            flex
-            -translate-x-1/2
-            gap-2
-        "
+          className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-2"
         >
           {images.map((_, index) => (
             <button
               key={index}
               type="button"
               onClick={() => setCurrentImage(index)}
-              className={`
-                    h-2
-                    rounded-full
-                    transition-all
-                    ${currentImage === index
-                  ? "w-5 bg-white"
-                  : "w-2 bg-white/50"
-                }
-                `}
+              className={`h-2 rounded-full transition-all ${currentImage === index ? "w-5 bg-white" : "w-2 bg-white/50"}`}
             />
           ))}
         </div>
@@ -270,26 +176,11 @@ export default function Posts() {
               style={{
                 backgroundImage: `url(${dp})`,
               }}
-              className="
-                                h-12
-                                w-12
-                                rounded-full
-                                bg-cover
-                                md:h-18
-                                md:w-18
-                            "
+              className="h-12 w-12 rounded-full bg-cover md:h-18 md:w-18"
             />
 
             <div
-              className="
-                                ml-1
-                                mb-1
-                                flex
-                                flex-col
-                                items-start
-                                justify-center
-                                md:ml-3
-                            "
+              className="ml-1 mb-1 flex flex-col items-start justify-center md:ml-3"
             >
 
               <p className="text-[13px] font-bold md:text-[18px]">
@@ -349,22 +240,7 @@ export default function Posts() {
         {/* Description */}
 
         <div
-          className="
-                        my-2
-                        w-full
-                        rounded-[15px]
-                        px-2
-                        py-1
-                        text-[10px]
-                        tracking-wide
-                        md:p-3
-                        md:text-[12px]
-                        md:leading-5
-                        lg:w-70
-                        lg:bg-[#D9D9D944]
-                        xl:h-65
-                        md:overflow-auto
-                    "
+          className="my-2 w-full rounded-[15px] px-2 py-1 text-[10px] tracking-wide md:p-3 md:text-[12px] md:leading-5 lg:w-70 lg:bg-[#D9D9D944] xl:h-65 md:overflow-auto"
         >
 
           <p className="line-clamp-1 xl:line-clamp-none">

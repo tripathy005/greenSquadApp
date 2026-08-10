@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import addPost from "../assets/icon/addPost.png";
 import Diamond from "../assets/icon/Diamond.png";
-import {
-    IoMdClose,
-    IoMdSend,
-    IoMdLocate,
-} from "react-icons/io";
+import { IoMdClose, IoMdSend, IoMdLocate, } from "react-icons/io";
 
 const CreatePostForm = ({ isOpen, onClose }) => {
 
@@ -36,9 +32,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
             setImageFile(file);
 
-            setSelectedImage(
-                URL.createObjectURL(file)
-            );
+            setSelectedImage(URL.createObjectURL(file));
 
         }
     };
@@ -242,23 +236,9 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                         {/* Header */}
 
-                        <div className="
-                flex
-                items-center
-                justify-between
-                border-b
-                border-gray-200
-                px-5
-                py-4
-                md:px-7
-            ">
+                        <div className=" flex items-center justify-between border-b border-gray-200 px-5 py-4 md:px-7">
 
-                            <h2 className="
-                    text-xl
-                    font-extrabold
-                    text-[#249138]
-                    md:text-2xl
-                ">
+                            <h2 className="text-xl font-extrabold text-[#249138] md:text-2xl">
                                 Create a New Post
                             </h2>
 
@@ -267,18 +247,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="
-        flex
-        h-9
-        w-9
-        items-center
-        justify-center
-        rounded-full
-        text-gray-500
-        transition
-        hover:bg-[#249138a3]
-        hover:text-gray-100
-    "
+                                    className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 transition hover:bg-[#249138a3] hover:text-gray-100"
                                 >
                                     <IoMdClose size={24} />
                                 </button>
@@ -301,14 +270,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                             <div>
 
-                                <label className="
-                        mb-2
-                        block
-                        text-sm
-                        font-bold
-                        text-gray-700
-                        md:text-base
-                    ">
+                                <label className="mb-2 block text-sm font-bold text-gray-700 md:text-base">
                                     Post Image
                                 </label>
 
@@ -324,24 +286,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                                 <label
                                     htmlFor="postImage"
-                                    className="
-                            relative
-                            flex
-                            h-52
-                            w-full
-                            cursor-pointer
-                            items-center
-                            justify-center
-                            overflow-hidden
-                            rounded-[20px]
-                            border-2
-                            border-dashed
-                            border-[#249138]
-                            bg-[#D9D9D944]
-                            transition
-                            hover:bg-[#D9D9D966]
-                            md:h-64
-                        "
+                                    className="relative flex h-52 w-full cursor-pointer items-center justify-center overflow-hidden border-2 border-dashed border-[#249138] bg-[#D9D9D944] transition hover:bg-[#D9D9D966] md:h-64"
                                 >
 
                                     {selectedImage ? (
@@ -354,12 +299,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                                     ) : (
 
-                                        <div className="
-                                flex
-                                flex-col
-                                items-center
-                                justify-center
-                            ">
+                                        <div className="flex flex-col items-center justify-center">
 
                                             <img
                                                 src={addPost}
@@ -367,12 +307,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                                 className="h-20 w-20 md:h-28 md:w-28"
                                             />
 
-                                            <p className="
-                                    mt-2
-                                    text-sm
-                                    font-semibold
-                                    text-[#249138]
-                                ">
+                                            <p className="mt-2 text-sm font-semibold text-[#249138]">
                                                 Click to select an image
                                             </p>
 
@@ -395,14 +330,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                                 <label
                                     htmlFor="description"
-                                    className="
-                            mb-2
-                            block
-                            text-sm
-                            font-bold
-                            text-gray-700
-                            md:text-base
-                        "
+                                    className="mb-2 block text-sm font-bold text-gray-700 md:text-base"
                                 >
                                     Description
                                 </label>
@@ -417,19 +345,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                     placeholder="Describe your activity..."
                                     rows="4"
                                     required
-                                    className="
-                            w-full
-                            resize-none
-                            rounded-[15px]
-                            bg-[#D9D9D944]
-                            p-3
-                            text-sm
-                            outline-none
-                            placeholder:text-gray-400
-                            focus:ring-2
-                            focus:ring-[#538E3C]
-                            md:text-base
-                        "
+                                    className="w-full resize-none rounded-[15px] bg-[#D9D9D944] p-3 text- outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-[#538E3C] md:text-base"
                                 />
 
                             </div>
@@ -441,14 +357,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                                 <label
                                     htmlFor="location"
-                                    className="
-                            mb-2
-                            block
-                            text-sm
-                            font-bold
-                            text-gray-700
-                            md:text-base
-                        "
+                                    className="mb-2 block text-sm font-bold text-gray-700 md:text-base"
                                 >
                                     Location
                                 </label>
@@ -464,33 +373,14 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                             setLocation(e.target.value)
                                         }
                                         placeholder="Select or enter location"
-                                        className="
-                                w-full
-                                rounded-[15px]
-                                bg-[#D9D9D944]
-                                p-3
-                                text-sm
-                                outline-none
-                                focus:ring-2
-                                focus:ring-[#538E3C]
-                            "
+                                        className="w-full rounded-[15px] bg-[#D9D9D944] p-3 text-sm outline-none focus:ring-2 focus:ring-[#538E3C]"
                                     />
 
 
                                     <button
                                         type="button"
                                         onClick={getLocation}
-                                        className="
-                                flex
-                                min-w-12
-                                items-center
-                                justify-center
-                                rounded-[15px]
-                                bg-[#538E3C]
-                                text-white
-                                transition
-                                hover:bg-[#467a32]
-                            "
+                                        className="flex min-w-12 items-center justify-center rounded-[15px] bg-[#538E3C] text-white transition hover:bg-[#467a32]"
                                         title="Use my location"
                                     >
                                         <IoMdLocate size={22} />
@@ -505,13 +395,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                             {(latitude && longitude) && (
 
-                                <div className="
-                        mt-3
-                        rounded-[15px]
-                        bg-[#E6FFE1]
-                        p-3
-                        text-sm
-                    ">
+                                <div className="mt-3 rounded-[15px] bg-[#E6FFE1] p-3 text-sm">
 
                                     <p className="font-semibold text-[#249138]">
                                         Location detected
@@ -533,13 +417,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                             <div className="mt-5">
 
-                                <p className="
-        mb-3
-        text-sm
-        font-bold
-        text-gray-700
-        md:text-base
-    ">
+                                <p className="mb-3 text-sm font-bold text-gray-700 md:text-base">
                                     Action
                                 </p>
 
@@ -562,11 +440,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                             value="yes"
                                             checked={action === "yes"}
                                             onChange={(e) => setAction(e.target.value)}
-                                            className="
-                    h-5
-                    w-5
-                    accent-[#538E3C]
-                "
+                                            className="h-5 w-5 accent-[#538E3C]"
                                         />
 
                                         <span className="text-sm font-semibold text-gray-700 md:text-base">
@@ -586,11 +460,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                             value="no"
                                             checked={action === "no"}
                                             onChange={(e) => setAction(e.target.value)}
-                                            className="
-                    h-5
-                    w-5
-                    accent-[#538E3C]
-                "
+                                            className="h-5 w-5 accent-[#538E3C]"
                                         />
 
                                         <span className="text-sm font-semibold text-gray-700 md:text-base">
@@ -608,14 +478,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                                     <div className="mt-4">
 
-                                        <label className="
-                mb-2
-                block
-                text-sm
-                font-bold
-                text-gray-700
-                md:text-base
-            ">
+                                        <label className="mb-2 block text-sm font-bold text-gray-700 md:text-base">
                                             Upload Cleaning Photo
                                         </label>
 
@@ -632,24 +495,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                                         <label
                                             htmlFor="cleaningImage"
-                                            className="
-                                relative
-                                flex
-                                h-40
-                                w-full
-                                cursor-pointer
-                                items-center
-                                justify-center  
-                                overflow-hidden
-                                rounded-[20px]
-                                border-2
-                                border-dashed
-                                border-[#249138]
-                                bg-[#D9D9D944]
-                                transition
-                                hover:bg-[#D9D9D966]
-                                md:h-48
-                            "
+                                            className="relative flex h-40 w-full cursor-pointer items-center justify-center rounded-[20px] border-2 border-dashed border-[#249138] bg-[#D9D9D944] transition hover:bg-[#D9D9D966] md:h-48"
                                         >
 
                                             {cleaningImagePreview ? (
@@ -664,12 +510,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                                                 <div className="text-center">
 
-                                                    <p className="
-                            text-sm
-                            font-semibold
-                            text-[#249138]
-                            md:text-base
-                        ">
+                                                    <p className="text-sm font-semibold text-[#249138] md:text-base">
                                                         Click to upload cleaning photo
                                                     </p>
 
@@ -694,24 +535,15 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                             {aiResult && (
 
-                                <div className="
-                        mt-5
-                        rounded-[15px]
-                        bg-[#E6FFE1]
-                        p-4
-                    ">
+                                <div className="mt-5 rounded-[15px] bg-[#E6FFE1] p-4">
 
-                                    <h3 className="
-                            font-bold
-                            text-[#249138]
-                        ">
+                                    <h3 className="font-bold text-[#249138]">
                                         AI Analysis
                                     </h3>
 
                                     {/* AI generated information will appear here */}
 
                                 </div>
-
                             )}
 
 
@@ -721,22 +553,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                                 <button
                                     type="submit"
-                                    className="
-                            flex
-                            items-center
-                            justify-center
-                            gap-2
-                            rounded-xl
-                            bg-[#538E3C]
-                            px-5
-                            py-2.5
-                            font-bold
-                            text-white
-                            transition
-                            hover:bg-[#467a32]
-                            md:px-7
-                            md:py-3
-                        "
+                                    className="flex items-center justify-center gap-2 rounded-xl bg-[#538E3C] px-5 py-2.5 font-bold text-white transition hover:bg-[#467a32] md:px-7 md:py-3"
                                 >
 
                                     Post
