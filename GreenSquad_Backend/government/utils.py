@@ -52,3 +52,24 @@ def is_within_radius(
     )
 
     return distance <= radius
+
+def post_is_in_superintendent_area(post, superintendent, radius=100):
+    """
+    Check whether a post is within the given radius
+    of any area assigned to the superintendent.
+    """
+
+    areas = superintendent.areas.all()
+
+    for area in areas:
+
+        if is_within_radius(
+            post.latitude,
+            post.longitude,
+            area.latitude,
+            area.longitude,
+            radius=radius
+        ):
+            return True
+
+    return False
