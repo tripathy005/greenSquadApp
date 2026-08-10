@@ -30,6 +30,11 @@ urlpatterns = [
     include("posts.urls")
     ),
 
+    path(
+    "api/government/",
+    include("government.urls")
+    ),
+
 
 ]
 

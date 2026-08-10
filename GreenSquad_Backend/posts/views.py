@@ -149,3 +149,28 @@ class PostDeleteView(generics.DestroyAPIView):
             )
 
         return super().destroy(request, *args, **kwargs)
+
+
+class PostUpdateView(generics.UpdateAPIView):
+
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+
+        post = self.get_object()
+
+        if post.user != request.user:
+            return Response(
+                {
+                    "detail": "You can only edit your own post."
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        return super().update(
+            request,
+            *args,
+            **kwargs
+        )   

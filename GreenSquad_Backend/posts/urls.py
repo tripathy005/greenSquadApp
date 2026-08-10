@@ -7,6 +7,7 @@ from .views import (
     MyPostsView,
     SelfResolvePostView,
     PostDeleteView,
+    PostUpdateView,
 )
 
 
@@ -47,4 +48,10 @@ urlpatterns = [
     PostDeleteView.as_view(),
     name="post-delete"
     ),
+
+    path(
+    "<int:pk>/update/",
+    PostUpdateView.as_view(),
+    name="post-update"
+),
 ]
