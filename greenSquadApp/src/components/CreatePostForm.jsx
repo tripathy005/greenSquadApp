@@ -285,6 +285,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                     accept="image/*"
                                     onChange={handleImageChange}
                                     className="hidden"
+                                    required
                                 />
 
 
@@ -335,6 +336,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                 <label
                                     htmlFor="description"
                                     className="mb-2 block text-sm font-bold text-gray-700 md:text-base"
+                                    required
                                 >
                                     Description
                                 </label>
@@ -348,8 +350,8 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                     }
                                     placeholder="Describe your activity..."
                                     rows="4"
-                                    required
                                     className="w-full resize-none rounded-[15px] bg-[#D9D9D944] p-3 text- outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-[#538E3C] md:text-base"
+                                    required
                                 />
 
                             </div>
@@ -373,11 +375,10 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                         id="location"
                                         type="text"
                                         value={location}
-                                        onChange={(e) =>
-                                            setLocation(e.target.value)
-                                        }
+                                        onChange={(e) =>setLocation(e.target.value)}
                                         placeholder="Select or enter location"
                                         className="w-full rounded-[15px] bg-[#D9D9D944] p-3 text-sm outline-none focus:ring-2 focus:ring-[#538E3C]"
+                                        required
                                     />
 
 

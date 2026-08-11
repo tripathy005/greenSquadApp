@@ -259,7 +259,7 @@ const ProfilePage = () => {
 
                                 {/* Header */}
 
-                                <div className='flex items-center justify-between'>
+                                <form className='flex items-center justify-between'>
 
                                     <h2 className='text-2xl font-extrabold text-[#249138] md:text-3xl'>
                                         Edit Profile
@@ -269,77 +269,95 @@ const ProfilePage = () => {
                                         <IoMdClose size={24} />
                                     </button>
 
-                                </div>
+                                </form>
 
+                                <form className='mt-5 flex flex-col gap-4 md:mt-6 md:gap-5'>
+                                    {/* Profile Image */}
 
-                                {/* Profile Image */}
+                                    <div className='mt-6'>
 
-                                <div className='mt-6'>
-
-                                    <label className='mb-2 block font-bold text-gray-700'>
-                                        Profile Picture
-                                    </label>
-
-                                    <div className='flex flex-col items-center'>
-
-                                        <img src={editImage} alt='Profile preview' className='h-28 w-28 rounded-[15px] md:rounded-[30px] border-4 border-[#249138] object-cover md:h-36 md:w-36' />
-
-                                        <label htmlFor='profileImage' className='mt-4 cursor-pointer rounded-[11px] bg-[#538e3c] px-5 py-2 text-sm font-bold text-white hover:bg-[#467a32] transition'>
-                                            Change Photo
+                                        <label className='mb-2 block font-bold text-gray-700'>
+                                            Profile Picture
                                         </label>
 
-                                        <input id='profileImage' type='file' accept='image/png,image/jpeg,image/jpg,image/webp' className='hidden' onChange={handleImageChange} />
+                                        <div className='flex flex-col items-center'>
 
-                                        {imageFile && (
-                                            <p className='mt-2 max-w-full truncate text-xs text-gray-500'>
-                                                {imageFile.name}
-                                            </p>
-                                        )}
+                                            <img src={editImage} alt='Profile preview' className='h-28 w-28 rounded-[15px] md:rounded-[30px] border-4 border-[#249138] object-cover md:h-36 md:w-36' />
+
+                                            <label htmlFor='profileImage' className='mt-4 cursor-pointer rounded-[11px] bg-[#538e3c] px-5 py-2 text-sm font-bold text-white hover:bg-[#467a32] transition'>
+                                                Change Photo
+                                            </label>
+
+                                            <input id='profileImage' type='file' accept='image/png,image/jpeg,image/jpg,image/webp' className='hidden' onChange={handleImageChange} />
+
+                                            {imageFile && (
+                                                <p className='mt-2 max-w-full truncate text-xs text-gray-500'>
+                                                    {imageFile.name}
+                                                </p>
+                                            )}
+
+                                        </div>
 
                                     </div>
 
-                                </div>
+
+                                    {/* Name */}
+
+                                    <div className='mt-5'>
+
+                                        <label htmlFor='profileName' className='mb-2 block font-bold text-gray-700'>
+                                            Name
+                                        </label>
+
+                                        <input
+                                            id='profileName'
+                                            type='text'
+                                            value={editName}
+                                            onChange={(e) => setEditName(e.target.value)}
+                                            placeholder='Enter your name'
+                                            className='w-full rounded-[15px] bg-[#D9D9D944] p-3 outline-none focus:ring-2 focus:ring-[#538e3c]'
+                                            required
+
+                                        />
+
+                                    </div>
 
 
-                                {/* Name */}
+                                    {/* Email */}
 
-                                <div className='mt-5'>
+                                    <div className='mt-5'>
 
-                                    <label htmlFor='profileName' className='mb-2 block font-bold text-gray-700'>
-                                        Name
-                                    </label>
+                                        <label htmlFor='profileEmail' className='mb-2 block font-bold text-gray-700'>
+                                            Email
+                                        </label>
 
-                                    <input id='profileName' type='text' value={editName} onChange={(e) => setEditName(e.target.value)} placeholder='Enter your name' className='w-full rounded-[15px] bg-[#D9D9D944] p-3 outline-none focus:ring-2 focus:ring-[#538e3c]' />
+                                        <input
+                                            id='profileEmail'
+                                            type='email'
+                                            value={editEmail}
+                                            onChange={(e) => setEditEmail(e.target.value)}
+                                            placeholder='Enter your email'
+                                            className='w-full rounded-[15px] bg-[#D9D9D944] p-3 outline-none focus:ring-2 focus:ring-[#538e3c]'
+                                            required
+                                        />
 
-                                </div>
-
-
-                                {/* Email */}
-
-                                <div className='mt-5'>
-
-                                    <label htmlFor='profileEmail' className='mb-2 block font-bold text-gray-700'>
-                                        Email
-                                    </label>
-
-                                    <input id='profileEmail' type='email' value={editEmail} onChange={(e) => setEditEmail(e.target.value)} placeholder='Enter your email' className='w-full rounded-[15px] bg-[#D9D9D944] p-3 outline-none focus:ring-2 focus:ring-[#538e3c]' />
-
-                                </div>
+                                    </div>
 
 
-                                {/* Buttons */}
+                                    {/* Buttons */}
 
-                                <div className='mt-6 flex justify-end gap-3'>
+                                    <div className='mt-6 flex justify-end gap-3'>
 
-                                    <button type='button' onClick={handleCancel} className='rounded-[11px] border-2 border-gray-300 px-5 py-2 font-bold text-gray-600 hover:bg-gray-100 transition'>
-                                        Cancel
-                                    </button>
+                                        <button type='button' onClick={handleCancel} className='rounded-[11px] border-2 border-gray-300 px-5 py-2 font-bold text-gray-600 hover:bg-gray-100 transition'>
+                                            Cancel
+                                        </button>
 
-                                    <button type='button' onClick={handleSave} className='rounded-[11px] bg-[#538e3c] px-5 py-2 font-bold text-white hover:bg-[#467a32] transition'>
-                                        Save Changes
-                                    </button>
+                                        <button type='submit' onClick={handleSave} className='rounded-[11px] bg-[#538e3c] px-5 py-2 font-bold text-white hover:bg-[#467a32] transition'>
+                                            Save Changes
+                                        </button>
 
-                                </div>
+                                    </div>
+                                </form>
 
                             </div>
 

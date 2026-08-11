@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { Toaster } from "react-hot-toast";
 import HomePage from './pages/homepage.jsx'
 import SuperintendentPage from './pages/superintendent.jsx'
@@ -28,7 +28,7 @@ const App = () => {
           <Route path="/squad" element={<SquadPage />} />
           <Route path="/login" element={<LoginPage />} />
 
-          {/* <Route path="*" element={<Navigate to="/" />} /> */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
 

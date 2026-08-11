@@ -112,7 +112,7 @@ const RegisterPage = () => {
                                 <label className="text-sm text-gray-700">
                                     Confirm Password
                                 </label>
- <div className="relative mt-1.5">
+                                <div className="relative mt-1.5">
 
                                     <input
                                         type={showPassword ? "text" : "password"}
