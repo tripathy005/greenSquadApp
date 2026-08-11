@@ -50,7 +50,7 @@ const LoginPage = () => {
 
                             <div>
                                 <label className="text-sm text-gray-700">
-                                    Enter User Name or Email Id
+                                    Enter User Name 
                                 </label>
 
                                 <input
@@ -91,18 +91,18 @@ const LoginPage = () => {
                                 Submit
                             </button>
 
-                            <a
+                            {/* <a
                                 href="/"
                                 className="text-sm text-green-600 hover:underline"
                             >
                                 Forgot Password?
-                            </a>
+                            </a> */}
 
                             <p className="text-sm">
                                 If you do not have any account{" "}
-                                <span className="text-green-600 cursor-pointer hover:underline">
+                                <a href="/register" className="text-green-600 cursor-pointer hover:underline">
                                     Create now.
-                                </span>
+                                </a>
                             </p>
 
                         </div>

@@ -223,9 +223,6 @@ const CreatePostForm = ({ isOpen, onClose }) => {
     return (
         <>
 
-
-
-
             {isOpen && (
                 <div className=" fixed inset-0 z-1000 flex items-center justify-center bg-black/50 p-4">
 
@@ -263,7 +260,14 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                         <form
                             onSubmit={handleSubmit}
-                            className="max-h-[calc(90vh-70px)] overflow-y-auto p-5 md:p-7"
+                            className="max-h-[calc(90vh-70px)] p-5 md:p-7 
+                            overflow-y-auto 
+                            [&::-webkit-scrollbar]:w-2 
+                            [&::-webkit-scrollbar-track]:my-1 
+                            [&::-webkit-scrollbar-track]:bg-[#D9D9D9] 
+                            [&::-webkit-scrollbar-thumb]:bg-[#249138]/60 
+                            [&::-webkit-scrollbar-thumb]:rounded-full 
+                            [&::-webkit-scrollbar-track]:rounded-full"
                         >
 
                             {/* IMAGE */}

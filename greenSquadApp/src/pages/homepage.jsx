@@ -21,7 +21,6 @@ const HomePage = () => {
             [&::-webkit-scrollbar-thumb]:rounded-full
             [&::-webkit-scrollbar-track]:rounded-full
 
-
         bg-[linear-gradient(to_top,#E6FFE1_0%,#ABD3A4_100%)]'>
           <CreatePost />
           <Highlights />

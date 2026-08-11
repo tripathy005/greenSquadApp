@@ -37,12 +37,12 @@ export default function navOfMob() {
           </div>
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="/"> <div className='w-17 h-7  bg-[#538e3c] rounded-[11px]  flex items-center justify-center'>
             <AiOutlineLike className='w-7 h-7 p-0.5' color="#E2F6E8" />
           </div>
           </Link>
-        </li>
+        </li> */}
       </ul>
     </>
   )

@@ -1,12 +1,116 @@
 import React from 'react'
+import Diamond from '../assets/icon/Diamond.png'
+import userDP from '../assets/dp/Kunal Verma.png'
+import { MdLogout } from 'react-icons/md'
 
-export default function lAside() {
-  return (
-    <>
-        <div className='hidden lg:block w-100 h-[calc(100vh-6rem)] bg-white  sticky top-20 left-0'>
-            <h1 className='text-2xl font-bold text-center'>Left Aside</h1>
-        </div>
-      
-    </>
-  )
+export default function LAside() {
+    return (
+        <aside className='hidden lg:flex w-[18%] min-w-55  bg-white flex-col items-center px-4 py-10 sticky top-20 left-0'>
+
+            {/* Profile Image */}
+
+            <img
+                src={userDP}
+                alt='Profile'
+                className='w-28 h-28 rounded-[30px]  object-cover border-4 border-[#249138]  '
+            />
+
+
+            {/* Name */}
+
+            <h2 className='mt-3 text-xl font-extrabold text-center'>
+                Kunal Verma
+            </h2>
+
+
+            {/* Username */}
+
+            <p className='text-sm text-gray-500 mt-1'>
+                @kunalverma
+            </p>
+
+
+            {/* Profile Details */}
+
+            <div className='w-full mt-7 space-y-4'>
+
+                {/* Email */}
+
+                <div>
+                    <p className='text-xs text-gray-500'>
+                        Email
+                    </p>
+
+                    <p className='text-sm font-semibold break-all'>
+                        kunal@example.com
+                    </p>
+                </div>
+
+
+                {/* Squad */}
+
+                <div>
+                    <p className='text-xs text-gray-500'>
+                        Squad
+                    </p>
+
+                    <p className='text-sm font-bold text-[#249138]'>
+                        Energy Champs
+                    </p>
+                </div>
+
+
+                {/* Credit Points */}
+
+                <div>
+
+                    <p className='text-xs text-gray-500 mb-1'>
+                        Credit Points
+                    </p>
+
+                    <div className='flex items-center justify-center w-full bg-[#D9D9D944] rounded-xl py-2'>
+
+                        <img
+                            src={Diamond}
+                            alt='Credit'
+                            className='h-5 w-5 mr-2'
+                        />
+
+                        <p className='text-lg text-[#249138] font-extrabold tracking-[2px]'>
+                            1234
+                        </p>
+
+                        <p className='text-sm text-[#249138] font-extrabold ml-1'>
+                            +
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {/* Logout */}
+
+            <div className='w-full mt-30 pt-8'>
+
+                <button
+                    type='button'
+                    className='w-full flex items-center justify-center gap-2 border-2 border-[#538E3C] text-[#538E3C] hover:bg-[#538E3C] hover:text-white font-bold py-2 rounded-xl transition'
+                >
+                    <MdLogout size={20} />
+                    Logout
+                </button>
+
+            </div>
+
+        </aside>
+    )
 }
+
+
+
+
+
+
