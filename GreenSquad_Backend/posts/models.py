@@ -14,6 +14,14 @@ class Post(models.Model):
 
     location = models.CharField(max_length=255)
 
+    area = models.ForeignKey(
+    "areas.Area",
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True,
+    related_name="posts"
+    )
+
     latitude = models.DecimalField(
         max_digits=11,
         decimal_places=8
@@ -102,3 +110,33 @@ class DuplicatePost(models.Model):
 
     def __str__(self):
         return f"Post {self.post.id} duplicates Post {self.duplicate_of.id}"
+
+
+class PostLike(models.Model):
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="post_likes"
+    )
+
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name="likes"
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "post"],
+                name="unique_user_post_like"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} liked Post {self.post.id}"

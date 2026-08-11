@@ -53,23 +53,61 @@ def is_within_radius(
 
     return distance <= radius
 
-def post_is_in_superintendent_area(post, superintendent, radius=100):
+def find_area_for_location(latitude, longitude, areas):
     """
-    Check whether a post is within the given radius
-    of any area assigned to the superintendent.
+    Find the first Area whose radius contains
+    the given location.
     """
-
-    areas = superintendent.areas.all()
 
     for area in areas:
 
         if is_within_radius(
-            post.latitude,
-            post.longitude,
+            latitude,
+            longitude,
             area.latitude,
             area.longitude,
-            radius=radius
+            radius=area.radius
         ):
-            return True
+            return area
 
-    return False
+    return None
+
+
+def find_duplicate_post(post, area):
+    """
+    Find an existing post within 100 meters
+    of the new post inside the same Area.
+    """
+
+    existing_posts = area.posts.filter(
+        is_duplicate=False
+    ).exclude(
+        id=post.id
+    )
+
+    for existing_post in existing_posts:
+
+        if is_within_radius(
+            post.latitude,
+            post.longitude,
+            existing_post.latitude,
+            existing_post.longitude,
+            radius=100
+        ):
+            return existing_post
+
+    return None
+
+
+def post_is_in_superintendent_area(post, superintendent):
+    """
+    Check whether the post belongs to one of the
+    superintendent's assigned areas.
+    """
+
+    if post.area is None:
+        return False
+
+    return superintendent.areas.filter(
+        id=post.area.id
+    ).exists()

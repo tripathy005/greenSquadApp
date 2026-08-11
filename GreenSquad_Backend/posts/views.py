@@ -4,8 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import PostSerializer,CleanupImageSerializer
 
-from .models import Post
-from .serializers import PostSerializer
+from .models import Post, PostLike
+from .permissions import IsCitizen
 
 
 class PostCreateView(generics.CreateAPIView):
@@ -102,35 +102,6 @@ class SelfResolvePostView(generics.CreateAPIView):
         )
 
 
-class HandoverPostView(generics.UpdateAPIView):
-
-    queryset = Post.objects.all()
-    permission_classes = [IsAuthenticated]
-
-    def update(self, request, *args, **kwargs):
-
-        post = self.get_object()
-
-        if post.user != request.user:
-            return Response(
-                {"detail": "You can only hand over your own post."},
-                status=status.HTTP_403_FORBIDDEN
-            )
-
-        if post.action != "handover":
-            return Response(
-                {"detail": "This post is marked for self-resolution."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        
-        post.save(update_fields=["is_handed_over"])
-
-        return Response({
-            "message": "Post handed over to authority."
-        })
-
-
 class PostDeleteView(generics.DestroyAPIView):
 
     queryset = Post.objects.all()
@@ -174,3 +145,37 @@ class PostUpdateView(generics.UpdateAPIView):
             *args,
             **kwargs
         )   
+
+
+class PostLikeToggleView(generics.GenericAPIView):
+
+    queryset = Post.objects.all()
+    permission_classes = [IsCitizen]
+
+    def post(self, request, *args, **kwargs):
+
+        post = self.get_object()
+
+        like, created = PostLike.objects.get_or_create(
+            user=request.user,
+            post=post
+        )
+
+        if not created:
+            like.delete()
+
+            return Response(
+                {
+                    "liked": False,
+                    "like_count": post.likes.count()
+                },
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            {
+                "liked": True,
+                "like_count": post.likes.count()
+            },
+            status=status.HTTP_201_CREATED
+        )

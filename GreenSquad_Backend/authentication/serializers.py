@@ -24,3 +24,37 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            "full_name",
+            "email",
+            "profile_photo",
+        ]
+
+    def validate(self, attrs):
+
+        allowed_fields = {
+            "full_name",
+            "email",
+            "profile_photo",
+        }
+
+        submitted_fields = set(self.initial_data.keys())
+
+        unknown_fields = submitted_fields - allowed_fields
+
+        if unknown_fields:
+            raise serializers.ValidationError(
+                {
+                    "detail": (
+                        "These fields cannot be updated: "
+                        + ", ".join(sorted(unknown_fields))
+                    )
+                }
+            )
+
+        return attrs

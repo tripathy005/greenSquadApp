@@ -8,6 +8,7 @@ from .views import (
     SelfResolvePostView,
     PostDeleteView,
     PostUpdateView,
+    PostLikeToggleView,
 )
 
 
@@ -53,5 +54,11 @@ urlpatterns = [
     "<int:pk>/update/",
     PostUpdateView.as_view(),
     name="post-update"
-),
+    ),
+
+    path(
+    "<int:pk>/like/",
+    PostLikeToggleView.as_view(),
+    name="post-like-toggle"
+    ),
 ]

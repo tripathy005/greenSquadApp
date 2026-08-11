@@ -6,10 +6,7 @@ from posts.models import Post
 from .permissions import IsSuperintendent
 from .serializers import GovernmentPostSerializer
 from .serializers import GovernmentCleanupSerializer
-from .utils import (
-    is_within_radius,
-    post_is_in_superintendent_area,
-)
+from .utils import post_is_in_superintendent_area
 
 
 class SuperintendentPostListView(generics.ListAPIView):
@@ -23,29 +20,12 @@ class SuperintendentPostListView(generics.ListAPIView):
 
         areas = superintendent.areas.all()
 
-        posts = Post.objects.filter(
+        return Post.objects.filter(
+            area__in=areas,
             action="handover",
             is_resolved=False,
             is_duplicate=False,
         ).order_by("-posted_at")
-
-        matching_posts = []
-
-        for post in posts:
-
-            for area in areas:
-
-                if is_within_radius(
-                    post.latitude,
-                    post.longitude,
-                    area.latitude,
-                    area.longitude,
-                    radius=100
-                ):
-                    matching_posts.append(post)
-                    break
-
-        return matching_posts
 
 
 class SuperintendentCleanupView(generics.CreateAPIView):
@@ -77,6 +57,16 @@ class SuperintendentCleanupView(generics.CreateAPIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST
                 )
+
+        if post.is_duplicate:
+            return Response(
+                {
+                    "detail": "Duplicate posts cannot be processed."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        
         if not post_is_in_superintendent_area(
                 post,
                 request.user.superintendent_profile
