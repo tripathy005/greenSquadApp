@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from .views import RegisterView,ProfileUpdateView
+from .views import RegisterView,ProfileUpdateView,ProfileView
 
 urlpatterns = [
     path(
@@ -28,6 +28,12 @@ urlpatterns = [
     "profile/update/",
     ProfileUpdateView.as_view(),
     name="profile-update"
+    ),
+
+    path(
+    "profile/",
+    ProfileView.as_view(),
+    name="profile"
     ),
 
 ]

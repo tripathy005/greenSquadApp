@@ -58,3 +58,22 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
             )
 
         return attrs
+
+class ProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "full_name",
+            "email",
+            "profile_photo",
+            "role",
+        ]
+        read_only_fields = [
+            "username",
+            "full_name",
+            "email",
+            "profile_photo",
+            "role",
+        ]

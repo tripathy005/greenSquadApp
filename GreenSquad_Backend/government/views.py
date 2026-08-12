@@ -3,9 +3,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from posts.models import Post
 
-from .permissions import IsSuperintendent
-from .serializers import GovernmentPostSerializer
-from .serializers import GovernmentCleanupSerializer
+from authentication.models import User
+
+
+from .permissions import IsSuperintendent,IsAdminUserRole
+from .serializers import GovernmentPostSerializer,GovernmentCleanupSerializer,SuperintendentSerializer
 from .utils import post_is_in_superintendent_area
 
 
@@ -104,3 +106,13 @@ class SuperintendentCleanupView(generics.CreateAPIView):
             },
             status=status.HTTP_201_CREATED
         )
+
+class SuperintendentListCreateView(generics.ListCreateAPIView):
+
+    permission_classes = [IsAdminUserRole]
+    serializer_class = SuperintendentSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(
+            role="superintendent"
+        ).order_by("id")
