@@ -2,6 +2,12 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from posts.models import Post
+from .models import SuperintendentProfile
+from areas.models import Area
+from .serializers import (
+    SuperintendentSerializer,
+    SuperintendentAreaSerializer,
+)
 
 from authentication.models import User
 
@@ -116,3 +122,57 @@ class SuperintendentListCreateView(generics.ListCreateAPIView):
         return User.objects.filter(
             role="superintendent"
         ).order_by("id")
+
+class SuperintendentDetailView(generics.RetrieveUpdateAPIView):
+
+    permission_classes = [IsAdminUserRole]
+    serializer_class = SuperintendentSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(
+            role="superintendent"
+        )
+
+
+class SuperintendentAreaUpdateView(generics.GenericAPIView):
+
+    permission_classes = [IsAdminUserRole]
+    serializer_class = SuperintendentAreaSerializer
+
+    def put(self, request, pk):
+
+        superintendent = SuperintendentProfile.objects.filter(
+            id=pk
+        ).first()
+
+        if not superintendent:
+            return Response(
+                {"detail": "Superintendent not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        area_ids = serializer.validated_data["area_ids"]
+
+        areas = Area.objects.filter(id__in=area_ids)
+
+        if areas.count() != len(set(area_ids)):
+            return Response(
+                {"detail": "One or more Areas do not exist."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Assign selected Areas to this Superintendent
+        areas.update(superintendent=superintendent)
+
+        return Response(
+            {
+                "message": "Areas assigned successfully.",
+                "area_ids": list(
+                    areas.values_list("id", flat=True)
+                )
+            },
+            status=status.HTTP_200_OK
+        )

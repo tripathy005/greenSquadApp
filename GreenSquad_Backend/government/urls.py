@@ -5,6 +5,8 @@ from .views import (
     SuperintendentPostListView,
     SuperintendentCleanupView,
     SuperintendentListCreateView,
+    SuperintendentDetailView,
+    SuperintendentAreaUpdateView,
 )
 
 
@@ -25,5 +27,17 @@ urlpatterns = [
     "superintendents/",
     SuperintendentListCreateView.as_view(),
     name="superintendent-list-create"
+    ),
+
+    path(
+    "superintendents/<int:pk>/",
+    SuperintendentDetailView.as_view(),
+    name="superintendent-detail"
+    ),
+
+    path(
+    "superintendents/<int:pk>/areas/",
+    SuperintendentAreaUpdateView.as_view(),
+    name="superintendent-area-update"
     ),
 ]

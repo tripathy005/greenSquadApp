@@ -43,6 +43,11 @@ class GovernmentCleanupSerializer(serializers.ModelSerializer):
 
 class SuperintendentSerializer(serializers.ModelSerializer):
 
+    password = serializers.CharField(
+        write_only=True,
+        required=True
+    )
+
     class Meta:
         model = User
         fields = [
@@ -50,8 +55,10 @@ class SuperintendentSerializer(serializers.ModelSerializer):
             "username",
             "full_name",
             "email",
+            "password",
             "profile_photo",
             "role",
+            "is_active",
         ]
         read_only_fields = [
             "id",
@@ -59,9 +66,21 @@ class SuperintendentSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+
+        password = validated_data.pop("password")
+
         user = User.objects.create_user(
+            password=password,
             role="superintendent",
             **validated_data
         )
 
         return user
+
+
+class SuperintendentAreaSerializer(serializers.Serializer):
+
+    area_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        allow_empty=True
+    )
