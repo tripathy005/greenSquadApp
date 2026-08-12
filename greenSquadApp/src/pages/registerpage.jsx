@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import API from "../api/api.js";
+import { toast } from "react-hot-toast";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import logo2 from "../assets/logo/logo2.png";
 import logo3 from "../assets/logo/logo3.png";
@@ -9,6 +11,83 @@ const RegisterPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    // for form data
+    const [email, setEmail] = useState('')
+    const [name, setName] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+    const [isLoading, setIsLoading] = useState(false)
+
+
+    // Function to handle form submission
+    const handleRegister = async (e) => {
+
+        e.preventDefault()
+
+        if (password !== confirmPassword) {
+            toast.error('Passwords do not match.')
+            return
+        }
+
+        setIsLoading(true)
+
+        try {
+
+            const response = await API.register({
+                full_name: name,
+                username: username,
+                email: email,
+                password: password,
+            })
+            
+            // Log the response for debugging
+            const data = await response.json()
+
+            console.log('Register response:', data)
+
+            if (!response.ok) {
+
+                if (data.username) {
+                    toast.error(data.username[0])
+                } else if (data.email) {
+                    toast.error(data.email[0])
+                } else if (data.password) {
+                    toast.error(data.password[0])
+                } else if (data.detail) {
+                    toast.error(data.detail)
+                } else {
+                    toast.error('Registration failed.')
+                }
+
+                return
+            }
+
+            toast.success('Account created successfully! Please login.')
+
+            setEmail('')
+            setName('')
+            setUsername('')
+            setPassword('')
+            setConfirmPassword('')
+
+            setTimeout(() => {
+                window.location.href = '/login'
+            }, 3500)
+
+        } catch (error) {
+
+            console.error('Registration error:', error)
+
+            toast.error('Unable to connect to the server.')
+
+        } finally {
+
+            setIsLoading(false)
+
+        }
+    }
 
     return (
         <>
@@ -39,7 +118,7 @@ const RegisterPage = () => {
                     <div className="hidden lg:block w-px  bg-gray-300"></div>
 
                     {/* Right */}
-                    <form className="lg:w-1/2 px-10 py-7">
+                    <form onSubmit={handleRegister} className="lg:w-1/2 px-10 py-7">
 
                         <h1 className="text-[30px] font-bold text-green-700 mb-6">
                             Register.
@@ -53,8 +132,11 @@ const RegisterPage = () => {
                                 </label>
 
                                 <input
-                                    type="email"
-                                    className="mt-1.5 w-full rounded-[15px] bg-gray-100 p-2 outline-none focus:ring-2 focus:ring-green-500"
+                                    type='email'
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className='mt-1.5 w-full rounded-[15px] bg-gray-100 p-2 outline-none focus:ring-2 focus:ring-green-500'
+                                    required
                                 />
                             </div>
 
@@ -64,8 +146,11 @@ const RegisterPage = () => {
                                 </label>
 
                                 <input
-                                    type="text"
-                                    className="mt-1.5 w-full rounded-[15px] bg-gray-100 p-2 outline-none focus:ring-2 focus:ring-green-500"
+                                    type='text'
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    className='mt-1.5 w-full rounded-[15px] bg-gray-100 p-2 outline-none focus:ring-2 focus:ring-green-500'
+                                    required
                                 />
                             </div>
 
@@ -75,8 +160,11 @@ const RegisterPage = () => {
                                 </label>
 
                                 <input
-                                    type="text"
-                                    className="mt-1.5 w-full rounded-[15px] bg-gray-100 p-2 outline-none focus:ring-2 focus:ring-green-500"
+                                    type='text'
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    className='mt-1.5 w-full rounded-[15px] bg-gray-100 p-2 outline-none focus:ring-2 focus:ring-green-500'
+                                    required
                                 />
                             </div>
 
@@ -88,8 +176,10 @@ const RegisterPage = () => {
                                 <div className="relative mt-1.5">
 
                                     <input
-                                        type={showPassword ? "text" : "password"}
-                                        className="w-full rounded-[15px] bg-gray-100 p-2 pr-12 outline-none focus:ring-2 focus:ring-green-500"
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className='w-full rounded-[15px] bg-gray-100 p-2 pr-12 outline-none focus:ring-2 focus:ring-green-500'
                                         required
                                     />
 
@@ -115,17 +205,19 @@ const RegisterPage = () => {
                                 <div className="relative mt-1.5">
 
                                     <input
-                                        type={showPassword ? "text" : "password"}
-                                        className="w-full rounded-[15px] bg-gray-100 p-2 pr-12 outline-none focus:ring-2 focus:ring-green-500"
+                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        className='w-full rounded-[15px] bg-gray-100 p-2 pr-12 outline-none focus:ring-2 focus:ring-green-500'
                                         required
                                     />
 
                                     <button
                                         type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                         className="absolute inset-y-0 right-4 flex items-center text-gray-500 hover:text-[#249138] transition"
                                     >
-                                        {showPassword ? (
+                                        {showConfirmPassword ? (
                                             <IoIosEyeOff size={22} />
                                         ) : (
                                             <IoIosEye size={22} />
@@ -135,15 +227,19 @@ const RegisterPage = () => {
                                 </div>
                             </div>
 
-                            <button className="w-full mt-2 bg-green-700 hover:bg-green-800 text-white py-2 rounded-[15px] font-semibold transition">
+                            <button
+                                type='submit'
+                                disabled={isLoading}
+                                className="w-full mt-2 bg-green-700 hover:bg-green-800 text-white py-2 rounded-[15px] font-semibold transition"
+                            >
                                 Submit
                             </button>
 
                             <p className="text-sm">
                                 Already have an account?{" "}
-                                <span className="text-green-600 cursor-pointer hover:underline">
-                                    Login now.
-                                </span>
+                                <a href="/login" className="text-green-600 cursor-pointer hover:underline">
+                                    {isLoading ? 'Creating Account...' : 'Login now.'}
+                                </a>
                             </p>
 
                         </div>

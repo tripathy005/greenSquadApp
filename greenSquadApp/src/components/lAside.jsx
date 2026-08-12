@@ -2,8 +2,32 @@ import React from 'react'
 import Diamond from '../assets/icon/Diamond.png'
 import userDP from '../assets/dp/Kunal Verma.png'
 import { MdLogout } from 'react-icons/md'
+import { toast } from 'react-hot-toast'
+import { useAuth } from '../context/AuthProvider.jsx'
 
 export default function LAside() {
+
+    const [authUser, setAuthUser] = useAuth()
+    const handleLogout = () => {
+        try {
+            setAuthUser({
+                ...authUser,
+                access_token: null,
+                refresh_token: null,
+            })
+            localStorage.removeItem('access_token')
+            localStorage.removeItem('refresh_token')
+            toast.success("Logged out successfully")
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000)
+        } catch (error) {
+            toast.error("Error: " + error.message)
+            setTimeout(() => { }, 2000)
+        }
+    }
+
+
     return (
         <aside className='hidden lg:flex w-[18%] min-w-55  bg-white flex-col items-center px-4 py-10 sticky top-20 left-0'>
 
@@ -97,6 +121,7 @@ export default function LAside() {
 
                 <button
                     type='button'
+                    onClick={handleLogout}
                     className='w-full flex items-center justify-center gap-2 border-2 border-[#538E3C] text-[#538E3C] hover:bg-[#538E3C] hover:text-white font-bold py-2 rounded-xl transition'
                 >
                     <MdLogout size={20} />

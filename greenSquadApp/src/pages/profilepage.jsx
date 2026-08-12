@@ -6,8 +6,30 @@ import userDP from '../assets/dp/Kunal Verma.png'
 import Diamond from '../assets/icon/Diamond.png'
 import { MdEditSquare } from 'react-icons/md'
 import { IoMdClose } from "react-icons/io"
+import { toast } from 'react-hot-toast'
+import { useAuth } from '../context/AuthProvider.jsx'
 
 const ProfilePage = () => {
+
+    const [authUser, setAuthUser] = useAuth()
+    const handleLogout = () => {
+        try {
+            setAuthUser({
+                ...authUser,
+                access_token: null,
+                refresh_token: null,
+            })
+            localStorage.removeItem('access_token')
+            localStorage.removeItem('refresh_token')
+            toast.success("Logged out successfully")
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000)
+        } catch (error) {
+            toast.error("Error: " + error.message)
+            setTimeout(() => { }, 2000)
+        }
+    }
 
     const [profile, setProfile] = useState({
         name: 'Kunal Verma',
@@ -213,6 +235,7 @@ const ProfilePage = () => {
 
                             <button
                                 type='button'
+                                onClick={handleLogout}
                                 className='  hover:bg-[#538e3c] rounded-[11px]  flex items-center justify-center px-5 py-2 text-[12px] md:text-[20px] text-[#538E3C] hover:text-[#E2F6E8] font-bold border-3 border-[#538E3C] hover:border-[#E2F6E8]'
                             >
                                 Logout

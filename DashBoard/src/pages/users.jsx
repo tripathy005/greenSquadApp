@@ -10,28 +10,24 @@ export default function UsersPage() {
             fullName: 'Kunal Verma',
             username: 'kunal_verma',
             email: 'kunal@example.com',
-            phone: '+91 9876543210',
         },
         {
             id: 2,
             fullName: 'Rahul Das',
             username: 'rahul_das',
             email: 'rahul@example.com',
-            phone: '+91 9123456780',
         },
         {
             id: 3,
             fullName: 'Priya Sharma',
             username: 'priya_sharma',
             email: 'priya@example.com',
-            phone: '+91 9988776655',
         },
         {
             id: 4,
             fullName: 'Amit Kumar',
             username: 'amit_kumar',
             email: 'amit@example.com',
-            phone: '+91 9090909090',
         },
     ])
 
@@ -160,19 +156,6 @@ export default function UsersPage() {
 
                                     </div>
 
-
-                                    {/* Phone */}
-                                    <div className="flex justify-between gap-4">
-
-                                        <span className="text-sm text-gray-400">
-                                            Phone
-                                        </span>
-
-                                        <span className="text-sm text-gray-700">
-                                            {user.phone || 'Not provided'}
-                                        </span>
-
-                                    </div>
 
                                 </div>
 

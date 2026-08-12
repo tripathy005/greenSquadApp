@@ -10,21 +10,18 @@ export default function SuperintendentPage() {
       fullName: 'Rajesh Kumar',
       username: 'rajesh_kumar',
       email: 'rajesh@example.com',
-      phone: '+91 9876543210',
     },
     {
       id: 2,
       fullName: 'Priya Sharma',
       username: 'priya_sharma',
       email: 'priya@example.com',
-      phone: '+91 9123456780',
     },
     {
       id: 3,
       fullName: 'Amit Das',
       username: 'amit_das',
       email: 'amit@example.com',
-      phone: '+91 9988776655',
     },
   ])
 
@@ -34,7 +31,7 @@ export default function SuperintendentPage() {
     username: '',
     email: '',
     password: '',
-    phone: '',
+    confirmPassword: '',
   })
 
 
@@ -51,12 +48,16 @@ export default function SuperintendentPage() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
+    if (formData.password !== formData.confirmPassword) {
+      alert('Passwords do not match.')
+      return
+    }
+
     const newSuperintendent = {
       id: Date.now(),
       fullName: formData.fullName,
       username: formData.username,
       email: formData.email,
-      phone: formData.phone,
     }
 
     setSuperintendents((previous) => [
@@ -69,7 +70,7 @@ export default function SuperintendentPage() {
       username: '',
       email: '',
       password: '',
-      phone: '',
+      confirmPassword: '',
     })
   }
 
@@ -189,25 +190,6 @@ export default function SuperintendentPage() {
               </div>
 
 
-              {/* Phone */}
-              <div>
-
-                <label className="mb-2 block text-sm font-medium text-gray-700">
-                  Phone Number
-                </label>
-
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="Enter phone number"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
-                />
-
-              </div>
-
-
               {/* Password */}
               <div>
 
@@ -221,6 +203,26 @@ export default function SuperintendentPage() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Enter password"
+                  required
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
+                />
+
+              </div>
+
+
+              {/* Confirm Password */}
+              <div>
+
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Confirm Password
+                </label>
+
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Confirm password"
                   required
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
                 />
@@ -324,19 +326,6 @@ export default function SuperintendentPage() {
 
                       <span className="text-sm text-gray-700">
                         {superintendent.email}
-                      </span>
-
-                    </div>
-
-
-                    <div className="flex justify-between gap-4">
-
-                      <span className="text-sm text-gray-400">
-                        Phone
-                      </span>
-
-                      <span className="text-sm text-gray-700">
-                        {superintendent.phone || 'Not provided'}
                       </span>
 
                     </div>
