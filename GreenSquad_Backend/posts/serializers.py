@@ -3,6 +3,8 @@ from .utils import find_matching_area
 from government.utils import find_duplicate_post
 from .models import Post, PostMedia, DuplicatePost
 from areas.models import Area
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class PostMediaSerializer(serializers.ModelSerializer):
@@ -25,8 +27,23 @@ class AreaSerializer(serializers.ModelSerializer):
             "name",
         ]
 
+class PostUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "full_name",
+            "profile_photo",
+        ]
+
 
 class PostSerializer(serializers.ModelSerializer):
+
+    user = PostUserSerializer(
+    read_only=True
+    )
 
     like_count = serializers.IntegerField(
     source="likes.count",
@@ -55,6 +72,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = [
             "id",
+            "user",
             "description",
             "location",
             "latitude",
@@ -85,9 +103,9 @@ class PostSerializer(serializers.ModelSerializer):
 
         image = validated_data.pop("image")
 
-        area_name = validated_data.pop(
-        "area_name",
-        None
+        validated_data.pop(
+            "area_name",
+            None
         )
 
         user = self.context["request"].user
@@ -106,11 +124,24 @@ class PostSerializer(serializers.ModelSerializer):
             **validated_data
         )
 
-        duplicate_post = find_duplicate_post(post,area)
+        # Save original post image
+        PostMedia.objects.create(
+            post=post,
+            image=image,
+            media_type="original"
+        )
+
+        # Check duplicate after Post is created
+        duplicate_post = find_duplicate_post(
+            post,
+            area
+        )
 
         if duplicate_post:
             post.is_duplicate = True
-            post.save(update_fields=["is_duplicate"])
+            post.save(
+                update_fields=["is_duplicate"]
+            )
 
             DuplicatePost.objects.create(
                 post=post,
@@ -118,6 +149,44 @@ class PostSerializer(serializers.ModelSerializer):
             )
 
         return post
+
+class SuperintendentPostSerializer(serializers.ModelSerializer):
+
+    user = PostUserSerializer(
+    read_only=True
+    )
+
+    like_count = serializers.IntegerField(
+        source="likes.count",
+        read_only=True
+    )
+
+    media = PostMediaSerializer(
+        many=True,
+        read_only=True
+    )
+
+    area = AreaSerializer(
+        read_only=True
+    )
+
+    class Meta:
+        model = Post
+        fields = [
+            "id",
+            "user",
+            "description",
+            "location",
+            "latitude",
+            "longitude",
+            "area",
+            "action",
+            "media",
+            "posted_at",
+            "is_resolved",
+            "credit_points",
+            "like_count",
+        ]
     
 class CleanupImageSerializer(serializers.ModelSerializer):
 

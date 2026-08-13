@@ -37,6 +37,16 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
 
+        user = self.context["request"].user
+
+        # Superintendent cannot update any profile field
+        if user.role == "superintendent":
+            raise serializers.ValidationError(
+                {
+                    "detail": "Superintendent profile cannot be modified."
+                }
+            )
+
         allowed_fields = {
             "full_name",
             "email",

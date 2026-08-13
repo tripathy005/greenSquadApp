@@ -5,8 +5,10 @@ from posts.models import Post
 from .models import SuperintendentProfile
 from areas.models import Area
 from .serializers import (
+    SuperintendentDeactivateSerializer,
     SuperintendentSerializer,
     SuperintendentAreaSerializer,
+    SuperintendentUpdateSerializer,
 )
 
 from authentication.models import User
@@ -15,6 +17,23 @@ from authentication.models import User
 from .permissions import IsSuperintendent,IsAdminUserRole
 from .serializers import GovernmentPostSerializer,GovernmentCleanupSerializer,SuperintendentSerializer
 from .utils import post_is_in_superintendent_area
+
+from django.contrib.auth import get_user_model
+from django.db import transaction
+from rest_framework import generics
+from rest_framework.permissions import IsAdminUser
+
+from .models import SuperintendentProfile
+from .serializers import SuperintendentCreateSerializer
+
+from posts.models import Post
+from posts.serializers import SuperintendentPostSerializer
+
+User = get_user_model()
+
+
+
+
 
 
 class SuperintendentPostListView(generics.ListAPIView):
@@ -176,3 +195,70 @@ class SuperintendentAreaUpdateView(generics.GenericAPIView):
             },
             status=status.HTTP_200_OK
         )
+
+
+class SuperintendentCreateView(generics.CreateAPIView):
+
+    serializer_class = SuperintendentCreateSerializer
+    permission_classes = [IsAdminUser]
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+
+        data = serializer.validated_data
+
+        user = User.objects.create_user(
+            username=data["username"],
+            email=data["email"],
+            password=data["password"],
+        )
+
+        user.full_name = data["full_name"]
+        user.role = "superintendent"
+        user.save()
+
+        SuperintendentProfile.objects.create(
+            user=user,
+            employee_id=data["employee_id"]
+        )
+
+class SuperintendentUpdateView(generics.UpdateAPIView):
+
+    queryset = SuperintendentProfile.objects.select_related("user")
+    serializer_class = SuperintendentUpdateSerializer
+    permission_classes = [IsAdminUser]
+
+    lookup_field = "id"
+
+
+class SuperintendentDeactivateView(generics.UpdateAPIView):
+
+    queryset = SuperintendentProfile.objects.select_related("user")
+    serializer_class = SuperintendentDeactivateSerializer
+    permission_classes = [IsAdminUser]
+
+    lookup_field = "id"
+
+class SuperintendentPostListView(generics.ListAPIView):
+
+    serializer_class = SuperintendentPostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+
+        user = self.request.user
+
+        if user.role != "superintendent":
+            return Post.objects.none()
+
+        superintendent_profile = (
+            user.superintendent_profile
+        )
+
+        areas = superintendent_profile.areas.all()
+
+        return Post.objects.filter(
+            area__in=areas,
+            action="handover",
+            is_duplicate=False,
+        ).order_by("-posted_at")
