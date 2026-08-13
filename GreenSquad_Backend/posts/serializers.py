@@ -1,10 +1,8 @@
 from rest_framework import serializers
-from .models import Post, PostMedia
+from .utils import find_matching_area
+from government.utils import find_duplicate_post
+from .models import Post, PostMedia, DuplicatePost
 from areas.models import Area
-from government.utils import (
-    find_area_for_location,
-    find_duplicate_post,
-)
 
 
 class PostMediaSerializer(serializers.ModelSerializer):
@@ -16,6 +14,15 @@ class PostMediaSerializer(serializers.ModelSerializer):
             "image",
             "media_type",
             "uploaded_at",
+        ]
+
+class AreaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Area
+        fields = [
+            "id",
+            "name",
         ]
 
 
@@ -35,8 +42,13 @@ class PostSerializer(serializers.ModelSerializer):
 
     media = PostMediaSerializer(many=True,read_only=True)
 
-    area = serializers.PrimaryKeyRelatedField(
+    area = AreaSerializer(
     read_only=True
+    )
+
+    area_name = serializers.CharField(
+    write_only=True,
+    required=False
     )
 
     class Meta:
@@ -48,6 +60,7 @@ class PostSerializer(serializers.ModelSerializer):
             "latitude",
             "longitude",
             "area",
+            "area_name",
             "action",
             "image",
             "media",
@@ -72,17 +85,19 @@ class PostSerializer(serializers.ModelSerializer):
 
         image = validated_data.pop("image")
 
+        area_name = validated_data.pop(
+        "area_name",
+        None
+        )
+
         user = self.context["request"].user
 
-        latitude = validated_data["latitude"]
-        longitude = validated_data["longitude"]
+        latitude = validated_data.get("latitude")
+        longitude = validated_data.get("longitude")
 
-        areas = Area.objects.all()
-
-        area = find_area_for_location(
+        area = find_matching_area(
             latitude,
-            longitude,
-            areas
+            longitude
         )
 
         post = Post.objects.create(
@@ -91,26 +106,16 @@ class PostSerializer(serializers.ModelSerializer):
             **validated_data
         )
 
-        PostMedia.objects.create(
-            post=post,
-            image=image,
-            media_type="original"
-        )
+        duplicate_post = find_duplicate_post(post,area)
 
-        if area:
+        if duplicate_post:
+            post.is_duplicate = True
+            post.save(update_fields=["is_duplicate"])
 
-            duplicate_post = find_duplicate_post(
-                post,
-                area
+            DuplicatePost.objects.create(
+                post=post,
+                duplicate_of=duplicate_post
             )
-
-            if duplicate_post:
-
-                post.is_duplicate = True
-
-                post.save(
-                    update_fields=["is_duplicate"]
-                )
 
         return post
     
