@@ -184,41 +184,242 @@ const CreatePostForm = ({ isOpen, onClose }) => {
         }
     };
 
-    const handleSubmit = (e) => {
 
-        e.preventDefault();
 
-        const postData = {
-            image: imageFile,
-            description: description,
-            location: location,
-            latitude: latitude,
-            longitude: longitude,
-            action: action,
-            cleaning_image: cleaningImage,
-        };
+    const handleSubmit = async (e) => {
 
-        console.log("Post data:", postData);
+        e.preventDefault()
 
-        /*
-            Later this will be sent to Django:
+        const token = localStorage.getItem('access_token')
 
-            const formData = new FormData();
+        if (!token) {
+            toast.error('Please login first.')
+            return
+        }
 
-            formData.append("image", imageFile);
-            formData.append("description", description);
-            formData.append("location", location);
-            formData.append("latitude", latitude);
-            formData.append("longitude", longitude);
-            formData.append("action", action);
-            if (action === "yes" && cleaningImage) {
-            formData.append("cleaning_image", cleaningImage);
+        if (!imageFile) {
+            toast.error('Please select a post image.')
+            return
+        }
+
+        if (!description.trim()) {
+            toast.error('Please enter a description.')
+            return
+        }
+
+        if (!location.trim()) {
+            toast.error('Please select a location.')
+            return
+        }
+
+        if (!latitude || !longitude) {
+            toast.error('Please detect your location.')
+            return
+        }
+
+        if (!action) {
+            toast.error('Please select Yes or No.')
+            return
+        }
+
+        if (action === 'yes' && !cleaningImage) {
+            toast.error('Please upload the cleaning photo.')
+            return
+        }
+
+        try {
+
+            // Convert frontend action to backend action
+            const backendAction = action === 'yes'
+                ? 'self_resolve'
+                : 'handover'
+
+
+            //create post
+
+            const postFormData = new FormData()
+
+            postFormData.append('image', imageFile)
+            postFormData.append('description', description)
+            postFormData.append('location', location)
+            postFormData.append('latitude', Number(latitude).toFixed(6))
+            postFormData.append('longitude', Number(longitude).toFixed(6))
+            postFormData.append('action', backendAction)
+
+
+            const createResponse = await fetch(
+                '/api/posts/create/',
+                {
+                    method: 'POST',
+
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+
+                    body: postFormData,
+                }
+            )
+
+
+            const createData = await createResponse.json()
+
+            console.log('Create post response:', createData)
+
+
+            // ==========================================
+            // CREATE POST FAILED
+            // ==========================================
+
+            if (!createResponse.ok) {
+
+                console.error(
+                    'Create post error:',
+                    createData
+                )
+
+                if (createData.detail) {
+
+                    toast.error(createData.detail)
+
+                } else if (createData.action) {
+
+                    toast.error(createData.action[0])
+
+                } else if (createData.image) {
+
+                    toast.error(createData.image[0])
+
+                } else if (createData.description) {
+
+                    toast.error(createData.description[0])
+
+                } else if (createData.location) {
+
+                    toast.error(createData.location[0])
+
+                } else {
+
+                    toast.error('Failed to create post.')
+
+                }
+
+                return
             }
 
-            axios.post("/api/posts/", formData);
-        */
-    };
 
+            // if user selete no for handover
+
+            if (action === 'no') {
+
+                toast.success('Post created successfully!')
+
+                onClose()
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1000)
+
+
+                return
+            }
+
+
+
+            // if user selete yes for Self-resolve
+
+            const postId = createData.id
+
+
+            if (!postId) {
+
+                console.error(
+                    'Post ID missing from create response:',
+                    createData
+                )
+
+                toast.error(
+                    'Post created, but post ID was not returned.'
+                )
+
+                return
+            }
+
+
+            // upload cleaning image
+
+
+            const resolveFormData = new FormData()
+
+            resolveFormData.append('image', cleaningImage)
+
+
+            const resolveResponse = await fetch(
+                `/api/posts/${postId}/resolve/`,
+                {
+                    method: 'POST',
+
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+
+                    body: resolveFormData,
+                }
+            )
+
+
+            const resolveData = await resolveResponse.json()
+
+            console.log('Resolve response:', resolveData)
+
+
+            // if form data not posted
+
+            if (!resolveResponse.ok) {
+
+                // console.error('Resolve error:',resolveData)
+
+                if (resolveData.detail) {
+                    toast.error(resolveData.detail)
+
+                } else if (resolveData.cleaning_image) {
+
+                    toast.error(
+                        resolveData.cleaning_image[0]
+                    )
+
+                } else {
+
+                    toast.error(
+                        'Post was created, but cleaning could not be completed.'
+                    )
+
+                }
+
+                return
+            }
+
+
+            // ==========================================
+            // SUCCESS
+            // ==========================================
+
+            toast.success(
+                'Post created and resolved successfully!'
+            )
+
+            onClose()
+            setTimeout(() => {
+                window.location.reload()
+            }, 500)
+
+        } catch (error) {
+
+            // console.error('Create post error:', error)
+
+            toast.error(
+                error?.message || 'Unable to connect to the server.'
+            )
+        }
+    }
 
     return (
         <>
@@ -375,7 +576,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                                         id="location"
                                         type="text"
                                         value={location}
-                                        onChange={(e) =>setLocation(e.target.value)}
+                                        onChange={(e) => setLocation(e.target.value)}
                                         placeholder="Select or enter location"
                                         className="w-full rounded-[15px] bg-[#D9D9D944] p-3 text-sm outline-none focus:ring-2 focus:ring-[#538E3C]"
                                         required

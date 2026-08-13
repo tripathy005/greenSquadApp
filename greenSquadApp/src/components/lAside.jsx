@@ -1,11 +1,61 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Diamond from '../assets/icon/Diamond.png'
-import userDP from '../assets/dp/Kunal Verma.png'
+import profileimg from '../assets/dp/image.png'
 import { MdLogout } from 'react-icons/md'
 import { toast } from 'react-hot-toast'
 import { useAuth } from '../context/AuthProvider.jsx'
 
 export default function LAside() {
+
+    
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+
+        // console.log('Profile component loaded')
+
+        const getProfile = async () => {
+
+            // console.log('getProfile started')
+
+            try {
+
+                const token = localStorage.getItem('access_token')
+
+                // console.log('Token:', token)
+
+                const response = await fetch('/api/auth/profile/', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                // console.log('Response:', response)
+                // console.log('Status:', response.status)
+
+                const data = await response.json()
+
+                // console.log('User:', data)
+
+                if (response.ok) {
+                    setUser(data)
+                }
+
+            } catch (error) {
+
+                console.error('Profile error:', error)
+
+            }
+
+        }
+
+        getProfile()
+
+    }, [])
+
+    const profilePhoto = user?.profile_photo
+        ? user.profile_photo
+        : profileimg
 
     const [authUser, setAuthUser] = useAuth()
     const handleLogout = () => {
@@ -34,7 +84,7 @@ export default function LAside() {
             {/* Profile Image */}
 
             <img
-                src={userDP}
+                src={profilePhoto}
                 alt='Profile'
                 className='w-28 h-28 rounded-[30px]  object-cover border-4 border-[#249138]  '
             />
@@ -43,14 +93,14 @@ export default function LAside() {
             {/* Name */}
 
             <h2 className='mt-3 text-xl font-extrabold text-center'>
-                Kunal Verma
+                {user?.full_name || 'loading....'}
             </h2>
 
 
             {/* Username */}
 
             <p className='text-sm text-gray-500 mt-1'>
-                @kunalverma
+                @{user?.username || 'loading....'}
             </p>
 
 
@@ -66,7 +116,7 @@ export default function LAside() {
                     </p>
 
                     <p className='text-sm font-semibold break-all'>
-                        kunal@example.com
+                        {user?.email || 'loading....'}
                     </p>
                 </div>
 
@@ -79,7 +129,7 @@ export default function LAside() {
                     </p>
 
                     <p className='text-sm font-bold text-[#249138]'>
-                        Energy Champs
+                        {user?.squad || 'loading....'}
                     </p>
                 </div>
 
@@ -101,7 +151,7 @@ export default function LAside() {
                         />
 
                         <p className='text-lg text-[#249138] font-extrabold tracking-[2px]'>
-                            1234
+                            {user?.creditpoints || '000'}
                         </p>
 
                         <p className='text-sm text-[#249138] font-extrabold ml-1'>

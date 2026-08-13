@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar.jsx'
 import PostCard from '../components/userPostsCard.jsx'
 
-import userDP from '../assets/dp/Kunal Verma.png'
+import profileimg from '../assets/dp/image.png'
 import Diamond from '../assets/icon/Diamond.png'
 import { MdEditSquare } from 'react-icons/md'
 import { IoMdClose } from "react-icons/io"
@@ -11,6 +11,7 @@ import { useAuth } from '../context/AuthProvider.jsx'
 
 const ProfilePage = () => {
 
+    //for logout
     const [authUser, setAuthUser] = useAuth()
     const handleLogout = () => {
         try {
@@ -31,21 +32,63 @@ const ProfilePage = () => {
         }
     }
 
-    const [profile, setProfile] = useState({
-        name: 'Kunal Verma',
-        username: '@kunalverma',
-        email: 'kunal@example.com',
-        squad: 'Energy Champs',
-        credit: 1234,
-        image: userDP
-    })
+    //for get user info
+    const [user, setUser] = useState(null)
+    useEffect(() => {
+
+        // console.log('Profile component loaded')
+
+        const getProfile = async () => {
+
+            // console.log('getProfile started')
+
+            try {
+
+                const token = localStorage.getItem('access_token')
+
+                // console.log('Token:', token)
+
+                const response = await fetch('/api/auth/profile/', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                // console.log('Response:', response)
+                // console.log('Status:', response.status)
+
+                const data = await response.json()
+
+                console.log('User:', data)
+
+                if (response.ok) {
+                    setUser(data)
+                }
+
+            } catch (error) {
+
+                console.error('Profile error:', error)
+
+            }
+
+        }
+
+        getProfile()
+
+    }, [])
+
+    //for set default dp
+    const profilePhoto = user?.profile_photo
+        ? user.profile_photo
+        : profileimg
 
 
     const [showEditModal, setShowEditModal] = useState(false)
 
-    const [editName, setEditName] = useState(profile.name)
-    const [editEmail, setEditEmail] = useState(profile.email)
-    const [editImage, setEditImage] = useState(profile.image)
+    const [editName, setEditName] = useState('')
+    const [editEmail, setEditEmail] = useState('')
+    const [editImage, setEditImage] = useState(profileimg)
+
     const [imageFile, setImageFile] = useState(null)
 
     const handleImageChange = (e) => {
@@ -63,9 +106,10 @@ const ProfilePage = () => {
 
     const handleEdit = () => {
 
-        setEditName(profile.name)
-        setEditEmail(profile.email)
-        setEditImage(profile.image)
+        setEditName(user?.full_name || '')
+        setEditEmail(user?.email || '')
+        setEditImage(user?.profile_photo || profileimg)
+
         setImageFile(null)
 
         setShowEditModal(true)
@@ -73,24 +117,68 @@ const ProfilePage = () => {
 
     const handleCancel = () => {
 
-        setEditName(profile.name)
-        setEditEmail(profile.email)
-        setEditImage(profile.image)
+        setEditName('')
+        setEditEmail('')
+        setEditImage(profilePhoto)
+
         setImageFile(null)
 
         setShowEditModal(false)
     }
 
-    const handleSave = () => {
+    const handleSave = async (e) => {
 
-        setProfile({
-            ...profile,
-            name: editName,
-            email: editEmail,
-            image: editImage
-        })
+        e.preventDefault()
 
-        setShowEditModal(false)
+        try {
+
+            const token = localStorage.getItem('access_token')
+
+            const formData = new FormData()
+
+            formData.append('full_name', editName)
+            formData.append('email', editEmail)
+
+            if (imageFile) {
+                formData.append('profile_photo', imageFile)
+            }
+
+            const response = await fetch('/api/auth/profile/update/', {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: formData,
+            })
+
+            const data = await response.json()
+
+            console.log('Update response:', data)
+
+            if (!response.ok) {
+
+                if (data.detail) {
+                    toast.error(data.detail)
+                } else {
+                    toast.error('Failed to update profile')
+                }
+
+                return
+            }
+
+            setUser(data)
+
+            toast.success('Profile updated successfully!')
+
+            setShowEditModal(false)
+
+        } catch (error) {
+
+            console.error('Profile update error:', error)
+
+            toast.error('Unable to update profile')
+
+        }
     }
 
 
@@ -122,7 +210,7 @@ const ProfilePage = () => {
                             <div className='shrink-0'>
 
                                 <img
-                                    src={profile.image}
+                                    src={profilePhoto}
                                     alt='Profile'
                                     className='h-28 w-28 rounded-[15px] md:rounded-[30px]  border-4 border-[#249138] object-cover md:h-40 md:w-40'
                                 />
@@ -142,7 +230,7 @@ const ProfilePage = () => {
                                     </p>
 
                                     <p className='text-base font-bold md:text-lg'>
-                                        {profile.name}
+                                        {user?.full_name || 'loading....'}
                                     </p>
                                 </div>
 
@@ -155,7 +243,7 @@ const ProfilePage = () => {
                                     </p>
 
                                     <p className='text-base font-bold md:text-lg'>
-                                        {profile.username}
+                                        @{user?.username || 'loading....'}
                                     </p>
                                 </div>
 
@@ -168,7 +256,7 @@ const ProfilePage = () => {
                                     </p>
 
                                     <p className='break-all text-base font-bold md:text-lg'>
-                                        {profile.email}
+                                        {user?.email || 'loading....'}
                                     </p>
                                 </div>
 
@@ -181,7 +269,7 @@ const ProfilePage = () => {
                                     </p>
 
                                     <p className='text-base font-bold text-[#249138] md:text-lg'>
-                                        {profile.squad}
+                                        {user?.squad || 'loading....'}
                                     </p>
                                 </div>
 
@@ -203,7 +291,7 @@ const ProfilePage = () => {
                                         />
 
                                         <p className='text-lg font-extrabold tracking-[2px] text-[#249138] md:text-2xl'>
-                                            {profile.credit}
+                                            {user?.creditpoints || '000'}
                                         </p>
 
                                         <p className='ml-1 font-extrabold text-[#249138]'>
@@ -278,7 +366,7 @@ const ProfilePage = () => {
 
                         <div className='fixed inset-0 z-9999 flex items-center justify-center bg-black/50 p-4'>
 
-                            <div className='relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-[25px] bg-white p-5 shadow-2xl md:p-7'>
+                            <div className='relative w-full max-w-lg max-h-[90vh] rounded-[25px] bg-white p-5 shadow-2xl md:p-7 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:my-5 [&::-webkit-scrollbar-track]:bg-[#D9D9D9] [&::-webkit-scrollbar-thumb]:bg-[#249138]/60 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full'>
 
                                 {/* Header */}
 
@@ -294,7 +382,7 @@ const ProfilePage = () => {
 
                                 </form>
 
-                                <form className='mt-5 flex flex-col gap-4 md:mt-6 md:gap-5'>
+                                <form onSubmit={handleSave} className='mt-5 flex flex-col gap-4 md:mt-6 md:gap-5'>
                                     {/* Profile Image */}
 
                                     <div className='mt-6'>
@@ -375,7 +463,7 @@ const ProfilePage = () => {
                                             Cancel
                                         </button>
 
-                                        <button type='submit' onClick={handleSave} className='rounded-[11px] bg-[#538e3c] px-5 py-2 font-bold text-white hover:bg-[#467a32] transition'>
+                                        <button type='submit' className='rounded-[11px] bg-[#538e3c] px-5 py-2 font-bold text-white hover:bg-[#467a32] transition'>
                                             Save Changes
                                         </button>
 

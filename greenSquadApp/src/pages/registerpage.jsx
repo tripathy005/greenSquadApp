@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import API from "../api/api.js";
 import { toast } from "react-hot-toast";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import logo2 from "../assets/logo/logo2.png";
@@ -35,13 +34,21 @@ const RegisterPage = () => {
 
         try {
 
-            const response = await API.register({
-                full_name: name,
-                username: username,
-                email: email,
-                password: password,
+            const response = await fetch('/api/auth/register/', {
+                method: 'POST',
+
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+
+                body: JSON.stringify({
+                    full_name: name,
+                    username: username,
+                    email: email,
+                    password: password,
+                }),
             })
-            
+
             // Log the response for debugging
             const data = await response.json()
 
@@ -74,7 +81,7 @@ const RegisterPage = () => {
 
             setTimeout(() => {
                 window.location.href = '/login'
-            }, 3500)
+            }, 1500)
 
         } catch (error) {
 

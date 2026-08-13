@@ -5,7 +5,6 @@ import toast from 'react-hot-toast'
 import logo2 from '../assets/logo/logo2.png'
 import logo3 from '../assets/logo/logo3.png'
 
-import API from '../api/api'
 
 
 const LoginPage = () => {
@@ -27,9 +26,15 @@ const LoginPage = () => {
 
         try {
 
-            const response = await API.login({
-                username: username,
-                password: password,
+            const response = await fetch('/api/auth/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                }),
             })
 
             const data = await response.json()
@@ -58,7 +63,7 @@ const LoginPage = () => {
 
             setTimeout(() => {
                 window.location.href = '/'
-            }, 3500)
+            }, 1500)
 
         } catch (error) {
 
