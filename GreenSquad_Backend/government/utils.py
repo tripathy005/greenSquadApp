@@ -1,4 +1,7 @@
 from math import radians, sin, cos, sqrt, atan2
+from posts.models import Post
+from areas.models import Area
+from posts.utils import calculate_distance
 
 
 def distance_in_meters(lat1, lon1, lat2, lon2):
@@ -75,11 +78,15 @@ def find_area_for_location(latitude, longitude, areas):
 
 def find_duplicate_post(post, area):
     """
-    Find an existing post within 100 meters
-    of the new post inside the same Area.
+    Check whether the post is a duplicate of an existing
+    post inside the same Area and within 100 meters.
     """
 
-    existing_posts = area.posts.filter(
+    if area is None:
+        return None
+
+    existing_posts = Post.objects.filter(
+        area=area,
         is_duplicate=False
     ).exclude(
         id=post.id
@@ -87,13 +94,14 @@ def find_duplicate_post(post, area):
 
     for existing_post in existing_posts:
 
-        if is_within_radius(
+        distance = calculate_distance(
             post.latitude,
             post.longitude,
             existing_post.latitude,
-            existing_post.longitude,
-            radius=100
-        ):
+            existing_post.longitude
+        )
+
+        if distance <= 100:
             return existing_post
 
     return None

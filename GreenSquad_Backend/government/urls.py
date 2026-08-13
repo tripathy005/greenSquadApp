@@ -1,10 +1,15 @@
 from django.urls import path
 
-from .views import SuperintendentPostListView
+from .views import SuperintendentDeactivateView, SuperintendentPostListView
 from .views import (
     SuperintendentPostListView,
     SuperintendentCleanupView,
     SuperintendentListCreateView,
+    SuperintendentDetailView,
+    SuperintendentAreaUpdateView,
+    SuperintendentCreateView,
+    SuperintendentUpdateView,
+    SuperintendentPostListView,
 )
 
 
@@ -26,4 +31,41 @@ urlpatterns = [
     SuperintendentListCreateView.as_view(),
     name="superintendent-list-create"
     ),
+
+    path(
+    "superintendents/<int:pk>/",
+    SuperintendentDetailView.as_view(),
+    name="superintendent-detail"
+    ),
+
+    path(
+    "superintendents/<int:pk>/areas/",
+    SuperintendentAreaUpdateView.as_view(),
+    name="superintendent-area-update"
+    ),
+
+    path(
+    "superintendents/create/",
+    SuperintendentCreateView.as_view(),
+    name="superintendent-create"
+    ),
+
+    path(
+    "superintendents/<int:id>/update/",
+    SuperintendentUpdateView.as_view(),
+    name="superintendent-update"
+    ),
+
+    path(
+    "superintendents/<int:id>/status/",
+    SuperintendentDeactivateView.as_view(),
+    name="superintendent-status"
+    ),
+
+    path(
+    "superintendent/posts/",
+    SuperintendentPostListView.as_view(),
+    name="superintendent-posts"
+    ),
+
 ]
