@@ -9,14 +9,32 @@ User = get_user_model()
 
 class PostMediaSerializer(serializers.ModelSerializer):
 
+    thumbnail = serializers.SerializerMethodField()
+
     class Meta:
         model = PostMedia
         fields = [
             "id",
             "image",
+            "thumbnail",
             "media_type",
             "uploaded_at",
         ]
+
+    def get_thumbnail(self, obj):
+
+        if not obj.image:
+            return None
+
+        url = obj.image.url
+
+        if "res.cloudinary.com" not in url:
+            return url
+
+        return url.replace(
+            "/upload/",
+            "/upload/w_400,h_400,c_fill,q_auto,f_auto/"
+        )
 
 class AreaSerializer(serializers.ModelSerializer):
 
