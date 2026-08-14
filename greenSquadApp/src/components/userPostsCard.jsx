@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 
-import post1 from "../assets/post/post3.png";
-import post2 from "../assets/post/post2.png";
-
-import dp from "../assets/dp/Kunal Verma.png";
+import profileimg from "../assets/dp/image.png";
 import LikeIcon from "../assets/icon/like.png";
 import DislikeIcon from "../assets/icon/dislike.png";
 import DiamondIcon from "../assets/icon/Diamond.png";
 
+import toast from "react-hot-toast";
+
 import { MdDeleteOutline } from "react-icons/md";
 
 
-export default function Posts() {
+export default function UserPostsCard({ post, onDelete }) {
 
   // Like
   const [isLiked, setIsLiked] = useState(false);
@@ -19,7 +18,11 @@ export default function Posts() {
   // Current image
   const [currentImage, setCurrentImage] = useState(0);
 
-  const images = [post1, post2];
+  const images = post.media?.map((item) => item.image) || [profileimg];
+
+  const profilePhoto = post.user?.profile_photo
+    ? post.user.profile_photo
+    : profileimg
 
   const handleToggleLike = () => {
     setIsLiked(!isLiked);
@@ -37,13 +40,104 @@ export default function Posts() {
     );
   };
 
+  const handleDeleteClick = () => {
+
+    toast.custom((t) => (
+
+      <div className="bg-white shadow-lg rounded-xl p-4 border border-gray-200">
+
+        <p className="font-semibold">
+          Delete this post?
+        </p>
+
+        <p className="text-sm text-gray-500 mt-1">
+          Are you sure you want to delete this post?
+        </p>
+
+        <div className="flex justify-end gap-3 mt-4">
+
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-3 py-1 rounded-lg bg-gray-200"
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={() => {
+              toast.dismiss(t.id)
+              handleDelete()
+            }}
+            className="px-3 py-1 rounded-lg bg-red-500 text-white"
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+
+    ))
+
+  }
+
+  const handleDelete = async () => {
+
+    const token = localStorage.getItem('access_token')
+
+    try {
+
+      const response = await fetch(
+        `/api/posts/${post.id}/delete/`,
+        {
+          method: 'DELETE',
+
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+
+      if (!response.ok) {
+
+        const data = await response.json()
+
+        toast.error(
+          data.detail || 'Failed to delete post.'
+        )
+
+        return
+      }
+
+
+      toast.success('Post deleted successfully!')
+
+      onDelete(post.id)
+
+    } catch (error) {
+
+      console.error('Delete error:', error)
+
+      toast.error('Unable to delete the post.')
+
+    }
+
+  }
+
   return (
     <div
       className="w-full relative h-auto flex flex-col lg:flex-row gap-4 bg-white rounded-[15px] md:rounded-[30px] shadow-md p-2 md:p-4 mt-2 md:mt-4"
     >
-      <button className="p-1 absolute top-5 md:top-7 right-5 md:right-7 bg-[#538e3c] border-2 border-[#E2F6E8] shadow-md rounded-full z-10 ">
+
+      {/* delete btn */}
+      <button
+        onClick={handleDeleteClick}
+        className="p-1 absolute top-5 md:top-7 right-5 md:right-7 bg-[#538e3c] border-2 border-[#E2F6E8] shadow-md rounded-full z-10 ">
         <MdDeleteOutline className="h-5 w-5 text-white md:h-6 md:w-6" />
       </button>
+
+
       {/* ================= IMAGE SLIDER ================= */}
 
       <div
@@ -120,9 +214,7 @@ export default function Posts() {
           <div className="ml-2 flex items-center">
 
             <div
-              style={{
-                backgroundImage: `url(${dp})`,
-              }}
+              style={{ backgroundImage: `url(${profilePhoto})`, }}
               className="h-12 w-12 rounded-full bg-cover md:h-18 md:w-18"
             />
 
@@ -131,11 +223,11 @@ export default function Posts() {
             >
 
               <p className="text-[13px] font-bold md:text-[18px]">
-                Kunal Verma
+                {post.user?.full_name}
               </p>
 
               <p className="text-[9px] text-[#249138] md:text-[14px]">
-                Energy Champs
+                @{post.user?.username}
               </p>
 
             </div>
@@ -149,7 +241,7 @@ export default function Posts() {
             <div className="mr-4 flex items-end gap-2 ">
 
               <p className="text-6 font-bold leading-none md:text-[14px]">
-                400K
+                {post.credit_points}
               </p>
 
               <img
@@ -163,7 +255,7 @@ export default function Posts() {
             <div className="mr-4 flex items-end gap-2">
 
               <p className="text-6 font-bold leading-none md:text-[14px]">
-                400K
+                {post.like_count}
               </p>
 
               <button
@@ -191,17 +283,12 @@ export default function Posts() {
         >
 
           <p className="line-clamp-1 xl:line-clamp-none">
-            Here's another post, with a different purpose
-            (energy saving), keeping it clean and social-app
-            ready: Turned off unused lights and unplugged
-            devices today 💡 Saving energy is an easy habit
-            that really adds up. Small steps, big impact for
-            the planet 🌍
+            {post.description}
           </p>
 
-          <p className="mt-2 text-[#249138]">
+          {/* <p className="mt-2 text-[#249138]">
             #GreenSquad #SaveEnergy #EcoHabits
-          </p>
+          </p> */}
 
         </div>
 
@@ -222,7 +309,7 @@ export default function Posts() {
             </button>
 
             <p className="font-bold text-[14px] ">
-              400K
+              {post.like_count}
             </p>
 
           </div>
@@ -231,7 +318,7 @@ export default function Posts() {
             <img src={DiamondIcon} alt="credit points" className=" h-5 w-5 " />
 
             <p className="font-bold text-[14px] ">
-              400K
+              {post.credit_points}
             </p>
 
           </div>

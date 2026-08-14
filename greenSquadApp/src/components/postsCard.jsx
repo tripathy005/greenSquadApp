@@ -57,15 +57,15 @@
 
 import React, { useState } from "react";
 
-import post1 from "../assets/post/post3.png";
-import post2 from "../assets/post/post2.png";
+// import post1 from "../assets/post/post3.png";
+// import post2 from "../assets/post/post2.png";
 
-import dp from "../assets/dp/Kunal Verma.png";
+import dp from "../assets/dp/image.png";
 import LikeIcon from "../assets/icon/like.png";
 import DislikeIcon from "../assets/icon/dislike.png";
 import DiamondIcon from "../assets/icon/Diamond.png";
 
-export default function Posts() {
+export default function Posts({ post }) {
 
   // Like
   const [isLiked, setIsLiked] = useState(false);
@@ -73,7 +73,7 @@ export default function Posts() {
   // Current image
   const [currentImage, setCurrentImage] = useState(0);
 
-  const images = [post1, post2];
+  const images = post.media || [];
 
   const handleToggleLike = () => {
     setIsLiked(!isLiked);
@@ -110,17 +110,21 @@ export default function Posts() {
             transform: `translateX(-${currentImage * 100}%)`,
           }}
         >
-          {images.map((image, index) => (
+          {images.map((media, index) => (
+
             <div
-              key={index}
+              key={media.id}
               className="h-full w-full min-w-full shrink-0"
             >
+
               <img
-                src={image}
-                alt={`Post ${index + 1}`}
+                src={media.image}
+                alt={media.media_type}
                 className="h-full w-full object-cover"
               />
+
             </div>
+
           ))}
         </div>
 
@@ -173,9 +177,7 @@ export default function Posts() {
           <div className="ml-2 flex items-center">
 
             <div
-              style={{
-                backgroundImage: `url(${dp})`,
-              }}
+              style={{ backgroundImage: `url(${post.user?.profile_photo || dp})`, }}
               className="h-12 w-12 rounded-full bg-cover md:h-18 md:w-18"
             />
 
@@ -184,11 +186,11 @@ export default function Posts() {
             >
 
               <p className="text-[13px] font-bold md:text-[18px]">
-                Kunal Verma
+                {post.user?.full_name || 'Unknown User'}
               </p>
 
               <p className="text-[9px] text-[#249138] md:text-[14px]">
-                Energy Champs
+                @{post.user?.username || 'unknown'}
               </p>
 
             </div>
@@ -202,7 +204,7 @@ export default function Posts() {
             <div className="mr-4 flex items-end gap-2 ">
 
               <p className="text-6 font-bold leading-none md:text-[14px]">
-                400K
+                {post.credit_points}
               </p>
 
               <img
@@ -216,7 +218,7 @@ export default function Posts() {
             <div className="mr-4 flex items-end gap-2">
 
               <p className="text-6 font-bold leading-none md:text-[14px]">
-                400K
+                {post.like_count}
               </p>
 
               <button
@@ -244,12 +246,7 @@ export default function Posts() {
         >
 
           <p className="line-clamp-1 xl:line-clamp-none">
-            Here's another post, with a different purpose
-            (energy saving), keeping it clean and social-app
-            ready: Turned off unused lights and unplugged
-            devices today 💡 Saving energy is an easy habit
-            that really adds up. Small steps, big impact for
-            the planet 🌍
+            {post.description}
           </p>
 
           <p className="mt-2 text-[#249138]">
@@ -275,7 +272,7 @@ export default function Posts() {
             </button>
 
             <p className="font-bold text-[14px] ">
-              400K
+              {post.like_count}
             </p>
 
           </div>
@@ -284,7 +281,7 @@ export default function Posts() {
             <img src={DiamondIcon} alt="credit points" className=" h-5 w-5 " />
 
             <p className="font-bold text-[14px] ">
-              400K
+              {post.credit_points}
             </p>
 
           </div>

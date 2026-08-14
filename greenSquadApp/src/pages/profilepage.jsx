@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar.jsx'
-import PostCard from '../components/userPostsCard.jsx'
 
 import profileimg from '../assets/dp/image.png'
 import Diamond from '../assets/icon/Diamond.png'
@@ -8,6 +7,8 @@ import { MdEditSquare } from 'react-icons/md'
 import { IoMdClose } from "react-icons/io"
 import { toast } from 'react-hot-toast'
 import { useAuth } from '../context/AuthProvider.jsx'
+
+import Posts from '../components/userPosts.jsx'
 
 const ProfilePage = () => {
 
@@ -336,31 +337,7 @@ const ProfilePage = () => {
 
                     {/* ================= MY POSTS SECTION ================= */}
 
-                    <section className='mt-3 w-full md:mt-5'>
-
-                        {/* Heading */}
-
-                        <div className='rounded-[15px] bg-white px-4 py-3 shadow-md md:rounded-[20px] md:px-6 md:py-4'>
-
-                            <h2 className='text-xl font-extrabold text-[#249138] md:text-2xl'>
-                                My Posts
-                            </h2>
-
-                        </div>
-
-
-                        {/* Existing Post Cards */}
-
-                        <div className='grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-0 '>
-
-                            <PostCard />
-                            <PostCard />
-                            <PostCard />
-                            <PostCard />
-
-                        </div>
-
-                    </section>
+                    <Posts/>
 
                     {showEditModal && (
 
