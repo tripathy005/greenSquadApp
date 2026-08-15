@@ -124,6 +124,25 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         return data
 
+class AdminUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "profile_photo",
+            "full_name",
+            "username",
+            "email",
+        ]
+        read_only_fields = [
+            "id",
+            "profile_photo",
+            "full_name",
+            "username",
+            "email",
+        ]
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):

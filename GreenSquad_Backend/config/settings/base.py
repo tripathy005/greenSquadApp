@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 
     "authentication",
     "users",
-    "areas",
+    "areas.apps.AreasConfig",
     "posts",
     "ai_engine",
     "government",

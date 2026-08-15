@@ -3,7 +3,13 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from .views import RegisterView,ProfileUpdateView,ProfileView
+from .views import (
+    RegisterView,
+    ProfileUpdateView,
+    ProfileView,
+    AdminUserListView,
+    AdminUserDeleteView
+)
 
 urlpatterns = [
     path(
@@ -36,4 +42,15 @@ urlpatterns = [
     name="profile"
     ),
 
+    path(
+    "users/",
+    AdminUserListView.as_view(),
+    name="admin-user-list"
+    ),
+
+    path(
+    "users/<int:id>/delete/",
+    AdminUserDeleteView.as_view(),
+    name="admin-user-delete"
+    ),
 ]

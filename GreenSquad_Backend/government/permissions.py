@@ -10,12 +10,12 @@ class IsSuperintendent(BasePermission):
         )
 
 
-class IsOfficerOrAdmin(BasePermission):
+class IsAdmin(BasePermission):
 
     def has_permission(self, request, view):
         return (
             request.user.is_authenticated
-            and request.user.role in ["officer", "admin"]
+            and request.user.role == "admin"
         )
 
 class IsAdminUserRole(BasePermission):

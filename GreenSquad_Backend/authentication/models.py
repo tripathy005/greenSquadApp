@@ -6,7 +6,6 @@ class User(AbstractUser):
 
     ROLE_CHOICES = (
         ("citizen", "Citizen"),
-        ("officer", "Officer"),
         ("superintendent", "Superintendent"),
         ("admin", "Admin"),
     )

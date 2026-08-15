@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .utils import find_matching_area
+from areas.utils import find_matching_area
 from government.utils import find_duplicate_post
 from .models import Post, PostMedia, DuplicatePost
 from areas.models import Area

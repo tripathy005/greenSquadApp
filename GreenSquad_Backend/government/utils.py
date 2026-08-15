@@ -1,7 +1,7 @@
 from math import radians, sin, cos, sqrt, atan2
 from posts.models import Post
 from areas.models import Area
-from posts.utils import calculate_distance
+from areas.utils import calculate_distance
 
 
 def distance_in_meters(lat1, lon1, lat2, lon2):
