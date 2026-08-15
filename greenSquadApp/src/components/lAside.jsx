@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Diamond from '../assets/icon/Diamond.png'
 import profileimg from '../assets/dp/image.png'
 import { MdLogout } from 'react-icons/md'
@@ -7,76 +7,37 @@ import { useAuth } from '../context/AuthProvider.jsx'
 
 export default function LAside() {
 
-    
-    const [user, setUser] = useState(null)
 
-    useEffect(() => {
+    const {authUser, setAuthUser}= useAuth()
 
-        // console.log('Profile component loaded')
-
-        const getProfile = async () => {
-
-            // console.log('getProfile started')
-
-            try {
-
-                const token = localStorage.getItem('access_token')
-
-                // console.log('Token:', token)
-
-                const response = await fetch('/api/auth/profile/', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                })
-
-                // console.log('Response:', response)
-                // console.log('Status:', response.status)
-
-                const data = await response.json()
-
-                // console.log('User:', data)
-
-                if (response.ok) {
-                    setUser(data)
-                }
-
-            } catch (error) {
-
-                console.error('Profile error:', error)
-
-            }
-
-        }
-
-        getProfile()
-
-    }, [])
-
-    const profilePhoto = user?.profile_photo
-        ? user.profile_photo
+    const profilePhoto = authUser?.profile_photo
+        ? authUser.profile_photo
         : profileimg
 
-    const [authUser, setAuthUser] = useAuth()
     const handleLogout = () => {
+
         try {
-            setAuthUser({
-                ...authUser,
-                access_token: null,
-                refresh_token: null,
-            })
+
             localStorage.removeItem('access_token')
             localStorage.removeItem('refresh_token')
-            toast.success("Logged out successfully")
-            setTimeout(() => {
-                window.location.reload();
-            }, 3000)
-        } catch (error) {
-            toast.error("Error: " + error.message)
-            setTimeout(() => { }, 2000)
-        }
-    }
 
+            setAuthUser(null)
+
+            toast.success("Logged out successfully")
+
+            setTimeout(() => {
+                window.location.href = '/login'
+            }, 1000)
+
+        } catch (error) {
+
+            console.error(error)
+
+            toast.error("Unable to logout")
+
+        }
+
+    }
 
     return (
         <aside className='hidden lg:flex w-[18%] min-w-55  bg-white flex-col items-center px-4 py-10 sticky top-20 left-0'>
@@ -93,14 +54,14 @@ export default function LAside() {
             {/* Name */}
 
             <h2 className='mt-3 text-xl font-extrabold text-center'>
-                {user?.full_name || 'loading....'}
+                {authUser?.full_name || 'loading....'}
             </h2>
 
 
             {/* Username */}
 
             <p className='text-sm text-gray-500 mt-1'>
-                @{user?.username || 'loading....'}
+                @{authUser?.username || 'loading....'}
             </p>
 
 
@@ -116,7 +77,7 @@ export default function LAside() {
                     </p>
 
                     <p className='text-sm font-semibold break-all'>
-                        {user?.email || 'loading....'}
+                        {authUser?.email || 'loading....'}
                     </p>
                 </div>
 
@@ -129,7 +90,7 @@ export default function LAside() {
                     </p>
 
                     <p className='text-sm font-bold text-[#249138]'>
-                        {user?.squad || 'loading....'}
+                        {authUser?.squad || 'loading....'}
                     </p>
                 </div>
 
@@ -151,7 +112,7 @@ export default function LAside() {
                         />
 
                         <p className='text-lg text-[#249138] font-extrabold tracking-[2px]'>
-                            {user?.creditpoints || '000'}
+                            {authUser?.creditpoints ?? 0}
                         </p>
 
                         <p className='text-sm text-[#249138] font-extrabold ml-1'>

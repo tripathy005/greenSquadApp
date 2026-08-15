@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar.jsx'
 import PostCard from '../components/postsCard.jsx'
 import squadDP from '../assets/groupdp/greenCore.png'
@@ -32,7 +32,69 @@ function SquadPage() {
     const [editImage, setEditImage] = useState(squad.image)
     const [imageFile, setImageFile] = useState(null)
 
-    const posts = [1, 2, 3, 4, 5, 6]
+    const [posts, setPosts] = useState([])
+    const [postsLoading, setPostsLoading] = useState(true)
+
+    const fetchPosts = async () => {
+
+        const token = localStorage.getItem('access_token')
+
+        try {
+
+            setPostsLoading(true)
+
+            const response = await fetch(
+                '/api/posts/',
+                {
+                    method: 'GET',
+
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+
+            const data = await response.json()
+
+            console.log('All posts:', data)
+
+            if (!response.ok) {
+
+                console.error('Failed to fetch posts:', data)
+
+                setPosts([])
+
+                return
+            }
+
+            // If API returns an array
+            if (Array.isArray(data)) {
+                setPosts(data)
+            }
+
+            // If Django pagination returns { results: [...] }
+            else if (Array.isArray(data.results)) {
+                setPosts(data.results)
+            }
+
+            else {
+                setPosts([])
+            }
+
+        } catch (error) {
+
+            console.error('Posts fetch error:', error)
+
+            setPosts([])
+
+        } finally {
+
+            setPostsLoading(false)
+
+        }
+    }
+
+    useEffect(() => { fetchPosts() }, [])
 
     const handleEdit = () => {
         setEditName(squad.name)
@@ -233,9 +295,30 @@ function SquadPage() {
 
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-0'>
 
-                    {posts.map(post => (
-                        <PostCard key={post} />
-                    ))}
+                    {postsLoading ? (
+
+                        <p className='col-span-full py-10 text-center text-gray-600'>
+                            Loading posts...
+                        </p>
+
+                    ) : posts.length === 0 ? (
+
+                        <p className='col-span-full py-10 text-center text-gray-600'>
+                            No posts available.
+                        </p>
+
+                    ) : (
+
+                        posts.map((post) => (
+
+                            <PostCard
+                                key={post.id}
+                                post={post}
+                            />
+
+                        ))
+
+                    )}
 
                 </div>
 

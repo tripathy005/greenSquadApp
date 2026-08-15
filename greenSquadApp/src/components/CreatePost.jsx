@@ -18,7 +18,7 @@ export default function CreatePost() {
           <div className='flex flex-col w-full ml-2 '>
             <div className='flex  gap-3  '>
 
-              <p className='  text-[10px] md:text-[16px] h-7.5 md:h-12 p-2 md:p-3 w-full bg-[#D9D9D944] rounded-[10px] md:rounded-[15px]  '>
+              <p className=' text-[16px] h-7.5 md:h-12 p-1.5 md:p-4 la w-full leading-4 bg-[#D9D9D944] rounded-[10px] md:rounded-[15px]  '>
                 Create a New Post ..
               </p>
 

@@ -57,9 +57,6 @@
 
 import React, { useState } from "react";
 
-// import post1 from "../assets/post/post3.png";
-// import post2 from "../assets/post/post2.png";
-
 import dp from "../assets/dp/image.png";
 import LikeIcon from "../assets/icon/like.png";
 import DislikeIcon from "../assets/icon/dislike.png";
@@ -68,16 +65,105 @@ import DiamondIcon from "../assets/icon/Diamond.png";
 export default function Posts({ post }) {
 
   // Like
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(post.is_liked || false);
+
+  const [likeCount, setLikeCount] = useState(post.like_count || 0);
 
   // Current image
   const [currentImage, setCurrentImage] = useState(0);
 
   const images = post.media || [];
 
-  const handleToggleLike = () => {
-    setIsLiked(!isLiked);
+  const handleToggleLike = async () => {
+
+    if (isLikeLoading) return;
+
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      toast.error("Please login first.");
+      return;
+    }
+
+    setIsLikeLoading(true);
+
+    try {
+
+      const response = await fetch(
+        `/api/posts/${post.id}/like/`,
+        {
+          method: "POST",
+
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+
+      const data = await response.json();
+
+      console.log("Like response:", data);
+
+
+      if (!response.ok) {
+
+        toast.error(
+          data.detail || "Unable to update like."
+        );
+
+        return;
+      }
+
+
+      /*
+        OPTION 1:
+        If your backend returns:
+
+        {
+          "liked": true,
+          "like_count": 6
+        }
+
+        this will work directly.
+      */
+
+      if (
+        typeof data.liked === "boolean" &&
+        typeof data.like_count === "number"
+      ) {
+
+        setIsLiked(data.liked);
+        setLikeCount(data.like_count);
+
+      } else {
+
+        /*
+          Fallback if backend does not return
+          liked and like_count
+        */
+
+        setIsLiked((prev) => !prev);
+
+        setLikeCount((prev) =>
+          isLiked ? Math.max(0, prev - 1) : prev + 1
+        );
+      }
+
+
+    } catch (error) {
+
+      console.error("Like error:", error);
+
+      toast.error("Unable to update like.");
+
+    } finally {
+
+      setIsLikeLoading(false);
+
+    }
   };
+
 
   const nextImage = () => {
     setCurrentImage((prev) =>

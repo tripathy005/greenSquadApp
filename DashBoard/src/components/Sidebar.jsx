@@ -5,6 +5,8 @@ import { GrUserWorker } from "react-icons/gr"
 import { LuUserRound } from "react-icons/lu"
 import { LuUsersRound } from "react-icons/lu"
 import { LuLogOut } from "react-icons/lu"
+import { toast } from "react-hot-toast";
+import { useAuth } from '../context/AuthProvider.jsx'
 
 const Sidebar = () => {
 
@@ -31,10 +33,25 @@ const Sidebar = () => {
         },
     ]
 
-
+    const [authUser, setAuthUser] = useAuth()
     const handleLogout = () => {
-        // Logout functionality will be added later
-        console.log('Logout clicked')
+        try {
+            setAuthUser({
+                ...authUser,
+                access_token: null,
+                refresh_token: null,
+            })
+            localStorage.removeItem('access_token')
+            localStorage.removeItem('refresh_token')
+            localStorage.removeItem('user_info')
+            toast.success("Logged out successfully")
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000)
+        } catch (error) {
+            toast.error("Error: " + error.message)
+            setTimeout(() => { }, 2000)
+        }
     }
 
 

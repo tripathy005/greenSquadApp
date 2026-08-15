@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Navbar from '../components/navbar.jsx'
 
 import profileimg from '../assets/dp/image.png'
@@ -13,75 +13,40 @@ import Posts from '../components/userPosts.jsx'
 const ProfilePage = () => {
 
     //for logout
-    const [authUser, setAuthUser] = useAuth()
+    const {authUser, setAuthUser} = useAuth()
+
+    const profilePhoto = authUser?.profile_photo
+        ? authUser.profile_photo
+        : profileimg
+
+
     const handleLogout = () => {
+
         try {
-            setAuthUser({
-                ...authUser,
-                access_token: null,
-                refresh_token: null,
-            })
+
             localStorage.removeItem('access_token')
             localStorage.removeItem('refresh_token')
+
+            setAuthUser(null)
+
             toast.success("Logged out successfully")
+
             setTimeout(() => {
-                window.location.reload();
-            }, 3000)
+                window.location.href = '/login'
+            }, 1000)
+
         } catch (error) {
-            toast.error("Error: " + error.message)
-            setTimeout(() => { }, 2000)
+
+            console.error(error)
+
+            toast.error("Unable to logout")
+
         }
+
     }
 
-    //for get user info
-    const [user, setUser] = useState(null)
-    useEffect(() => {
 
-        // console.log('Profile component loaded')
 
-        const getProfile = async () => {
-
-            // console.log('getProfile started')
-
-            try {
-
-                const token = localStorage.getItem('access_token')
-
-                // console.log('Token:', token)
-
-                const response = await fetch('/api/auth/profile/', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                })
-
-                // console.log('Response:', response)
-                // console.log('Status:', response.status)
-
-                const data = await response.json()
-
-                console.log('User:', data)
-
-                if (response.ok) {
-                    setUser(data)
-                }
-
-            } catch (error) {
-
-                console.error('Profile error:', error)
-
-            }
-
-        }
-
-        getProfile()
-
-    }, [])
-
-    //for set default dp
-    const profilePhoto = user?.profile_photo
-        ? user.profile_photo
-        : profileimg
 
 
     const [showEditModal, setShowEditModal] = useState(false)
@@ -91,6 +56,8 @@ const ProfilePage = () => {
     const [editImage, setEditImage] = useState(profileimg)
 
     const [imageFile, setImageFile] = useState(null)
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleImageChange = (e) => {
 
@@ -132,6 +99,7 @@ const ProfilePage = () => {
         e.preventDefault()
 
         try {
+            setIsLoading(true)
 
             const token = localStorage.getItem('access_token')
 
@@ -167,7 +135,7 @@ const ProfilePage = () => {
                 return
             }
 
-            setUser(data)
+            setAuthUser(data)
 
             toast.success('Profile updated successfully!')
 
@@ -179,6 +147,8 @@ const ProfilePage = () => {
 
             toast.error('Unable to update profile')
 
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -231,7 +201,7 @@ const ProfilePage = () => {
                                     </p>
 
                                     <p className='text-base font-bold md:text-lg'>
-                                        {user?.full_name || 'loading....'}
+                                        {authUser?.full_name || 'loading....'}
                                     </p>
                                 </div>
 
@@ -244,7 +214,7 @@ const ProfilePage = () => {
                                     </p>
 
                                     <p className='text-base font-bold md:text-lg'>
-                                        @{user?.username || 'loading....'}
+                                        @{authUser?.username || 'loading....'}
                                     </p>
                                 </div>
 
@@ -257,7 +227,7 @@ const ProfilePage = () => {
                                     </p>
 
                                     <p className='break-all text-base font-bold md:text-lg'>
-                                        {user?.email || 'loading....'}
+                                        {authUser?.email || 'loading....'}
                                     </p>
                                 </div>
 
@@ -270,7 +240,7 @@ const ProfilePage = () => {
                                     </p>
 
                                     <p className='text-base font-bold text-[#249138] md:text-lg'>
-                                        {user?.squad || 'loading....'}
+                                        {authUser?.squad || 'loading....'}
                                     </p>
                                 </div>
 
@@ -292,7 +262,7 @@ const ProfilePage = () => {
                                         />
 
                                         <p className='text-lg font-extrabold tracking-[2px] text-[#249138] md:text-2xl'>
-                                            {user?.creditpoints || '000'}
+                                            {authUser?.creditpoints || '000'}
                                         </p>
 
                                         <p className='ml-1 font-extrabold text-[#249138]'>
@@ -337,7 +307,7 @@ const ProfilePage = () => {
 
                     {/* ================= MY POSTS SECTION ================= */}
 
-                    <Posts/>
+                    <Posts />
 
                     {showEditModal && (
 
@@ -446,6 +416,26 @@ const ProfilePage = () => {
 
                                     </div>
                                 </form>
+
+                                {/* loading interface */}
+
+                                {isLoading && (
+
+                                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center rounded-[30px] bg-white/90 backdrop-blur-sm">
+
+                                        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#249138] border-t-transparent"></div>
+
+                                        <p className="mt-4 font-bold text-[#249138]">
+                                            Updateing your Details...
+                                        </p>
+
+                                        <p className="mt-1 text-sm text-gray-500">
+                                            Please wait
+                                        </p>
+
+                                    </div>
+
+                                )}
 
                             </div>
 

@@ -1,20 +1,63 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, {
+    createContext,
+    useContext,
+    useState
+} from "react";
 
-export const AuthContext = createContext()
+import {
+    getSecureItem,
+    setSecureItem,
+    removeSecureItem
+} from "../utils/secureStorage";
+
+export const AuthContext = createContext();
+
 
 export default function AuthProvider({ children }) {
 
-    const initialAuthUser = localStorage.getItem('access_token')
+    const [authUser, setAuthUserState] = useState(() => {
 
-    const [authUser, setAuthUser] = useState(
-        initialAuthUser ? true : false
-    )
+        return getSecureItem("user");
+
+    });
+
+
+    const setAuthUser = (user) => {
+
+        if (user) {
+
+            setSecureItem("user", user);
+
+        } else {
+
+            removeSecureItem("user");
+
+        }
+
+        setAuthUserState(user);
+
+    };
+
 
     return (
-        <AuthContext.Provider value={[authUser, setAuthUser]}>
+
+        <AuthContext.Provider
+            value={{
+                authUser,
+                setAuthUser
+            }}
+        >
+
             {children}
+
         </AuthContext.Provider>
-    )
+
+    );
 }
 
-export const useAuth = () => useContext(AuthContext)
+
+export const useAuth = () => {
+
+    return useContext(AuthContext);
+
+};

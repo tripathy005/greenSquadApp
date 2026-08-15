@@ -22,6 +22,12 @@ const CreatePostForm = ({ isOpen, onClose }) => {
     const [cleaningImage, setCleaningImage] = useState(null);
     const [cleaningImagePreview, setCleaningImagePreview] = useState(null);
 
+    const [isLoading, setIsLoading] = useState(false)
+    const [isLocationLoading, setIsLocationLoading] = useState(false)
+    
+
+    
+
 
 
     const handleImageChange = (e) => {
@@ -83,6 +89,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
             return;
         }
+        setIsLocationLoading(true)
 
         navigator.geolocation.getCurrentPosition(
 
@@ -116,13 +123,16 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
                 } catch (error) {
 
-                    console.error(error);
+                console.error(error)
 
-                    toast.error(
-                        "Location detected, but we couldn't find the address."
-                    );
-                }
-            },
+                toast.error(
+                    "Location detected, but we couldn't find the address."
+                )
+
+            } finally {
+                setIsLocationLoading(false)
+            }
+        },
 
             (error) => {
 
@@ -228,6 +238,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
         }
 
         try {
+            setIsLoading(true)
 
             // Convert frontend action to backend action
             const backendAction = action === 'yes'
@@ -266,9 +277,11 @@ const CreatePostForm = ({ isOpen, onClose }) => {
             console.log('Create post response:', createData)
 
 
-            // ==========================================
-            // CREATE POST FAILED
-            // ==========================================
+
+
+            // make post failed
+
+
 
             if (!createResponse.ok) {
 
@@ -398,9 +411,11 @@ const CreatePostForm = ({ isOpen, onClose }) => {
             }
 
 
-            // ==========================================
+
+
             // SUCCESS
-            // ==========================================
+
+
 
             toast.success(
                 'Post created and resolved successfully!'
@@ -418,6 +433,8 @@ const CreatePostForm = ({ isOpen, onClose }) => {
             toast.error(
                 error?.message || 'Unable to connect to the server.'
             )
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -771,6 +788,43 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                             </div>
 
                         </form>
+
+                        {/* loading interface */}
+
+                        {isLoading && (
+
+                            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center rounded-[30px] bg-white/90 backdrop-blur-sm">
+
+                                <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#249138] border-t-transparent"></div>
+
+                                <p className="mt-4 font-bold text-[#249138]">
+                                    Processing your post...
+                                </p>
+
+                                <p className="mt-1 text-sm text-gray-500">
+                                    Please wait
+                                </p>
+
+                            </div>
+
+                        )}
+                        {isLocationLoading && (
+
+                            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center rounded-[30px] bg-white/90 backdrop-blur-sm">
+
+                                <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#249138] border-t-transparent"></div>
+
+                                <p className="mt-4 font-bold text-[#249138]">
+                                    Fetching your location...
+                                </p>
+
+                                <p className="mt-1 text-sm text-gray-500">
+                                    Please wait
+                                </p>
+
+                            </div>
+
+                        )}
 
                     </div>
                 </div>

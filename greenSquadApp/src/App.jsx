@@ -15,23 +15,40 @@ import AuthProvider, { useAuth } from './context/AuthProvider.jsx'
 
 const AppRoutes = () => {
 
-    const [authUser, setAuthUser] = useAuth()
+    const { authUser, setAuthUser } = useAuth()
 
     return (
+
         <Routes>
-        
-            <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />}/>
-            <Route path="/leaderboard" element={authUser ? <LeaderBoard /> : <Navigate to="/login" />}/>
-            <Route path="/squad" element={authUser ? <SquadPage /> : <Navigate to="/login" />}/>
-            <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />}/>
 
-            <Route path="/login" element={<LoginPage />}/>
-            <Route path="/register" element={<RegisterPage />}/>
-            <Route path="/about" element={<AboutPage />}/>
+            <Route
+                path="/"
+                element={authUser ? <HomePage /> : <Navigate to="/login" />}
+            />
 
-            <Route path="*" element={<Navigate to="/" />}/>
+            <Route
+                path="/leaderboard"
+                element={authUser ? <LeaderBoard /> : <Navigate to="/login" />}
+            />
+
+            <Route
+                path="/squad"
+                element={authUser ? <SquadPage /> : <Navigate to="/login" />}
+            />
+
+            <Route
+                path="/profile"
+                element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+            />
+
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/about" element={<AboutPage />} />
+
+            <Route path="*" element={<Navigate to="/" />} />
 
         </Routes>
+
     )
 }
 
@@ -39,6 +56,7 @@ const AppRoutes = () => {
 const App = () => {
 
     return (
+
         <BrowserRouter>
 
             <AuthProvider>
@@ -46,6 +64,7 @@ const App = () => {
                 <AppRoutes />
 
             </AuthProvider>
+
 
             <Toaster
                 position="top-center"
@@ -59,6 +78,7 @@ const App = () => {
             />
 
         </BrowserRouter>
+
     )
 }
 

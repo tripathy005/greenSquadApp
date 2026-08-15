@@ -82,9 +82,18 @@ export default function UserPosts() {
 
             {loading && (
 
-                <p className='py-10 text-center'>
-                    Loading your posts...
-                </p>
+                <div className="w-full h-100 md:h-160 lg:h-80 flex items-center justify-center lg:flex-col  p-2 md:p-4 mt-2 md:mt-4">
+                    <div className=' bg-white h-45 w-60 md:h-50 md:w-70 lg:w-100 flex flex-col items-center justify-center rounded-[15px] md:rounded-[30px] shadow-md p-2 md:p-4 mt-2'>
+                        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#249138] border-t-transparent"></div>
+                        <p className="mt-4 md:text-xl font-bold text-[#249138]">
+                            Loading Your Posts...
+                        </p>
+                        <p className="mt-1 text-sm text-gray-500">
+                            Please wait
+                        </p>
+
+                    </div>
+                </div>
 
             )}
 
@@ -93,9 +102,16 @@ export default function UserPosts() {
 
             {!loading && posts.length === 0 && (
 
-                <p className='py-10 text-center'>
-                    You have not created any posts yet.
-                </p>
+                <div className="w-full h-100 lg:h-80 flex items-center justify-center lg:flex-col  p-2 md:p-4 mt-2 md:mt-4">
+                    <div className=' bg-white h-45 w-60 md:h-50 md:w-70 lg:w-100 flex flex-col items-center justify-center rounded-[15px] md:rounded-[30px] shadow-md p-2 md:p-4 mt-2'>
+                        <RxCrossCircled className=' text-[#249138] font-extrabold h-15 w-15 ' />
+                        <p className="mt-4 md:text-xl font-bold text-[#249138]">
+                            No posts available.
+                        </p>
+
+
+                    </div>
+                </div>
 
             )}
 

@@ -286,9 +286,9 @@ export default function UserPostsCard({ post, onDelete }) {
             {post.description}
           </p>
 
-          {/* <p className="mt-2 text-[#249138]">
+          <p className="mt-2 text-[#249138]">
             #GreenSquad #SaveEnergy #EcoHabits
-          </p> */}
+          </p>
 
         </div>
 

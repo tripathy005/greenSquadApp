@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { IoIosEye, IoIosEyeOff } from 'react-icons/io'
 import toast from 'react-hot-toast'
+import { useAuth } from '../context/AuthProvider.jsx'
 
 import logo2 from '../assets/logo/logo2.png'
 import logo3 from '../assets/logo/logo3.png'
@@ -15,6 +16,8 @@ const LoginPage = () => {
     const [password, setPassword] = useState('')
 
     const [isLoading, setIsLoading] = useState(false)
+
+    const { setAuthUser } = useAuth()
 
 
 
@@ -59,7 +62,31 @@ const LoginPage = () => {
             localStorage.setItem('access_token', data.access)
             localStorage.setItem('refresh_token', data.refresh)
 
+
+            const profileResponse = await fetch('/api/auth/profile/', {
+                headers: {
+                    Authorization: `Bearer ${data.access}`,
+                },
+            })
+
+
+            const profileData = await profileResponse.json()
+
+
+            if (profileResponse.ok) {
+
+                setAuthUser(profileData)
+
+            } else {
+
+                toast.error('Login succeeded, but failed to load profile.')
+
+                return
+            }
+
+
             toast.success('Login successful!')
+
 
             setTimeout(() => {
                 window.location.href = '/'
