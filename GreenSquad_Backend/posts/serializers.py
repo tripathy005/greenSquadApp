@@ -145,18 +145,23 @@ class PostSerializer(serializers.ModelSerializer):
             longitude
         )
 
+        # Set default credit based on action
+        action = validated_data.get("action")
+
+        if user.role == "citizen":
+
+            if action == "self_resolve":
+                validated_data["credit_points"] = 9.0
+
+            elif action == "handover":
+                validated_data["credit_points"] = 1.0
+
+        # Create post AFTER setting credit_points
         post = Post.objects.create(
             user=user,
             area=area,
             **validated_data
         )
-
-        action = validated_data.get("action")
-        if action == "self_resolve":
-            validated_data["credit_points"] = 9.0
-
-        elif action == "handed_over":
-            validated_data["credit_points"] = 1.0
 
         # Save original post image
         PostMedia.objects.create(
@@ -173,6 +178,7 @@ class PostSerializer(serializers.ModelSerializer):
 
         if duplicate_post:
             post.is_duplicate = True
+
             post.save(
                 update_fields=["is_duplicate"]
             )
