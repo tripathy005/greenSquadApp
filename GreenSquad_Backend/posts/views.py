@@ -84,12 +84,10 @@ class SelfResolvePostView(generics.CreateAPIView):
 
         # Mark post as resolved
         post.is_resolved = True
-        post.credit_points = 10
 
         post.save(
             update_fields=[
                 "is_resolved",
-                "credit_points"
             ]
         )
 
