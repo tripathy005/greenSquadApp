@@ -7,7 +7,7 @@ class SuperintendentProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="superintendent_profile"
+        related_name="superintendentprofile"
     )
 
     employee_id = models.CharField(
