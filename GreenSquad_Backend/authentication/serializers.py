@@ -2,6 +2,9 @@ from rest_framework import serializers
 from .models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from government.models import SuperintendentProfile
+from django.db.models import Sum
+from posts.models import Post
+from government.models import SuperintendentProfile
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -95,7 +98,23 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         data = super().to_representation(instance)
 
+        # Credit points are only for citizens
+        if instance.role == "citizen":
+
+            total = (
+                Post.objects
+                .filter(user=instance)
+                .aggregate(
+                    total=Sum("credit_points")
+                )["total"]
+                or 0
+            )
+
+            data["total_credit_points"] = total
+
+        # Employee ID is only for superintendents
         if instance.role == "superintendent":
+
             try:
                 data["employee_id"] = (
                     instance.superintendent_profile.employee_id

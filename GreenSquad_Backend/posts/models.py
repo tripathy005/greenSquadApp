@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Post(models.Model):
@@ -54,7 +55,16 @@ class Post(models.Model):
 
     is_resolved = models.BooleanField(default=False)
 
-    credit_points = models.PositiveIntegerField(default=0)
+    credit_points = models.DecimalField(
+    max_digits=4,
+    decimal_places=1,
+    null=True,
+    blank=True,
+    validators=[
+        MinValueValidator(0),
+        MaxValueValidator(10),
+    ]
+    )
 
     def __str__(self):
         return f"Post {self.id} - {self.user.username}"

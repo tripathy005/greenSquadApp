@@ -151,6 +151,13 @@ class PostSerializer(serializers.ModelSerializer):
             **validated_data
         )
 
+        action = validated_data.get("action")
+        if action == "self_resolve":
+            validated_data["credit_points"] = 9.0
+
+        elif action == "handed_over":
+            validated_data["credit_points"] = 1.0
+
         # Save original post image
         PostMedia.objects.create(
             post=post,
