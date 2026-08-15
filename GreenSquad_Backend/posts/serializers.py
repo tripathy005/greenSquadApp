@@ -67,6 +67,7 @@ class PostSerializer(serializers.ModelSerializer):
     source="likes.count",
     read_only=True
     )
+    is_liked = serializers.SerializerMethodField()
 
     image = serializers.ImageField(write_only=True)
 
@@ -100,6 +101,7 @@ class PostSerializer(serializers.ModelSerializer):
             "action",
             "image",
             "media",
+            "is_liked",
             "posted_at",
             "ai_verified",
             "is_duplicate",
@@ -116,7 +118,14 @@ class PostSerializer(serializers.ModelSerializer):
             "is_resolved",
             "credit_points",
         ]
-
+    def get_is_liked(self, obj):
+            request = self.context.get("request")
+    
+            if not request or not request.user.is_authenticated:
+                return False
+    
+            return obj.likes.filter(user=request.user).exists()
+    
     def create(self, validated_data):
 
         image = validated_data.pop("image")
@@ -167,6 +176,7 @@ class PostSerializer(serializers.ModelSerializer):
             )
 
         return post
+    
 
 class SuperintendentPostSerializer(serializers.ModelSerializer):
 

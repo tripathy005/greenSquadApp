@@ -13,9 +13,9 @@ urlpatterns = [
     ),
 
     path(
-        "login/",
-        TokenObtainPairView.as_view(),
-        name="login",
+    "login/",
+    TokenObtainPairView.as_view(),
+    name="login",
     ),
 
     path(
