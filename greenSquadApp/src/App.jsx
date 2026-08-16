@@ -73,7 +73,7 @@ const App = () => {
                     zIndex: 9999999,
                 }}
                 toastOptions={{
-                    duration: 3000,
+                    duration: 2500,
                 }}
             />
 

@@ -117,7 +117,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
             try:
                 data["employee_id"] = (
-                    instance.superintendent_profile.employee_id
+                    instance.superintendentprofile.employee_id
                 )
             except SuperintendentProfile.DoesNotExist:
                 data["employee_id"] = None
