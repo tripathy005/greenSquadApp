@@ -9,7 +9,6 @@ from .serializers import (
     ProfileUpdateSerializer,
     AdminUserSerializer)
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import CustomTokenObtainPairSerializer
 from .permissions import IsAdmin
 
 class RegisterView(generics.CreateAPIView):
@@ -18,9 +17,6 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
-class CustomTokenObtainPairView(TokenObtainPairView):
-
-    serializer_class = CustomTokenObtainPairSerializer
 
 class ProfileUpdateView(generics.UpdateAPIView):
 

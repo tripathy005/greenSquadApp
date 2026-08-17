@@ -5,9 +5,18 @@ from authentication.models import User
 
 
 from django.contrib.auth import get_user_model
-from rest_framework import serializers
 from .models import SuperintendentProfile
+from areas.models import Area
 
+
+class GovernmentAreaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Area
+        fields = [
+            "id",
+            "name",
+        ]
 
 
 class GovernmentPostSerializer(serializers.ModelSerializer):

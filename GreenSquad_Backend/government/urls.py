@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import SuperintendentDeactivateView, SuperintendentPostListView
+from .views import AreaListView, SuperintendentDeactivateView, SuperintendentPostListView
 from .views import (
     SuperintendentPostListView,
     SuperintendentCleanupView,
@@ -67,5 +67,11 @@ urlpatterns = [
     SuperintendentPostListView.as_view(),
     name="superintendent-posts"
     ),
+
+    path(
+    "areas/",
+    AreaListView.as_view(),
+    name="area-list"
+),
 
 ]

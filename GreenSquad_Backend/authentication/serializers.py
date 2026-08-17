@@ -143,30 +143,3 @@ class AdminUserSerializer(serializers.ModelSerializer):
             "email",
         ]
 
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-
-    def validate(self, attrs):
-        data = super().validate(attrs)
-
-        data["user"] = {
-            "id": self.user.id,
-            "username": self.user.username,
-            "full_name": self.user.full_name,
-            "email": self.user.email,
-            "role": self.user.role,
-            "profile_photo": (
-                self.user.profile_photo.url
-                if self.user.profile_photo
-                else None
-            ),
-        }
-
-        if self.user.role == "superintendent":
-            try:
-                data["user"]["employee_id"] = (
-                    self.user.superintendent_profile.employee_id
-                )
-            except SuperintendentProfile.DoesNotExist:
-                data["user"]["employee_id"] = None
-
-        return data
