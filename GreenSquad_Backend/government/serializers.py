@@ -47,6 +47,8 @@ class GovernmentCleanupSerializer(serializers.ModelSerializer):
 
 class SuperintendentSerializer(serializers.ModelSerializer):
 
+    id = serializers.SerializerMethodField()
+
     employee_id = serializers.SerializerMethodField()
 
     password = serializers.CharField(
@@ -74,6 +76,12 @@ class SuperintendentSerializer(serializers.ModelSerializer):
             "employee_id",
         ]
 
+    def get_id(self, obj):
+        try:
+            return obj.superintendentprofile.id
+        except SuperintendentProfile.DoesNotExist:
+            return None
+        
     def get_employee_id(self, obj):
         try:
             return obj.superintendentprofile.employee_id
