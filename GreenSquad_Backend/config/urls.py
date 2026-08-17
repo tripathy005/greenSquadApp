@@ -34,11 +34,11 @@ urlpatterns = [
     "api/government/",
     include("government.urls")
     ),
-
+    
     path(
-    "api/ai/",
-    include("ai_engine.urls")
-    ),
+        "api/ai/",
+        include("ai_engine.urls")
+        ),
 
 ]
 
