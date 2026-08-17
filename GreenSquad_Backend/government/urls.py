@@ -9,7 +9,8 @@ from .views import (
     SuperintendentAreaUpdateView,
     SuperintendentCreateView,
     SuperintendentUpdateView,
-    SuperintendentPostListView,
+    MyAssignedAreasView,
+    GovernmentHandoverPostListView,
 )
 
 
@@ -63,9 +64,14 @@ urlpatterns = [
     ),
 
     path(
-    "superintendent/posts/",
-    SuperintendentPostListView.as_view(),
-    name="superintendent-posts"
+    "my-areas/",
+    MyAssignedAreasView.as_view(),
+    name="my-assigned-areas"
     ),
+
+    path(
+    "admin/posts/",
+    GovernmentHandoverPostListView.as_view(),
+    name="government-admin-posts"),
 
 ]

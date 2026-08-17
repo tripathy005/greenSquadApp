@@ -117,7 +117,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
             try:
                 data["employee_id"] = (
-                    instance.superintendent_profile.employee_id
+                    instance.superintendentprofile.employee_id
                 )
             except SuperintendentProfile.DoesNotExist:
                 data["employee_id"] = None
@@ -134,6 +134,7 @@ class AdminUserSerializer(serializers.ModelSerializer):
             "full_name",
             "username",
             "email",
+            "role",
         ]
         read_only_fields = [
             "id",
@@ -141,32 +142,6 @@ class AdminUserSerializer(serializers.ModelSerializer):
             "full_name",
             "username",
             "email",
+            "role",
         ]
 
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-
-    def validate(self, attrs):
-        data = super().validate(attrs)
-
-        data["user"] = {
-            "id": self.user.id,
-            "username": self.user.username,
-            "full_name": self.user.full_name,
-            "email": self.user.email,
-            "role": self.user.role,
-            "profile_photo": (
-                self.user.profile_photo.url
-                if self.user.profile_photo
-                else None
-            ),
-        }
-
-        if self.user.role == "superintendent":
-            try:
-                data["user"]["employee_id"] = (
-                    self.user.superintendent_profile.employee_id
-                )
-            except SuperintendentProfile.DoesNotExist:
-                data["user"]["employee_id"] = None
-
-        return data

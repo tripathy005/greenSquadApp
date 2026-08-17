@@ -5,9 +5,18 @@ from authentication.models import User
 
 
 from django.contrib.auth import get_user_model
-from rest_framework import serializers
 from .models import SuperintendentProfile
+from areas.models import Area
 
+
+class GovernmentAreaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Area
+        fields = [
+            "id",
+            "name",
+        ]
 
 
 class GovernmentPostSerializer(serializers.ModelSerializer):
@@ -47,7 +56,11 @@ class GovernmentCleanupSerializer(serializers.ModelSerializer):
 
 class SuperintendentSerializer(serializers.ModelSerializer):
 
+    id = serializers.SerializerMethodField()
+
     employee_id = serializers.SerializerMethodField()
+
+    areas = serializers.SerializerMethodField()
 
     password = serializers.CharField(
         write_only=True,
@@ -66,19 +79,44 @@ class SuperintendentSerializer(serializers.ModelSerializer):
             "role",
             "is_active",
             "employee_id",
+            "areas",
         ]
 
         read_only_fields = [
             "id",
             "role",
             "employee_id",
+            "areas",
         ]
 
-    def get_employee_id(self, obj):
+    def get_id(self, obj):
+
         try:
-            return obj.superintendentprofile.employee_id
+            return obj.superintendentprofile.id
+
         except SuperintendentProfile.DoesNotExist:
             return None
+
+    def get_employee_id(self, obj):
+
+        try:
+            return obj.superintendentprofile.employee_id
+
+        except SuperintendentProfile.DoesNotExist:
+            return None
+
+    def get_areas(self, obj):
+
+        try:
+            areas = obj.superintendentprofile.areas.all().order_by("id")
+
+            return SuperintendentAreaListSerializer(
+                areas,
+                many=True
+            ).data
+
+        except SuperintendentProfile.DoesNotExist:
+            return []
 
     def create(self, validated_data):
 
@@ -264,3 +302,16 @@ class SuperintendentDeactivateSerializer(serializers.Serializer):
             "employee_id": instance.employee_id,
             "is_active": instance.user.is_active,
         }
+
+
+class SuperintendentAreaListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Area
+        fields = [
+            "id",
+            "name",
+            "latitude",
+            "longitude",
+            "radius",
+        ]

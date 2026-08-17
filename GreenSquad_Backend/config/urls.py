@@ -34,11 +34,20 @@ urlpatterns = [
     "api/government/",
     include("government.urls")
     ),
+<<<<<<< HEAD
     
     path(
         "api/ai/",
         include("ai_engine.urls")
         ),
+=======
+
+    path(
+        "api/areas/",
+        include("areas.urls")
+    ),
+
+>>>>>>> 6ab42ab703b4ee0fcdc3bd98bc90580ae7503ef0
 
 ]
 

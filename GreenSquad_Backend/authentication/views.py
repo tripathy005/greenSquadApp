@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics,status
 from rest_framework.permissions import AllowAny,IsAuthenticated
+from rest_framework.response import Response
 
 from .models import User
 from .serializers import (
@@ -9,7 +10,6 @@ from .serializers import (
     ProfileUpdateSerializer,
     AdminUserSerializer)
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import CustomTokenObtainPairSerializer
 from .permissions import IsAdmin
 
 class RegisterView(generics.CreateAPIView):
@@ -18,9 +18,6 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
-class CustomTokenObtainPairView(TokenObtainPairView):
-
-    serializer_class = CustomTokenObtainPairSerializer
 
 class ProfileUpdateView(generics.UpdateAPIView):
 
@@ -68,6 +65,26 @@ class AdminUserDeleteView(generics.DestroyAPIView):
         return Response(
             {
                 "detail": "User account deleted successfully."
+            },
+            status=status.HTTP_200_OK
+        )
+
+class DeleteMyAccountView(generics.DestroyAPIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def destroy(self, request, *args, **kwargs):
+
+        user = self.get_object()
+
+        user.delete()
+
+        return Response(
+            {
+                "detail": "Your account and all associated posts have been deleted successfully."
             },
             status=status.HTTP_200_OK
         )
