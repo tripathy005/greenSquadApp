@@ -1,7 +1,9 @@
+from requests import post
 from rest_framework import serializers
 from areas.utils import find_matching_area
 from government.utils import find_duplicate_post
 from .models import Post, PostMedia, DuplicatePost
+from ai_engine.roboflow_service import analyze_waste
 from areas.models import Area
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -104,6 +106,9 @@ class PostSerializer(serializers.ModelSerializer):
             "is_liked",
             "posted_at",
             "ai_verified",
+            "waste_type",
+            "ai_confidence",
+            "waste_volume",
             "is_duplicate",
             "is_resolved",
             "credit_points",
@@ -114,6 +119,9 @@ class PostSerializer(serializers.ModelSerializer):
             "id",
             "posted_at",
             "ai_verified",
+            "waste_type",
+            "ai_confidence",
+            "waste_volume",
             "is_duplicate",
             "is_resolved",
             "credit_points",
@@ -148,13 +156,7 @@ class PostSerializer(serializers.ModelSerializer):
         # Set default credit based on action
         action = validated_data.get("action")
 
-        if user.role == "citizen":
-
-            if action == "self_resolve":
-                validated_data["credit_points"] = 9.0
-
-            elif action == "handover":
-                validated_data["credit_points"] = 1.0
+        
 
         # Create post AFTER setting credit_points
         post = Post.objects.create(
@@ -164,11 +166,48 @@ class PostSerializer(serializers.ModelSerializer):
         )
 
         # Save original post image
-        PostMedia.objects.create(
+        post_media=PostMedia.objects.create(
             post=post,
             image=image,
             media_type="original"
         )
+
+        image_url = post_media.image.url
+
+        print("\n========== CLOUDINARY URL ==========")
+        print(image_url)
+        print("====================================\n")
+
+        # Analyze image using Roboflow
+        try:
+            ai_result = analyze_waste(image_url)
+
+            post.waste_type = ai_result["waste_type"]
+            post.ai_confidence = ai_result["confidence_percent"]
+            post.credit_points = round(
+                ai_result["confidence_percent"] / 10,
+                1
+            )
+            post.ai_verified = True
+
+            post.save(
+                update_fields=[
+                    "waste_type",
+                    "ai_confidence",
+                    "ai_verified",
+                ]
+            )
+
+        except Exception as e:
+            print(f"Roboflow AI analysis failed: {e}")
+
+        post.save(
+        update_fields=[
+            "waste_type",
+            "ai_confidence",
+            "ai_verified",
+        ]
+    )
 
         # Check duplicate after Post is created
         duplicate_post = find_duplicate_post(

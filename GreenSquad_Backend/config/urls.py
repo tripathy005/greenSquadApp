@@ -35,6 +35,10 @@ urlpatterns = [
     include("government.urls")
     ),
 
+    path(
+    "api/ai/",
+    include("ai_engine.urls")
+    ),
 
 ]
 
