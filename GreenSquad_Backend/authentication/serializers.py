@@ -134,6 +134,7 @@ class AdminUserSerializer(serializers.ModelSerializer):
             "full_name",
             "username",
             "email",
+            "role",
         ]
         read_only_fields = [
             "id",
@@ -141,5 +142,6 @@ class AdminUserSerializer(serializers.ModelSerializer):
             "full_name",
             "username",
             "email",
+            "role",
         ]
 

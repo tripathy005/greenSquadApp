@@ -35,6 +35,11 @@ urlpatterns = [
     include("government.urls")
     ),
 
+    path(
+        "api/areas/",
+        include("areas.urls")
+    ),
+
 
 ]
 
