@@ -72,6 +72,6 @@ urlpatterns = [
     "areas/",
     AreaListView.as_view(),
     name="area-list"
-),
+    ),
 
 ]

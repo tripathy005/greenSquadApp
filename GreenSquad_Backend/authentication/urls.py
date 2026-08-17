@@ -8,7 +8,8 @@ from .views import (
     ProfileUpdateView,
     ProfileView,
     AdminUserListView,
-    AdminUserDeleteView
+    AdminUserDeleteView,
+    DeleteMyAccountView,
 )
 
 urlpatterns = [
@@ -46,6 +47,18 @@ urlpatterns = [
     "users/",
     AdminUserListView.as_view(),
     name="admin-user-list"
+    ),
+
+    path(
+    "users/<int:id>/delete/",
+    AdminUserDeleteView.as_view(),
+    name="admin-user-delete"
+    ),
+
+    path(
+    "profile/delete/",
+    DeleteMyAccountView.as_view(),
+    name="delete-my-account"
     ),
 
     path(
