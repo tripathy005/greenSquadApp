@@ -18,5 +18,6 @@ class AreaSerializer(serializers.ModelSerializer):
 
         read_only_fields = [
             "id",
+            "radius",
             "superintendent",
         ]

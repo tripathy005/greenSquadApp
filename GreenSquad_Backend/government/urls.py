@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import AreaListView, SuperintendentDeactivateView, SuperintendentPostListView
+from .views import SuperintendentDeactivateView, SuperintendentPostListView
 from .views import (
     SuperintendentPostListView,
     SuperintendentCleanupView,
@@ -9,7 +9,8 @@ from .views import (
     SuperintendentAreaUpdateView,
     SuperintendentCreateView,
     SuperintendentUpdateView,
-    SuperintendentPostListView,
+    MyAssignedAreasView,
+    GovernmentHandoverPostListView,
 )
 
 
@@ -63,15 +64,14 @@ urlpatterns = [
     ),
 
     path(
-    "superintendent/posts/",
-    SuperintendentPostListView.as_view(),
-    name="superintendent-posts"
+    "my-areas/",
+    MyAssignedAreasView.as_view(),
+    name="my-assigned-areas"
     ),
 
     path(
-    "areas/",
-    AreaListView.as_view(),
-    name="area-list"
-    ),
+    "admin/posts/",
+    GovernmentHandoverPostListView.as_view(),
+    name="government-admin-posts"),
 
 ]

@@ -15,7 +15,8 @@ class Area(models.Model):
     )
 
     radius = models.PositiveIntegerField(
-        default=2000
+        default=2000,
+        editable=False,
     )
 
     superintendent = models.ForeignKey(

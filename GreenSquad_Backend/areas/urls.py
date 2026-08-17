@@ -26,6 +26,5 @@ urlpatterns = [
         AreaDetailView.as_view(),
         name="area-detail"
     ),
-
-
+    
 ]

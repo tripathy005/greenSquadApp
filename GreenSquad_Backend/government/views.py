@@ -16,6 +16,7 @@ from .serializers import (
     GovernmentAreaSerializer,
     GovernmentCleanupSerializer,
     GovernmentPostSerializer,
+    SuperintendentAreaListSerializer,
     SuperintendentAreaSerializer,
     SuperintendentCreateSerializer,
     SuperintendentDeactivateSerializer,
@@ -277,3 +278,31 @@ class SuperintendentPostListView(generics.ListAPIView):
             is_resolved=False,
             is_duplicate=False,
         ).order_by("-posted_at")
+
+class GovernmentHandoverPostListView(generics.ListAPIView):
+
+    serializer_class = SuperintendentPostSerializer
+    permission_classes = [IsAdminUserRole]
+
+    def get_queryset(self):
+
+        return Post.objects.filter(
+            action="handover",
+            is_resolved=False,
+            is_duplicate=False,
+        ).order_by("-posted_at")
+    
+
+class MyAssignedAreasView(generics.ListAPIView):
+
+    serializer_class = SuperintendentAreaListSerializer
+    permission_classes = [IsSuperintendent]
+
+    def get_queryset(self):
+
+        superintendentprofile = (
+            self.request.user.superintendentprofile
+        )
+
+        return superintendentprofile.areas.all().order_by("id")
+
