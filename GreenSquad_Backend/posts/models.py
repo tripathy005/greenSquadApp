@@ -52,12 +52,7 @@ class Post(models.Model):
     blank=True
     )
 
-    volume_percent = models.DecimalField(
-    max_digits=5,
-    decimal_places=2,
-    null=True,
-    blank=True
-    )
+   
 
     waste_volume = models.CharField(
     max_length=10,

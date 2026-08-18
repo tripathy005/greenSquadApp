@@ -1,89 +1,357 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import NaNavbar from '../components/Navbar.jsx'
 import Sidebar from '../components/Sidebar.jsx'
+import { toast } from "react-hot-toast"
 
 export default function SuperintendentPage() {
 
-  const [superintendents, setSuperintendents] = useState([
-    {
-      id: 1,
-      fullName: 'Rajesh Kumar',
-      username: 'rajesh_kumar',
-      email: 'rajesh@example.com',
-    },
-    {
-      id: 2,
-      fullName: 'Priya Sharma',
-      username: 'priya_sharma',
-      email: 'priya@example.com',
-    },
-    {
-      id: 3,
-      fullName: 'Amit Das',
-      username: 'amit_das',
-      email: 'amit@example.com',
-    },
-  ])
+
+  const [superintendents, setSuperintendents] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
 
 
   const [formData, setFormData] = useState({
     fullName: '',
     username: '',
     email: '',
+    employeeId: '',
     password: '',
     confirmPassword: '',
   })
 
 
+  // ============================
+  // GET ALL SUPERINTENDENTS
+  // ============================
+  const fetchSuperintendents = async () => {
+
+    try {
+
+      setLoading(true)
+
+      const accessToken = localStorage.getItem('access_token')
+
+      console.log('Access Token:', accessToken)
+
+      const response = await fetch(
+        '/api/government/superintendents/',
+        {
+          method: 'GET',
+
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        }
+      )
+
+
+      const data = await response.json()
+
+      console.log('Response Status:', response.status)
+      console.log('Superintendents:', data)
+
+
+      if (!response.ok) {
+
+        toast.error(
+          data.detail || 'Unable to fetch superintendents'
+        )
+
+        return
+      }
+
+
+
+
+      if (Array.isArray(data)) {
+
+        setSuperintendents(data)
+
+      } else if (data.results) {
+
+        setSuperintendents(data.results)
+
+      } else {
+
+        setSuperintendents([])
+
+      }
+
+
+    } catch (error) {
+
+      console.error(error)
+
+      toast.error(
+        'Something went wrong while fetching superintendents'
+      )
+
+    } finally {
+
+      setLoading(false)
+
+    }
+
+  }
+
+
+  // Fetch data when page loads
+  useEffect(() => {
+
+    fetchSuperintendents()
+
+  }, [])
+
+
+
+  // ============================
+  // HANDLE FORM INPUT
+  // ============================
   const handleChange = (e) => {
+
     const { name, value } = e.target
 
     setFormData((previous) => ({
       ...previous,
-      [name]: value,
+
+      [name]:
+        name === 'employeeId'
+          ? value.toUpperCase()
+          : value,
     }))
+
   }
 
 
-  const handleSubmit = (e) => {
+
+  // ============================
+  // CREATE SUPERINTENDENT
+  // ============================
+  const handleSubmit = async (e) => {
+
     e.preventDefault()
 
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match.')
-      return
-    }
-
-    const newSuperintendent = {
-      id: Date.now(),
-      fullName: formData.fullName,
-      username: formData.username,
-      email: formData.email,
-    }
-
-    setSuperintendents((previous) => [
-      ...previous,
-      newSuperintendent,
-    ])
-
-    setFormData({
-      fullName: '',
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    })
-  }
 
 
-  const handleDelete = (id) => {
+    // Validate Employee ID
+    const employeeIdPattern = /^SUP\d{3}$/
 
-    setSuperintendents((previous) =>
-      previous.filter(
-        (superintendent) => superintendent.id !== id
+    if (!employeeIdPattern.test(formData.employeeId)) {
+
+      toast.error(
+        'Employee ID must be in format SUP001, SUP002, SUP003, etc.'
       )
-    )
+
+      return
+
+    }
+
+
+
+    // Check passwords
+    if (formData.password !== formData.confirmPassword) {
+
+      toast.error('Passwords do not match')
+
+      return
+
+    }
+
+
+    try {
+
+      setSubmitting(true)
+
+
+      const accessToken = localStorage.getItem(
+        'access_token'
+      )
+
+
+      const response = await fetch(
+        '/api/government/superintendents/create/',
+        {
+          method: 'POST',
+
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+
+          body: JSON.stringify({
+
+            full_name: formData.fullName,
+
+            username: formData.username,
+
+            email: formData.email,
+
+            employee_id: formData.employeeId,
+
+            password: formData.password,
+
+            confirm_password: formData.confirmPassword,
+
+          }),
+        }
+      )
+
+
+      const data = await response.json()
+
+      console.log('Create Superintendent:', data)
+
+
+      if (!response.ok) {
+
+        if (data.username) {
+
+          toast.error(
+            Array.isArray(data.username)
+              ? data.username[0]
+              : data.username
+          )
+
+        } else if (data.email) {
+
+          toast.error(
+            Array.isArray(data.email)
+              ? data.email[0]
+              : data.email
+          )
+
+        } else if (data.password) {
+
+          toast.error(
+            Array.isArray(data.password)
+              ? data.password[0]
+              : data.password
+          )
+
+        } else {
+
+          toast.error(
+            data.detail || 'Unable to create superintendent'
+          )
+
+        }
+
+        return
+
+      }
+
+
+      toast.success(
+        'Superintendent created successfully'
+      )
+
+
+      setFormData({
+        fullName: '',
+        username: '',
+        email: '',
+        employeeId: '',
+        password: '',
+        confirmPassword: '',
+      })
+
+      // employee_id
+      // Fetch latest superintendent list
+      await fetchSuperintendents()
+
+
+    } catch (error) {
+
+      console.error(error)
+
+      toast.error('Something went wrong')
+
+    } finally {
+
+      setSubmitting(false)
+
+    }
 
   }
+
+
+
+  // ============================
+  // ACTIVATE / DEACTIVATE SUPERINTENDENT
+  // ============================
+  const handleStatusChange = async (superintendent) => {
+
+    try {
+
+      const accessToken = localStorage.getItem(
+        'access_token'
+      )
+
+      // Current status
+      const newStatus = !superintendent.is_active
+
+      const response = await fetch(
+        `/api/government/superintendents/${superintendent.id}/status/`,
+        {
+          method: 'PATCH',
+
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+
+          body: JSON.stringify({
+            is_active: newStatus,
+          }),
+        }
+      )
+
+      const data = await response.json()
+
+      console.log('Status Update:', data)
+
+      if (!response.ok) {
+
+        toast.error(
+          data.detail || 'Unable to update superintendent status'
+        )
+
+        return
+      }
+
+
+      // Update the UI immediately
+      setSuperintendents((previous) =>
+        previous.map((item) =>
+          item.id === superintendent.id
+            ? {
+              ...item,
+              is_active: newStatus,
+            }
+            : item
+        )
+      )
+
+
+      toast.success(
+        newStatus
+          ? 'Superintendent activated successfully'
+          : 'Superintendent deactivated successfully'
+      )
+
+    } catch (error) {
+
+      console.error(error)
+
+      toast.error(
+        'Something went wrong while updating status'
+      )
+
+    }
+
+  }
+
 
 
   return (
@@ -163,6 +431,7 @@ export default function SuperintendentPage() {
                   value={formData.username}
                   onChange={handleChange}
                   placeholder="Enter username"
+                  autoComplete="username"
                   required
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
                 />
@@ -183,9 +452,36 @@ export default function SuperintendentPage() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Enter email"
+                  autoComplete="email"
                   required
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
                 />
+
+              </div>
+
+
+              {/* Employee ID */}
+              <div>
+
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Employee ID
+                </label>
+
+                <input
+                  type="text"
+                  name="employeeId"
+                  value={formData.employeeId}
+                  onChange={handleChange}
+                  placeholder="SUP001"
+                  autoComplete="employeeId"
+                  maxLength={6}
+                  required
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm uppercase outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
+                />
+
+                <p className="mt-1 text-xs text-gray-400">
+                  Format: SUP001, SUP002, SUP003
+                </p>
 
               </div>
 
@@ -203,6 +499,7 @@ export default function SuperintendentPage() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Enter password"
+                  autoComplete="new-password"
                   required
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
                 />
@@ -223,6 +520,7 @@ export default function SuperintendentPage() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="Confirm password"
+                  autoComplete="new-password"
                   required
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
                 />
@@ -235,9 +533,13 @@ export default function SuperintendentPage() {
 
                 <button
                   type="submit"
-                  className="w-full rounded-lg bg-green-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-green-700"
+                  disabled={submitting}
+                  className="w-full rounded-lg bg-green-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Add Superintendent
+                  {submitting
+                    ? 'Adding...'
+                    : 'Add Superintendent'
+                  }
                 </button>
 
               </div>
@@ -268,79 +570,137 @@ export default function SuperintendentPage() {
             </div>
 
 
+            {/* Loading */}
+            {loading && (
+
+              <div className="rounded-2xl border border-gray-200 bg-white p-12 text-center">
+
+                <p className="text-sm text-gray-500">
+                  Loading superintendents...
+                </p>
+
+              </div>
+
+            )}
+
+
             {/* Cards */}
-            <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+            {!loading && superintendents.length > 0 && (
 
-              {superintendents.map((superintendent) => (
+              <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
 
-                <div
-                  key={superintendent.id}
-                  className="rounded-2xl border border-gray-200 bg-white p-6"
-                >
+                {superintendents.map((superintendent) => (
 
-                  {/* Top */}
-                  <div className="flex items-start justify-between">
+                  <div
+                    key={superintendent.id}
+                    className="rounded-2xl border border-gray-200 bg-white p-6"
+                  >
 
-                    <div className="flex items-center gap-4">
+                    {/* Top */}
+                    <div className="flex items-start justify-between">
 
-                      {/* Avatar */}
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-lg font-semibold text-green-700">
-                        {superintendent.fullName.charAt(0).toUpperCase()}
+                      <div className="flex items-center gap-4">
+
+                        {/* Avatar */}
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-lg font-semibold text-green-700">
+
+                          {(
+                            superintendent.full_name ||
+                            superintendent.username ||
+                            'S'
+                          )
+                            .charAt(0)
+                            .toUpperCase()
+                          }
+
+                        </div>
+
+
+                        <div>
+
+                          <h3 className="text-lg font-semibold text-gray-800">
+
+                            {superintendent.full_name ||
+                              superintendent.username
+                            }
+
+                          </h3>
+
+                          <p className="text-sm text-gray-400">
+                            @{superintendent.username}
+                          </p>
+
+                        </div>
+
                       </div>
 
-
-                      <div>
-
-                        <h3 className="text-lg font-semibold text-gray-800">
-                          {superintendent.fullName}
-                        </h3>
-
-                        <p className="text-sm text-gray-400">
-                          @{superintendent.username}
-                        </p>
-
-                      </div>
+                      {/* Activate / Deactivate */}
+                      <button
+                        onClick={() => handleStatusChange(superintendent)}
+                        className={`rounded-lg px-3 py-2 text-sm font-medium transition ${superintendent.is_active
+                          ? 'text-red-600 hover:bg-red-50'
+                          : 'text-green-600 hover:bg-green-50'
+                          }`}
+                      >
+                        {superintendent.is_active
+                          ? 'Deactivate'
+                          : 'Activate'
+                        }
+                      </button>
 
                     </div>
 
 
-                    {/* Delete */}
-                    <button
-                      onClick={() => handleDelete(superintendent.id)}
-                      className="rounded-lg px-3 py-2 text-sm font-medium text-red-500 transition hover:bg-red-50"
-                    >
-                      Delete
-                    </button>
+                    {/* Details */}
+                    <div className="mt-6 space-y-3 border-t border-gray-100 pt-5">
 
-                  </div>
+                      <div className="flex justify-between gap-4">
 
+                        <span className="text-sm text-gray-400">
+                          Status
+                        </span>
 
-                  {/* Details */}
-                  <div className="mt-6 space-y-3 border-t border-gray-100 pt-5">
+                        <span
+                          className={`text-sm font-medium ${superintendent.is_active
+                              ? 'text-green-600'
+                              : 'text-red-500'
+                            }`}
+                        >
+                          {superintendent.is_active
+                            ? 'Active'
+                            : 'Deactivated'
+                          }
+                        </span>
 
-                    <div className="flex justify-between gap-4">
+                      </div>
+                      
+                      <div className="flex justify-between gap-4">
 
-                      <span className="text-sm text-gray-400">
-                        Email
-                      </span>
+                        <span className="text-sm text-gray-400">
+                          Email
+                        </span>
 
-                      <span className="text-sm text-gray-700">
-                        {superintendent.email}
-                      </span>
+                        <span className="text-sm text-gray-700">
+                          {superintendent.email}
+                        </span>
+
+                      </div>
+
 
                     </div>
 
                   </div>
 
-                </div>
+                ))}
 
-              ))}
+              </div>
 
-            </div>
+            )}
 
 
             {/* Empty State */}
-            {superintendents.length === 0 && (
+            {!loading && superintendents.length === 0 && (
+
               <div className="rounded-2xl border border-gray-200 bg-white p-12 text-center">
 
                 <h3 className="text-lg font-semibold text-gray-700">
@@ -352,6 +712,7 @@ export default function SuperintendentPage() {
                 </p>
 
               </div>
+
             )}
 
           </div>

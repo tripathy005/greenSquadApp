@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import UserPostsCard from '../components/userPostsCard.jsx'
+import { RxCrossCircled } from "react-icons/rx";
+
 
 export default function UserPosts() {
 
@@ -27,7 +29,7 @@ export default function UserPosts() {
 
                 const data = await response.json()
 
-                console.log('My Posts:', data)
+                // console.log('My Posts:', data)
 
                 if (!response.ok) {
                     console.error('Failed to fetch posts:', data)

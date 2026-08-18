@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import profileimg from "../assets/dp/image.png";
+import dp from "../assets/dp/image.png";
 import LikeIcon from "../assets/icon/like.png";
 import DislikeIcon from "../assets/icon/dislike.png";
 import DiamondIcon from "../assets/icon/Diamond.png";
@@ -13,20 +13,93 @@ import { MdDeleteOutline } from "react-icons/md";
 export default function UserPostsCard({ post, onDelete }) {
 
   // Like
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(post.is_liked ?? false);
+  const [likeCount, setLikeCount] = useState(post.like_count ?? 0);
+  const [isLikeLoading, setIsLikeLoading] = useState(false);
+
+
+
+  useEffect(() => {
+
+    setIsLiked(post.is_liked ?? false);
+
+    setLikeCount(post.like_count ?? 0);
+
+  }, [post.id]);
+
+
+  const handleToggleLike = async () => {
+
+    if (isLikeLoading) return;
+
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+      console.error("User is not authenticated.");
+      return;
+    }
+
+    const previousLiked = isLiked;
+    const previousCount = likeCount;
+
+    // Immediately update UI
+    setIsLiked(!previousLiked);
+
+    setLikeCount((prev) =>
+      previousLiked
+        ? Math.max(0, prev - 1)
+        : prev + 1
+    );
+
+    setIsLikeLoading(true);
+
+    try {
+
+      const response = await fetch(
+        `/api/posts/${post.id}/like/`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      // console.log("Like API response:", data);
+
+      if (!response.ok) {
+        throw new Error(
+          data.detail || "Failed to update like."
+        );
+      }
+
+      // Synchronize with backend response
+      setIsLiked(data.liked);
+      setLikeCount(data.like_count);
+
+    } catch (error) {
+
+      console.error("Like error:", error);
+
+      // Restore old state
+      setIsLiked(previousLiked);
+      setLikeCount(previousCount);
+
+    } finally {
+
+      setIsLikeLoading(false);
+
+    }
+
+  };
+
+
 
   // Current image
   const [currentImage, setCurrentImage] = useState(0);
-
-  const images = post.media?.map((item) => item.image) || [profileimg];
-
-  const profilePhoto = post.user?.profile_photo
-    ? post.user.profile_photo
-    : profileimg
-
-  const handleToggleLike = () => {
-    setIsLiked(!isLiked);
-  };
+  const images = post.media || [];
 
   const nextImage = () => {
     setCurrentImage((prev) =>
@@ -39,6 +112,7 @@ export default function UserPostsCard({ post, onDelete }) {
       prev === 0 ? images.length - 1 : prev - 1
     );
   };
+
 
   const handleDeleteClick = () => {
 
@@ -57,7 +131,7 @@ export default function UserPostsCard({ post, onDelete }) {
         <div className="flex justify-end gap-3 mt-4">
 
           <button
-            onClick={() => toast.dismiss(t.id)}
+            onClick={() => toast.remove(t.id)}
             className="px-3 py-1 rounded-lg bg-gray-200"
           >
             Cancel
@@ -65,7 +139,7 @@ export default function UserPostsCard({ post, onDelete }) {
 
           <button
             onClick={() => {
-              toast.dismiss(t.id)
+              toast.remove(t.id)
               handleDelete()
             }}
             className="px-3 py-1 rounded-lg bg-red-500 text-white"
@@ -91,13 +165,11 @@ export default function UserPostsCard({ post, onDelete }) {
         `/api/posts/${post.id}/delete/`,
         {
           method: 'DELETE',
-
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       )
-
 
       if (!response.ok) {
 
@@ -110,16 +182,17 @@ export default function UserPostsCard({ post, onDelete }) {
         return
       }
 
+      onDelete(post.id)
 
       toast.success('Post deleted successfully!')
-
-      onDelete(post.id)
 
     } catch (error) {
 
       console.error('Delete error:', error)
 
-      toast.error('Unable to delete the post.')
+      toast.error(
+        'Unable to delete the post.'
+      )
 
     }
 
@@ -151,14 +224,14 @@ export default function UserPostsCard({ post, onDelete }) {
           }}
         >
 
-          {images.map((image, index) => (
+          {images.map((media, index) => (
             <div
-              key={index}
+              key={media.id}
               className="h-full w-full min-w-full shrink-0"
             >
               <img
-                src={image}
-                alt={`Post ${index + 1}`}
+                src={media.image}
+                alt={media.media_type}
                 className="h-full w-full object-cover"
               />
             </div>
@@ -214,7 +287,7 @@ export default function UserPostsCard({ post, onDelete }) {
           <div className="ml-2 flex items-center">
 
             <div
-              style={{ backgroundImage: `url(${profilePhoto})`, }}
+              style={{ backgroundImage: `url(${post.user?.profile_photo || dp})`, }}
               className="h-12 w-12 rounded-full bg-cover md:h-18 md:w-18"
             />
 
@@ -223,11 +296,11 @@ export default function UserPostsCard({ post, onDelete }) {
             >
 
               <p className="text-[13px] font-bold md:text-[18px]">
-                {post.user?.full_name}
+                {post.user?.full_name || 'Unknown User'}
               </p>
 
               <p className="text-[9px] text-[#249138] md:text-[14px]">
-                @{post.user?.username}
+                @{post.user?.username || 'unknown'}
               </p>
 
             </div>
@@ -255,16 +328,17 @@ export default function UserPostsCard({ post, onDelete }) {
             <div className="mr-4 flex items-end gap-2">
 
               <p className="text-6 font-bold leading-none md:text-[14px]">
-                {post.like_count}
+                {likeCount}
               </p>
 
               <button
                 onClick={handleToggleLike}
+                disabled={isLikeLoading}
                 className="h-5 w-5 md:h-6 md:w-6"
               >
                 <img
-                  src={isLiked ? DislikeIcon : LikeIcon}
-                  alt="like toggle"
+                  src={isLiked ? LikeIcon : DislikeIcon}
+                  alt={isLiked ? "Unlike" : "Like"}
                 />
               </button>
 
@@ -300,16 +374,17 @@ export default function UserPostsCard({ post, onDelete }) {
 
             <button
               onClick={handleToggleLike}
+              disabled={isLikeLoading}
               className="h-6 w-5"
             >
               <img
-                src={isLiked ? DislikeIcon : LikeIcon}
-                alt="like toggle"
+                src={isLiked ? LikeIcon : DislikeIcon}
+                alt={isLiked ? "Unlike" : "Like"}
               />
             </button>
 
             <p className="font-bold text-[14px] ">
-              {post.like_count}
+              {likeCount}
             </p>
 
           </div>
