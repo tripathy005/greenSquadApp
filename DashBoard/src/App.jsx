@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast'
 
 import HomePage from './pages/homepage.jsx'
 import SuperintendentPage from './pages/superintendent.jsx'
+import AreasPage from './pages/areas.jsx'
 import UsersPage from './pages/users.jsx'
 import SquadPage from './pages/squad.jsx'
 import LoginPage from './pages/loginpage.jsx'
@@ -45,6 +46,18 @@ const AppRoutes = () => {
                 element={
                     authUser && userRole === 'admin'
                         ? <SuperintendentPage />
+                        : <Navigate to="/" />
+                }
+            />
+
+            {/* Areas
+                Admin only
+            */}
+            <Route
+                path="/areas"
+                element={
+                    authUser && userRole === 'admin'
+                        ? <AreasPage />
                         : <Navigate to="/" />
                 }
             />

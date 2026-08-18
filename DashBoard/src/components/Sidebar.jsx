@@ -2,9 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router'
 import { AiOutlineAlert } from "react-icons/ai"
 import { GrUserWorker } from "react-icons/gr"
-import { LuUserRound } from "react-icons/lu"
-import { LuUsersRound } from "react-icons/lu"
-import { LuLogOut } from "react-icons/lu"
+import { LuMapPin, LuUserRound, LuUsersRound, LuLogOut } from "react-icons/lu"
 import { toast } from "react-hot-toast";
 import { useAuth } from '../context/AuthProvider.jsx'
 
@@ -20,6 +18,11 @@ const Sidebar = () => {
             icon: <GrUserWorker />,
             name: 'Superintendent',
             path: '/superintendent',
+        },
+        {
+            icon: <LuMapPin />,
+            name: 'Areas',
+            path: '/areas',
         },
         {
             icon: <LuUserRound />,
