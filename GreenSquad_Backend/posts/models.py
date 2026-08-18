@@ -67,6 +67,7 @@ class Post(models.Model):
 
     is_duplicate = models.BooleanField(default=False)
 
+
     ACTION_CHOICES = (
     ("self_resolve", "Self Resolve"),
     ("handover", "Hand Over to Authority"),
