@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import NaNavbar from '../components/Navbar.jsx'
+import Navbar from '../components/Navbar.jsx'
 import Sidebar from '../components/Sidebar.jsx'
 import { toast } from 'react-hot-toast'
 
@@ -436,7 +436,7 @@ export default function SuperintendentPage() {
 
 
       {/* Navbar */}
-      <NaNavbar />
+      <Navbar />
 
 
       {/* Body */}

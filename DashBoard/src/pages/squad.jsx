@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import NaNavbar from '../components/Navbar.jsx'
+import Navbar from '../components/Navbar.jsx'
 import Sidebar from '../components/Sidebar.jsx'
 
 export default function SquadPage() {
@@ -55,7 +55,7 @@ export default function SquadPage() {
         <div className="min-h-screen bg-[#F5F7F5]">
 
             {/* Navbar */}
-            <NaNavbar />
+            <Navbar />
 
 
             {/* Body */}

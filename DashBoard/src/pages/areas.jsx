@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import NaNavbar from '../components/Navbar.jsx'
+import Navbar from '../components/Navbar.jsx'
 import Sidebar from '../components/Sidebar.jsx'
 import { toast } from 'react-hot-toast'
 
@@ -422,7 +422,7 @@ export default function AreasPage() {
 
         <div className="min-h-screen bg-[#F5F7F5]">
 
-            <NaNavbar />
+            <Navbar />
 
 
             <div className="flex">

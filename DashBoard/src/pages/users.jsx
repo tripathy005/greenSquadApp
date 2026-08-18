@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import NaNavbar from '../components/Navbar.jsx'
+import Navbar from '../components/Navbar.jsx'
 import Sidebar from '../components/Sidebar.jsx'
 import { toast } from 'react-hot-toast'
 
@@ -232,7 +232,7 @@ export default function UsersPage() {
         <div className="min-h-screen bg-[#F5F7F5]">
 
             {/* Navbar */}
-            <NaNavbar />
+            <Navbar />
 
 
             {/* Body */}
