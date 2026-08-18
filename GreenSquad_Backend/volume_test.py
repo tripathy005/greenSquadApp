@@ -3,7 +3,6 @@ import cv2
 
 IMAGE_PATH = "test.png"
 
-
 # 1. Read image
 image = cv2.imread(IMAGE_PATH)
 

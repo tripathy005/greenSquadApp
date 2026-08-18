@@ -59,7 +59,7 @@ const Sidebar = () => {
 
 
     return (
-        <aside className="h-full w-16 sm:w-20 lg:w-64 bg-white border-r border-gray-200 flex flex-col">
+        <aside className="h-full w-16 sm:w-20 lg:w-64 bg-white border-r border-gray-200 flex flex-col sticky top-23 md:top-20 left-0">
 
 
             {/* Navigation Items */}

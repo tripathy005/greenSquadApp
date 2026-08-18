@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+import React, { useState, useEffect } from 'react'
+import NaNavbar from '../components/Navbar.jsx'
+import Sidebar from '../components/Sidebar.jsx'
+import { toast } from "react-hot-toast"
+
+export default function SuperintendentPage() {
+
+
+  const [superintendents, setSuperintendents] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
+
+=======
 import React, { useEffect, useState } from 'react'
 import NaNavbar from '../components/Navbar.jsx'
 import Sidebar from '../components/Sidebar.jsx'
@@ -11,6 +25,7 @@ export default function SuperintendentPage() {
   const [superintendents, setSuperintendents] = useState([])
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -33,10 +48,14 @@ export default function SuperintendentPage() {
 
       const accessToken = localStorage.getItem('access_token')
 
+<<<<<<< HEAD
+      console.log('Access Token:', accessToken)
+=======
       if (!accessToken) {
         toast.error('You are not logged in')
         return
       }
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
       const response = await fetch(
         '/api/government/superintendents/',
@@ -52,11 +71,20 @@ export default function SuperintendentPage() {
 
       const data = await response.json()
 
+<<<<<<< HEAD
+      console.log('Response Status:', response.status)
+      console.log('Superintendents:', data)
+
+
+      if (!response.ok) {
+
+=======
 
       if (!response.ok) {
 
         console.error('Fetch Superintendents:', data)
 
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
         toast.error(
           data.detail || 'Unable to fetch superintendents'
         )
@@ -65,12 +93,21 @@ export default function SuperintendentPage() {
       }
 
 
+<<<<<<< HEAD
+
+
+=======
       // Support both normal array and paginated response
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
       if (Array.isArray(data)) {
 
         setSuperintendents(data)
 
+<<<<<<< HEAD
+      } else if (data.results) {
+=======
       } else if (Array.isArray(data.results)) {
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
         setSuperintendents(data.results)
 
@@ -98,9 +135,13 @@ export default function SuperintendentPage() {
   }
 
 
+<<<<<<< HEAD
+  // Fetch data when page loads
+=======
   // ============================
   // FETCH ON PAGE LOAD
   // ============================
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
   useEffect(() => {
 
     fetchSuperintendents()
@@ -108,6 +149,10 @@ export default function SuperintendentPage() {
   }, [])
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
   // ============================
   // HANDLE FORM INPUT
   // ============================
@@ -124,12 +169,19 @@ export default function SuperintendentPage() {
         name === 'employeeId'
           ? value.toUpperCase()
           : value,
+<<<<<<< HEAD
+=======
 
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
     }))
 
   }
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
   // ============================
   // CREATE SUPERINTENDENT
   // ============================
@@ -137,6 +189,49 @@ export default function SuperintendentPage() {
 
     e.preventDefault()
 
+<<<<<<< HEAD
+
+
+    // Validate Employee ID
+    const employeeIdPattern = /^SUP\d{3}$/
+
+    if (!employeeIdPattern.test(formData.employeeId)) {
+
+      toast.error(
+        'Employee ID must be in format SUP001, SUP002, SUP003, etc.'
+      )
+
+      return
+
+    }
+
+
+
+    // Check passwords
+    if (formData.password !== formData.confirmPassword) {
+
+      toast.error('Passwords do not match')
+
+      return
+
+    }
+
+
+    try {
+
+      setSubmitting(true)
+
+
+      const accessToken = localStorage.getItem(
+        'access_token'
+      )
+
+
+      const response = await fetch(
+        '/api/government/superintendents/create/',
+        {
+          method: 'POST',
+=======
 
     // Validate employee ID
     const employeeIdPattern = /^SUP\d{3}$/
@@ -353,6 +448,7 @@ export default function SuperintendentPage() {
         `/api/government/superintendents/${superintendent.id}/status/`,
         {
           method: 'PATCH',
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
           headers: {
             'Content-Type': 'application/json',
@@ -360,33 +456,107 @@ export default function SuperintendentPage() {
           },
 
           body: JSON.stringify({
+<<<<<<< HEAD
+
+            full_name: formData.fullName,
+
+            username: formData.username,
+
+            email: formData.email,
+
+            employee_id: formData.employeeId,
+
+            password: formData.password,
+
+            confirm_password: formData.confirmPassword,
+
+          }),
+=======
             is_active: newStatus,
           }),
 
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
         }
       )
 
 
       const data = await response.json()
 
+<<<<<<< HEAD
+      console.log('Create Superintendent:', data)
+=======
       console.log(
         'Status Update:',
         data
       )
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
 
       if (!response.ok) {
 
+<<<<<<< HEAD
+        if (data.username) {
+
+          toast.error(
+            Array.isArray(data.username)
+              ? data.username[0]
+              : data.username
+          )
+
+        } else if (data.email) {
+
+          toast.error(
+            Array.isArray(data.email)
+              ? data.email[0]
+              : data.email
+          )
+
+        } else if (data.password) {
+
+          toast.error(
+            Array.isArray(data.password)
+              ? data.password[0]
+              : data.password
+          )
+
+        } else {
+
+          toast.error(
+            data.detail || 'Unable to create superintendent'
+          )
+
+        }
+=======
         toast.error(
           data.detail ||
           'Unable to update superintendent status'
         )
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
         return
 
       }
 
 
+<<<<<<< HEAD
+      toast.success(
+        'Superintendent created successfully'
+      )
+
+
+      setFormData({
+        fullName: '',
+        username: '',
+        email: '',
+        employeeId: '',
+        password: '',
+        confirmPassword: '',
+      })
+
+      // employee_id
+      // Fetch latest superintendent list
+      await fetchSuperintendents()
+=======
       // Update UI immediately
       setSuperintendents((previous) =>
 
@@ -415,7 +585,93 @@ export default function SuperintendentPage() {
           : 'Superintendent deactivated successfully'
 
       )
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
+
+    } catch (error) {
+
+      console.error(error)
+
+<<<<<<< HEAD
+      toast.error('Something went wrong')
+
+    } finally {
+
+      setSubmitting(false)
+=======
+      toast.error(
+        'Something went wrong while updating status'
+      )
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
+
+    }
+
+  }
+
+
+
+  // ============================
+  // ACTIVATE / DEACTIVATE SUPERINTENDENT
+  // ============================
+  const handleStatusChange = async (superintendent) => {
+
+    try {
+
+      const accessToken = localStorage.getItem(
+        'access_token'
+      )
+
+      // Current status
+      const newStatus = !superintendent.is_active
+
+      const response = await fetch(
+        `/api/government/superintendents/${superintendent.id}/status/`,
+        {
+          method: 'PATCH',
+
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+
+          body: JSON.stringify({
+            is_active: newStatus,
+          }),
+        }
+      )
+
+      const data = await response.json()
+
+      console.log('Status Update:', data)
+
+      if (!response.ok) {
+
+        toast.error(
+          data.detail || 'Unable to update superintendent status'
+        )
+
+        return
+      }
+
+
+      // Update the UI immediately
+      setSuperintendents((previous) =>
+        previous.map((item) =>
+          item.id === superintendent.id
+            ? {
+              ...item,
+              is_active: newStatus,
+            }
+            : item
+        )
+      )
+
+
+      toast.success(
+        newStatus
+          ? 'Superintendent activated successfully'
+          : 'Superintendent deactivated successfully'
+      )
 
     } catch (error) {
 
@@ -428,6 +684,7 @@ export default function SuperintendentPage() {
     }
 
   }
+
 
 
   return (
@@ -554,6 +811,10 @@ export default function SuperintendentPage() {
                   value={formData.employeeId}
                   onChange={handleChange}
                   placeholder="SUP001"
+<<<<<<< HEAD
+                  autoComplete="employeeId"
+=======
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
                   maxLength={6}
                   required
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm uppercase outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-100"
@@ -614,14 +875,22 @@ export default function SuperintendentPage() {
                 <button
                   type="submit"
                   disabled={submitting}
+<<<<<<< HEAD
+                  className="w-full rounded-lg bg-green-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+=======
                   className="w-full md:w-auto rounded-lg bg-green-600 px-8 py-3 text-sm font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
                 >
 
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
                   {submitting
                     ? 'Adding...'
                     : 'Add Superintendent'
                   }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
                 </button>
 
               </div>
@@ -666,10 +935,89 @@ export default function SuperintendentPage() {
           {/* Superintendent Cards */}
           {!loading && superintendents.length > 0 && (
 
+<<<<<<< HEAD
+            {/* Loading */}
+            {loading && (
+
+              <div className="rounded-2xl border border-gray-200 bg-white p-12 text-center">
+
+                <p className="text-sm text-gray-500">
+                  Loading superintendents...
+                </p>
+
+              </div>
+
+            )}
+
+
+            {/* Cards */}
+            {!loading && superintendents.length > 0 && (
+=======
             <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
-              {superintendents.map((superintendent) => (
+              <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
 
+<<<<<<< HEAD
+                {superintendents.map((superintendent) => (
+
+                  <div
+                    key={superintendent.id}
+                    className="rounded-2xl border border-gray-200 bg-white p-6"
+                  >
+
+                    {/* Top */}
+                    <div className="flex items-start justify-between">
+
+                      <div className="flex items-center gap-4">
+
+                        {/* Avatar */}
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-lg font-semibold text-green-700">
+
+                          {(
+                            superintendent.full_name ||
+                            superintendent.username ||
+                            'S'
+                          )
+                            .charAt(0)
+                            .toUpperCase()
+                          }
+
+                        </div>
+
+
+                        <div>
+
+                          <h3 className="text-lg font-semibold text-gray-800">
+
+                            {superintendent.full_name ||
+                              superintendent.username
+                            }
+
+                          </h3>
+
+                          <p className="text-sm text-gray-400">
+                            @{superintendent.username}
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                      {/* Activate / Deactivate */}
+                      <button
+                        onClick={() => handleStatusChange(superintendent)}
+                        className={`rounded-lg px-3 py-2 text-sm font-medium transition ${superintendent.is_active
+                          ? 'text-red-600 hover:bg-red-50'
+                          : 'text-green-600 hover:bg-green-50'
+                          }`}
+                      >
+                        {superintendent.is_active
+                          ? 'Deactivate'
+                          : 'Activate'
+                        }
+                      </button>
+=======
                 <div
                   key={superintendent.id}
                   className="rounded-2xl border border-gray-200 bg-white p-5 md:p-6"
@@ -716,10 +1064,17 @@ export default function SuperintendentPage() {
 
                       </div>
 
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
                     </div>
 
 
+<<<<<<< HEAD
+                    {/* Details */}
+                    <div className="mt-6 space-y-3 border-t border-gray-100 pt-5">
+
+                      <div className="flex justify-between gap-4">
+=======
                     {/* Activate / Deactivate */}
                     <button
                       onClick={() =>
@@ -740,8 +1095,40 @@ export default function SuperintendentPage() {
 
 
                   </div>
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
+                        <span className="text-sm text-gray-400">
+                          Status
+                        </span>
 
+<<<<<<< HEAD
+                        <span
+                          className={`text-sm font-medium ${superintendent.is_active
+                              ? 'text-green-600'
+                              : 'text-red-500'
+                            }`}
+                        >
+                          {superintendent.is_active
+                            ? 'Active'
+                            : 'Deactivated'
+                          }
+                        </span>
+
+                      </div>
+                      
+                      <div className="flex justify-between gap-4">
+
+                        <span className="text-sm text-gray-400">
+                          Email
+                        </span>
+
+                        <span className="text-sm text-gray-700">
+                          {superintendent.email}
+                        </span>
+
+                      </div>
+
+=======
                   {/* Details */}
                   <div className="mt-6 space-y-4 border-t border-gray-100 pt-5">
 
@@ -794,27 +1181,44 @@ export default function SuperintendentPage() {
                       <span className="max-w-[60%] truncate text-xs text-gray-700 md:text-sm">
                         {superintendent.email}
                       </span>
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
                     </div>
 
 
                   </div>
 
+<<<<<<< HEAD
+                ))}
+=======
 
                 </div>
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
-              ))}
+              </div>
 
-            </div>
+            )}
 
           )}
 
+<<<<<<< HEAD
+            {/* Empty State */}
+            {!loading && superintendents.length === 0 && (
+
+              <div className="rounded-2xl border border-gray-200 bg-white p-12 text-center">
+=======
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
           {/* Empty State */}
           {!loading && superintendents.length === 0 && (
 
             <div className="rounded-2xl border border-gray-200 bg-white p-12 text-center">
 
+<<<<<<< HEAD
+              </div>
+
+            )}
+=======
               <h3 className="text-lg font-semibold text-gray-700">
                 No superintendents found
               </h3>
@@ -826,6 +1230,7 @@ export default function SuperintendentPage() {
             </div>
 
           )}
+>>>>>>> 2464a02207ecafa817113b83de98b093799e7eab
 
 
         </main>

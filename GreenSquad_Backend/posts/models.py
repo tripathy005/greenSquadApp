@@ -52,6 +52,7 @@ class Post(models.Model):
     blank=True
     )
 
+   
 
     waste_volume = models.CharField(
     max_length=10,
@@ -65,6 +66,7 @@ class Post(models.Model):
     )
 
     is_duplicate = models.BooleanField(default=False)
+
 
     ACTION_CHOICES = (
     ("self_resolve", "Self Resolve"),
