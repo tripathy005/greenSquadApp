@@ -112,7 +112,7 @@ export default function LAside() {
                         />
 
                         <p className='text-lg text-[#249138] font-extrabold tracking-[2px]'>
-                            {authUser?.total_credit_points ?? 0}
+                            {authUser?.creditpoints ?? 0}
                         </p>
 
                         <p className='text-sm text-[#249138] font-extrabold ml-1'>

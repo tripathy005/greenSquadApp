@@ -39,6 +39,37 @@ class Post(models.Model):
 
     ai_verified = models.BooleanField(default=False)
 
+    waste_type = models.CharField(
+    max_length=100,
+    null=True,
+    blank=True
+    )
+
+    ai_confidence = models.DecimalField(
+    max_digits=5,
+    decimal_places=2,
+    null=True,
+    blank=True
+    )
+
+    volume_percent = models.DecimalField(
+    max_digits=5,
+    decimal_places=2,
+    null=True,
+    blank=True
+    )
+
+    waste_volume = models.CharField(
+    max_length=10,
+    choices=(
+        ("small", "Small"),
+        ("medium", "Medium"),
+        ("large", "Large"),
+    ),
+    null=True,
+    blank=True
+    )
+
     is_duplicate = models.BooleanField(default=False)
 
     ACTION_CHOICES = (
@@ -52,6 +83,7 @@ class Post(models.Model):
     null=True,
     blank=True
     )
+
 
     is_resolved = models.BooleanField(default=False)
 

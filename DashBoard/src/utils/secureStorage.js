@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js'
 
-const SECRET_KEY = import.meta.env.VITE_STORAGE_SECRET_KEY
+const SECRET_KEY = 'GreenSquad_User_Data_2026'
 
 
 export const encryptData = (data) => {

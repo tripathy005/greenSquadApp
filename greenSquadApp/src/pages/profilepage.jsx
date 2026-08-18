@@ -15,8 +15,6 @@ const ProfilePage = () => {
     //for logout
     const {authUser, setAuthUser} = useAuth()
 
-    // console.log('Auth User:', authUser)
-
     const profilePhoto = authUser?.profile_photo
         ? authUser.profile_photo
         : profileimg
@@ -264,7 +262,7 @@ const ProfilePage = () => {
                                         />
 
                                         <p className='text-lg font-extrabold tracking-[2px] text-[#249138] md:text-2xl'>
-                                            {authUser?.total_credit_points ?? 0}
+                                            {authUser?.creditpoints || '000'}
                                         </p>
 
                                         <p className='ml-1 font-extrabold text-[#249138]'>

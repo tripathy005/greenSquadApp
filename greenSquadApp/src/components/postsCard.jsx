@@ -1,4 +1,61 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState } from 'react'
+// import post from '../assets/post/post3.png'
+
+// import dp from '../assets/dp/Kunal Verma.png'
+// import likeIcon from '../assets/icon/like.png'
+// import dislikeIcon from '../assets/icon/dislike.png'
+
+// export default function Posts() {
+
+//   //for like icon
+//   const [isLiked, setIsLiked] = useState(false);
+
+//   const handleToggleLike = () => {
+//     setIsLiked(!isLiked);
+//   };
+
+//   return (
+//     <>
+//         <div className='w-full h-auto flex flex-col lg:flex-row gap-4 bg-white rounded-[15px] md:rounded-[30px] shadow-md p-2 md:p-4 mt-2 md:mt-4'>
+//           <div style={{ backgroundImage: `url(${post})` }} className='h-70 md:h-106.75 w-full lg:w-123 rounded-[15px] md:rounded-[30px] bg-cover min-h-55'>
+//           </div>
+
+//           <div className='flex flex-1 flex-col justify-between md:my-3'>
+//             <div className='flex items-center justify-between'>
+//               <div className='flex items-center  ml-2'>
+//                 <div style={{ backgroundImage: `url(${dp})` }} className='h-12 w-12 md:h-18 md:w-18  bg-cover rounded-full'></div>
+//                 <div className='ml-1 md:ml-3 mb-1 flex flex-col items-start justify-center'>
+//                   <p className='font-bold text-[13px] md:text-[18px]'>Kunal Verma</p>
+//                   <p className='text-[#249138] text-[9px] md:text-[14px]'>{"Energy Champs"}</p>
+//                 </div>
+//               </div>
+//               <div className='mr-4 flex  gap-2 items-end xl:hidden '>
+//                 <p className='font-bold text-6 md:text-lg leading-none'>400K</p>
+//                 <button onClick={handleToggleLike} className='h-6 w-6 md:h-7 md:w-7'>
+//                   <img src={isLiked ? dislikeIcon : likeIcon} alt="like toggle" />
+//                 </button>
+//               </div>
+//             </div>
+
+//             <div className='my-2 w-full lg:w-70 xl:h-65 py-1 px-2 md:p-3 text-[10px] md:text-[12px] md:leading-5 tracking-wide lg:bg-[#D9D9D944] rounded-[15px] md:overflow-auto'>
+//               <p className=' line-clamp-1 xl:line-clamp-none'>Here’s another post, with a different purpose (energy saving), keeping it clean and social-app ready: Turned off unused lights and unplugged devices today 💡Saving energy is an easy habit that really adds up. Small steps, big impact for the planet 🌍</p>
+//               <p className='text-[#249138] md:mt-2'>#GreenSquad #SaveEnergy #EcoHabits</p>
+//             </div>
+
+//             <div className='ml-3 xl:flex items-end gap-2 hidden'>
+//               <button onClick={handleToggleLike} className='h-7 w-7'>
+//                 <img src={isLiked ? dislikeIcon : likeIcon} alt="like toggle" />
+//               </button>
+//               <p className='font-bold'>400K</p>
+//             </div>
+//           </div>
+//         </div>
+//     </>
+//   )
+// }
+
+
+import React, { useState } from "react";
 
 import dp from "../assets/dp/image.png";
 import LikeIcon from "../assets/icon/like.png";
@@ -8,20 +65,14 @@ import DiamondIcon from "../assets/icon/Diamond.png";
 export default function Posts({ post }) {
 
   // Like
-  const [isLiked, setIsLiked] = useState(post.is_liked ?? false);
-  const [likeCount, setLikeCount] = useState(post.like_count ?? 0);
-  const [isLikeLoading, setIsLikeLoading] = useState(false);
+  const [isLiked, setIsLiked] = useState(post.is_liked || false);
 
+  const [likeCount, setLikeCount] = useState(post.like_count || 0);
 
+  // Current image
+  const [currentImage, setCurrentImage] = useState(0);
 
-  useEffect(() => {
-
-    setIsLiked(post.is_liked ?? false);
-
-    setLikeCount(post.like_count ?? 0);
-
-  }, [post.id]);
-
+  const images = post.media || [];
 
   const handleToggleLike = async () => {
 
@@ -30,21 +81,9 @@ export default function Posts({ post }) {
     const token = localStorage.getItem("access_token");
 
     if (!token) {
-      console.error("User is not authenticated.");
+      toast.error("Please login first.");
       return;
     }
-
-    const previousLiked = isLiked;
-    const previousCount = likeCount;
-
-    // Immediately update UI
-    setIsLiked(!previousLiked);
-
-    setLikeCount((prev) =>
-      previousLiked
-        ? Math.max(0, prev - 1)
-        : prev + 1
-    );
 
     setIsLikeLoading(true);
 
@@ -54,46 +93,76 @@ export default function Posts({ post }) {
         `/api/posts/${post.id}/like/`,
         {
           method: "POST",
+
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
 
+
       const data = await response.json();
 
-      // console.log("Like API response:", data);
+      console.log("Like response:", data);
+
 
       if (!response.ok) {
-        throw new Error(
-          data.detail || "Failed to update like."
+
+        toast.error(
+          data.detail || "Unable to update like."
+        );
+
+        return;
+      }
+
+
+      /*
+        OPTION 1:
+        If your backend returns:
+
+        {
+          "liked": true,
+          "like_count": 6
+        }
+
+        this will work directly.
+      */
+
+      if (
+        typeof data.liked === "boolean" &&
+        typeof data.like_count === "number"
+      ) {
+
+        setIsLiked(data.liked);
+        setLikeCount(data.like_count);
+
+      } else {
+
+        /*
+          Fallback if backend does not return
+          liked and like_count
+        */
+
+        setIsLiked((prev) => !prev);
+
+        setLikeCount((prev) =>
+          isLiked ? Math.max(0, prev - 1) : prev + 1
         );
       }
 
-      // Synchronize with backend response
-      setIsLiked(data.liked);
-      setLikeCount(data.like_count);
 
     } catch (error) {
 
       console.error("Like error:", error);
 
-      // Restore old state
-      setIsLiked(previousLiked);
-      setLikeCount(previousCount);
+      toast.error("Unable to update like.");
 
     } finally {
 
       setIsLikeLoading(false);
 
     }
-
   };
-  
-  // Current image
-  const [currentImage, setCurrentImage] = useState(0);
-
-  const images = post.media || [];
 
 
   const nextImage = () => {
@@ -235,17 +304,16 @@ export default function Posts({ post }) {
             <div className="mr-4 flex items-end gap-2">
 
               <p className="text-6 font-bold leading-none md:text-[14px]">
-                {likeCount}
+                {post.like_count}
               </p>
 
               <button
                 onClick={handleToggleLike}
-                disabled={isLikeLoading}
-                className="h-5 w-5 md:h-6 md:w-6 "
+                className="h-5 w-5 md:h-6 md:w-6"
               >
                 <img
-                  src={isLiked ? LikeIcon : DislikeIcon}
-                  alt={isLiked ? "Unlike" : "Like"}
+                  src={isLiked ? DislikeIcon : LikeIcon}
+                  alt="like toggle"
                 />
               </button>
 
@@ -281,17 +349,16 @@ export default function Posts({ post }) {
 
             <button
               onClick={handleToggleLike}
-              disabled={isLikeLoading}
-              className="h-6 w-5 "
+              className="h-6 w-5"
             >
               <img
-                src={isLiked ? LikeIcon : DislikeIcon}
-                alt={isLiked ? "Unlike" : "Like"}
+                src={isLiked ? DislikeIcon : LikeIcon}
+                alt="like toggle"
               />
             </button>
 
             <p className="font-bold text-[14px] ">
-              {likeCount}
+              {post.like_count}
             </p>
 
           </div>
