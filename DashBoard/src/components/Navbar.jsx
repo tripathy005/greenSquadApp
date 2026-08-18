@@ -14,7 +14,7 @@ export default function Navbar() {
 
     // Decrypt user data safely
     const user = decryptData(encryptedUser)
-    console.log(user)
+    // console.log(user)
 
     // Get role safely
     const role = user?.role || ''
@@ -31,13 +31,13 @@ export default function Navbar() {
 
 
     return (
-        <nav className='h-23 md:h-20 w-full px-3 md:px-10 lg:px-15 xl:px-25 py-3 flex md:items-center text-[#E2F6E8] sticky top-0 left-0 z-30 bg-[linear-gradient(to_top,#249138_0%,#1D782E_25%,#186226_50%,#134F1E_75%,#0F3D17_100%)]'>
+        <nav className='h-23 md:h-20 w-full px-3 md:px-10 lg:px-15 xl:px-25 py-3 flex justify-between items-center  text-[#E2F6E8] sticky top-0 left-0 z-30 bg-[linear-gradient(to_top,#249138_0%,#1D782E_25%,#186226_50%,#134F1E_75%,#0F3D17_100%)]'>
 
             {/* Logo */}
             <img
                 src={Logo}
                 alt="Green Squad"
-                className='w-16 h-15.25 mr-auto md:mr-3'
+                className='w-17 h-16 drop-shadow-2xl'
             />
 
 
@@ -76,7 +76,7 @@ export default function Navbar() {
                 <img
                     src={profileImage}
                     alt={role || 'Profile'}
-                    className="h-11 w-11 rounded-full border-2 border-green-100 object-cover"
+                    className="h-12 w-12 rounded-[10px] md:rounded-2xl border-3 border-[#538e3c] object-cover"
                 />
 
             </div>

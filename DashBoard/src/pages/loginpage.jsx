@@ -3,7 +3,8 @@ import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthProvider.jsx";
 import { encryptData } from '../utils/secureStorage'
-import logo from "../assets/logo/Dlogo.png";
+import logo2 from "../assets/logo/Dlogo2.png";
+import logo3 from "../assets/logo/Dlogo3.png";
 import { toast } from "react-hot-toast";
 
 
@@ -163,9 +164,17 @@ const LoginPage = () => {
                     <div className="lg:w-1/2 flex items-center justify-center px-2 pb-7 pt-15 lg:p-10">
 
                         <img
-                            src={logo}
-                            alt="Green Squad"
-                            className=" w-72 md:w-120"
+                            src={logo3}
+                            alt='Green Squad'
+                            className='block lg:hidden w-72 md:w-120'
+                        />
+
+                        {/* Tablet & Desktop Logo */}
+
+                        <img
+                            src={logo2}
+                            alt='Green Squad'
+                            className='hidden lg:block w-72'
                         />
 
 

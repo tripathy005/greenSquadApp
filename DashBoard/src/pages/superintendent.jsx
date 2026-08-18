@@ -32,7 +32,7 @@ export default function SuperintendentPage() {
 
       const accessToken = localStorage.getItem('access_token')
 
-      console.log('Access Token:', accessToken)
+      // console.log('Access Token:', accessToken)
 
       const response = await fetch(
         '/api/government/superintendents/',
@@ -599,10 +599,10 @@ export default function SuperintendentPage() {
                     {/* Top */}
                     <div className="flex items-start justify-between">
 
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2 md:gap-4">
 
                         {/* Avatar */}
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-lg font-semibold text-green-700">
+                        <div className="leading-4 p-4 md:p-5 rounded-full bg-green-100 text-lg font-semibold text-green-700">
 
                           {(
                             superintendent.full_name ||
@@ -618,7 +618,7 @@ export default function SuperintendentPage() {
 
                         <div>
 
-                          <h3 className="text-lg font-semibold text-gray-800">
+                          <h3 className="text-sm md:text-lg truncate w-20 md:w-40 font-semibold text-gray-800">
 
                             {superintendent.full_name ||
                               superintendent.username
@@ -626,7 +626,7 @@ export default function SuperintendentPage() {
 
                           </h3>
 
-                          <p className="text-sm text-gray-400">
+                          <p className="text-xs md:text-sm text-gray-400">
                             @{superintendent.username}
                           </p>
 
@@ -637,7 +637,7 @@ export default function SuperintendentPage() {
                       {/* Activate / Deactivate */}
                       <button
                         onClick={() => handleStatusChange(superintendent)}
-                        className={`rounded-lg px-3 py-2 text-sm font-medium transition ${superintendent.is_active
+                        className={`rounded-lg px-3 py-2 text-xs md:text-sm font-medium transition ${superintendent.is_active
                           ? 'text-red-600 hover:bg-red-50'
                           : 'text-green-600 hover:bg-green-50'
                           }`}
@@ -656,12 +656,12 @@ export default function SuperintendentPage() {
 
                       <div className="flex justify-between gap-4">
 
-                        <span className="text-sm text-gray-400">
+                        <span className="text-xs md:text-sm text-gray-400">
                           Status
                         </span>
 
                         <span
-                          className={`text-sm font-medium ${superintendent.is_active
+                          className={`text-xs md:text-sm font-medium ${superintendent.is_active
                               ? 'text-green-600'
                               : 'text-red-500'
                             }`}
@@ -676,11 +676,22 @@ export default function SuperintendentPage() {
                       
                       <div className="flex justify-between gap-4">
 
-                        <span className="text-sm text-gray-400">
+                        <span className="text-xs md:text-sm text-gray-400">
+                          Employee Id
+                        </span>
+
+                        <span className="text-xs md:text-sm text-gray-700">
+                          {superintendent.employee_id}
+                        </span>
+
+                      </div>
+                      <div className="flex justify-between gap-4">
+
+                        <span className="text-xs md:text-sm text-gray-400">
                           Email
                         </span>
 
-                        <span className="text-sm text-gray-700">
+                        <span className="text-xs md:text-sm text-gray-700 truncate w-30">
                           {superintendent.email}
                         </span>
 

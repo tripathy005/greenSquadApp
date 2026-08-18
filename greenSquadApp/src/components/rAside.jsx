@@ -46,11 +46,7 @@ export default function RAside() {
             members: '2156 Members',
             image: squad3,
         },
-        {
-            name: 'Urban Greens',
-            members: '2156 Members',
-            image: squad3,
-        },
+      
     ]
 
     return (
