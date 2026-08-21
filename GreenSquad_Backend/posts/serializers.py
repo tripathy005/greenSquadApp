@@ -1,4 +1,3 @@
-
 from rest_framework import serializers
 from areas.utils import find_matching_area
 from government.utils import find_duplicate_post
@@ -100,7 +99,6 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-
         fields = [
             "id",
             "user",
@@ -117,7 +115,6 @@ class PostSerializer(serializers.ModelSerializer):
             "posted_at",
             "ai_verified",
             "waste_type",
-            "ai_confidence",
             "waste_volume",
             "is_duplicate",
             "is_resolved",
@@ -130,7 +127,6 @@ class PostSerializer(serializers.ModelSerializer):
             "posted_at",
             "ai_verified",
             "waste_type",
-            "ai_confidence",
             "waste_volume",
             "is_duplicate",
             "is_resolved",
@@ -150,10 +146,6 @@ class PostSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
 
-        # --------------------------------
-        # 1. Get uploaded image
-        # --------------------------------
-
         image = validated_data.pop("image")
 
         validated_data.pop(
@@ -161,15 +153,7 @@ class PostSerializer(serializers.ModelSerializer):
             None
         )
 
-        # --------------------------------
-        # 2. Get logged-in user
-        # --------------------------------
-
         user = self.context["request"].user
-
-        # --------------------------------
-        # 3. Find area from coordinates
-        # --------------------------------
 
         latitude = validated_data.get("latitude")
         longitude = validated_data.get("longitude")
@@ -179,19 +163,11 @@ class PostSerializer(serializers.ModelSerializer):
             longitude
         )
 
-        # --------------------------------
-        # 4. Create Post
-        # --------------------------------
-
         post = Post.objects.create(
             user=user,
             area=area,
             **validated_data
         )
-
-        # --------------------------------
-        # 5. Save original image
-        # --------------------------------
 
         post_media = PostMedia.objects.create(
             post=post,
@@ -201,61 +177,27 @@ class PostSerializer(serializers.ModelSerializer):
 
         image_url = post_media.image.url
 
-        print(
-            "\n========== CLOUDINARY URL =========="
-        )
-        print(image_url)
-        print(
-            "====================================\n"
-        )
-
-        # --------------------------------
-        # 6. AI / Roboflow Analysis
-        # --------------------------------
-
         try:
 
             ai_result = analyze_waste(
                 image_url
             )
 
-            print(
-                "\n========== AI RESULT =========="
-            )
-            print(ai_result)
-            print(
-                "================================\n"
-            )
-
-            # Waste volume
             post.waste_volume = ai_result.get(
                 "waste_volume"
             )
 
-            # Waste type
             post.waste_type = ai_result.get(
                 "waste_type"
             )
 
-            # AI confidence
-            post.ai_confidence = ai_result.get(
-                "confidence_percent"
+            post.ai_confidence = None
+
+            post.credit_points = ai_result.get(
+                "score"
             )
 
-            # Credit points
-            if post.ai_confidence is not None:
-
-                post.credit_points = round(
-                    post.ai_confidence / 10,
-                    1
-                )
-
-            # AI verification
             post.ai_verified = True
-
-            # --------------------------------
-            # 7. Save AI data
-            # --------------------------------
 
             post.save(
                 update_fields=[
@@ -272,10 +214,6 @@ class PostSerializer(serializers.ModelSerializer):
             print(
                 f"Roboflow AI analysis failed: {e}"
             )
-
-        # --------------------------------
-        # 8. Check duplicate post
-        # --------------------------------
 
         duplicate_post = find_duplicate_post(
             post,
@@ -296,10 +234,6 @@ class PostSerializer(serializers.ModelSerializer):
                 post=post,
                 duplicate_of=duplicate_post
             )
-
-        # --------------------------------
-        # 9. Return post
-        # --------------------------------
 
         return post
 
@@ -328,7 +262,6 @@ class SuperintendentPostSerializer(
 
     class Meta:
         model = Post
-
         fields = [
             "id",
             "user",
@@ -343,7 +276,6 @@ class SuperintendentPostSerializer(
             "is_resolved",
             "credit_points",
             "waste_type",
-            "ai_confidence",
             "waste_volume",
             "like_count",
         ]
@@ -355,7 +287,6 @@ class CleanupImageSerializer(
 
     class Meta:
         model = PostMedia
-
         fields = [
             "image"
         ]

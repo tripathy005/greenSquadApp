@@ -2,13 +2,13 @@ import React from 'react'
 import { IoPersonAdd } from 'react-icons/io5'
 import { FaUserPlus } from 'react-icons/fa'
 
-import user1 from '../assets/dp/Kunal Verma.png'
-import user2 from '../assets/dp/Kunal Verma.png'
-import user3 from '../assets/dp/Kunal Verma.png'
+import user1 from '../assets/dp/image.png'
+import user2 from '../assets/dp/image.png'
+import user3 from '../assets/dp/image.png'
 
-import squad1 from '../assets/groupdp/greenCore.png'
-import squad2 from '../assets/groupdp/greenCore.png'
-import squad3 from '../assets/groupdp/greenCore.png'
+import squad1 from '../assets/squad/carbonCutters.png'
+import squad2 from '../assets/squad/greenCore.png'
+import squad3 from '../assets/squad/energyChamps.png'
 
 export default function RAside() {
 

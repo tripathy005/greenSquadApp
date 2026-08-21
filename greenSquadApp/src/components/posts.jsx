@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PostCard from '../components/postsCard.jsx'
+import { toast } from 'react-hot-toast'
 import { RxCrossCircled } from "react-icons/rx";
 
 
@@ -29,6 +30,7 @@ const Posts = () => {
                 // console.log('Posts:', data)
 
                 if (!response.ok) {
+                    toast.error('Failed to fetch posts:', data)
                     console.error('Failed to fetch posts:', data)
                     return
                 }
@@ -37,6 +39,7 @@ const Posts = () => {
 
             } catch (error) {
 
+                toast.error('Posts fetch error:', error)
                 console.error('Posts fetch error:', error)
 
             } finally {

@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar.jsx'
 import PostCard from '../components/postsCard.jsx'
-import squadDP from '../assets/groupdp/greenCore.png'
+import squadDP from '../assets/squad/greenCore.png'
 import Diamond from '../assets/icon/Diamond.png'
-import dp from '../assets/dp/Kunal Verma.png'
+import dp from '../assets/dp/image.png'
 import { MdEditSquare } from "react-icons/md"
 import { IoMdClose } from "react-icons/io"
 
-const members = Array(16).fill({
-    name: "Kunal Verma",
+const members = Array(42).fill({
+    name: "Name",
     credit: 1123
 })
 
 const squadData = {
     id: 1,
     name: "Urban Greens",
-    members: 999,
+    members: 42,
     credit: 1234,
     image: squadDP,
     description: "Urban Greens is a squad dedicated to making city life cleaner and more sustainable 🌱🏙️. From planting trees and saving energy to keeping our streets and parks clean, we believe small actions create big change 🌍. We take on eco challenges together, track our progress, and support each other every day 🤝. Our goal is simple, build a greener, healthier community for everyone 💚✨"
@@ -152,7 +152,7 @@ function SquadPage() {
 
                 <div className='w-full flex flex-col lg:flex-row justify-between'>
 
-                    {/* ================= TOP LEFT SECTION ================= */}
+                    {/* TOP LEFT SECTION */}
 
                     <div className='w-full lg:w-[65vw] lg:h-[77vh] p-5 md:p-10 lg:py-5 rounded-[15px] md:rounded-[30px] bg-white'>
 
@@ -230,12 +230,12 @@ function SquadPage() {
                     </div>
 
 
-                    {/* ================= TOP RIGHT SECTION ================= */}
+                    {/* TOP RIGHT SECTION */}
 
                     <div className='bg-white rounded-[30px] overflow-hidden w-full h-100 md:h-120 lg:h-[77vh] lg:w-[32vw] mt-2 md:mt-4 lg:mt-0'>
 
                         <h2 className='bg-[#538e3c] md:text-[25px] lg:text-[18px] text-white font-extrabold text-center p-3 md:p-4 lg:p-3 rounded-tl-[15px] rounded-tr-[15px] md:rounded-tl-[30px] md:rounded-tr-[30px]'>
-                            Crew Members
+                            @username
                         </h2>
 
                         <div className='p-4 space-y-5 h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:my-5 [&::-webkit-scrollbar-track]:bg-[#D9D9D9] [&::-webkit-scrollbar-thumb]:bg-[#249138]/60 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full'>
@@ -291,7 +291,7 @@ function SquadPage() {
                 </div>
 
 
-                {/* ================= POSTS ================= */}
+                {/* POSTS */}
 
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-0'>
 
@@ -323,7 +323,7 @@ function SquadPage() {
                 </div>
 
 
-                {/* ================= EDIT MODAL ================= */}
+                {/* EDIT MODAL */}
 
                 {showEditModal && (
                     <div className='fixed inset-0 z-9999 flex items-center justify-center bg-black/50 p-4 '>

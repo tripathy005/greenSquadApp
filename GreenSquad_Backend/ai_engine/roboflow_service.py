@@ -8,16 +8,8 @@ from dotenv import load_dotenv
 from inference_sdk import InferenceHTTPClient
 
 
-# ============================================================
-# Load environment variables
-# ============================================================
-
 load_dotenv()
 
-
-# ============================================================
-# Roboflow client
-# ============================================================
 
 client = InferenceHTTPClient(
     api_url=os.getenv("ROBOFLOW_API_URL"),
@@ -27,10 +19,6 @@ client = InferenceHTTPClient(
 WORKSPACE_NAME = os.getenv("ROBOFLOW_WORKSPACE")
 WORKFLOW_ID = os.getenv("ROBOFLOW_WORKFLOW")
 
-
-# ============================================================
-# Run Roboflow classification
-# ============================================================
 
 def run_roboflow(image_url):
 
@@ -43,42 +31,19 @@ def run_roboflow(image_url):
         use_cache=True,
     )
 
-    print("\n========== ROBOFLOW RAW RESULT ==========")
-    print(result)
-    print("=========================================\n")
-
     return result
 
 
-# ============================================================
-# Calculate visible waste coverage using OpenCV
-# ============================================================
-
 def calculate_waste_volume(image_source):
-    """
-    Calculates apparent waste coverage from the image.
-
-    Returns:
-        small
-        medium
-        large
-        None
-    """
-
-    # --------------------------------------------------------
-    # Read image
-    # --------------------------------------------------------
 
     image = None
 
-    # Case 1: Local image path
     if os.path.isfile(str(image_source)):
 
         image = cv2.imread(
             str(image_source)
         )
 
-    # Case 2: URL
     else:
 
         try:
@@ -108,10 +73,6 @@ def calculate_waste_volume(image_source):
 
             return None
 
-    # --------------------------------------------------------
-    # Check image
-    # --------------------------------------------------------
-
     if image is None:
 
         print(
@@ -120,33 +81,17 @@ def calculate_waste_volume(image_source):
 
         return None
 
-    # --------------------------------------------------------
-    # Resize
-    # --------------------------------------------------------
-
     image = cv2.resize(
         image,
         (800, 600)
     )
-
-    # --------------------------------------------------------
-    # Convert BGR → HSV
-    # --------------------------------------------------------
 
     hsv = cv2.cvtColor(
         image,
         cv2.COLOR_BGR2HSV
     )
 
-    # --------------------------------------------------------
-    # Extract saturation
-    # --------------------------------------------------------
-
     saturation = hsv[:, :, 1]
-
-    # --------------------------------------------------------
-    # Threshold
-    # --------------------------------------------------------
 
     _, mask = cv2.threshold(
         saturation,
@@ -154,10 +99,6 @@ def calculate_waste_volume(image_source):
         255,
         cv2.THRESH_BINARY
     )
-
-    # --------------------------------------------------------
-    # Remove small noise
-    # --------------------------------------------------------
 
     kernel = cv2.getStructuringElement(
         cv2.MORPH_ELLIPSE,
@@ -176,10 +117,6 @@ def calculate_waste_volume(image_source):
         kernel
     )
 
-    # --------------------------------------------------------
-    # Calculate coverage
-    # --------------------------------------------------------
-
     waste_pixels = cv2.countNonZero(
         mask
     )
@@ -194,20 +131,6 @@ def calculate_waste_volume(image_source):
         total_pixels
     )
 
-    coverage_percent = (
-        coverage_ratio * 100
-    )
-
-    print(
-        "Waste coverage:",
-        round(coverage_percent, 2),
-        "%"
-    )
-
-    # --------------------------------------------------------
-    # Convert coverage to volume category
-    # --------------------------------------------------------
-
     if coverage_ratio <= 0.33:
 
         waste_volume = "small"
@@ -220,17 +143,8 @@ def calculate_waste_volume(image_source):
 
         waste_volume = "large"
 
-    print(
-        "Waste volume:",
-        waste_volume
-    )
-
     return waste_volume
 
-
-# ============================================================
-# Extract Roboflow prediction
-# ============================================================
 
 def extract_prediction(result):
 
@@ -238,24 +152,12 @@ def extract_prediction(result):
 
     predictions = prediction_data["predictions"]
 
-    # --------------------------------------------------------
-    # Get highest-confidence prediction
-    # --------------------------------------------------------
-
     top_prediction = max(
         predictions,
         key=lambda x: x["confidence"]
     )
 
-    # --------------------------------------------------------
-    # Waste type
-    # --------------------------------------------------------
-
     waste_type = top_prediction["class"]
-
-    # --------------------------------------------------------
-    # Score out of 10
-    # --------------------------------------------------------
 
     confidence = top_prediction["confidence"]
 
@@ -270,15 +172,7 @@ def extract_prediction(result):
     }
 
 
-# ============================================================
-# Main AI analysis
-# ============================================================
-
 def analyze_waste(image_source):
-
-    # --------------------------------------------------------
-    # Step 1: Roboflow classification
-    # --------------------------------------------------------
 
     result = run_roboflow(
         image_source
@@ -288,26 +182,12 @@ def analyze_waste(image_source):
         result
     )
 
-    # --------------------------------------------------------
-    # Step 2: OpenCV volume estimation
-    # --------------------------------------------------------
-
     waste_volume = calculate_waste_volume(
         image_source
     )
 
-    # --------------------------------------------------------
-    # Step 3: Final GreenSquad result
-    # --------------------------------------------------------
-
-    final_result = {
+    return {
         "waste_type": prediction["waste_type"],
         "score": prediction["score"],
         "waste_volume": waste_volume,
     }
-
-    print("\n========== GREEN SQUAD RESULT ==========")
-    print(final_result)
-    print("=========================================\n")
-
-    return final_result

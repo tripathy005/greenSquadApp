@@ -1,43 +1,11 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar.jsx'
 import Sidebar from '../components/Sidebar.jsx'
+import squads from '../assets/squads.json'
 
 export default function SquadPage() {
 
-    const [squads, setSquads] = useState([
-        {
-            id: 1,
-            image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac',
-            name: 'Green Warriors',
-            members: 12,
-            creditPoints: 850,
-            description: 'A dedicated squad working together to keep public areas clean and promote proper waste management.',
-        },
-        {
-            id: 2,
-            image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18',
-            name: 'Eco Champs',
-            members: 8,
-            creditPoints: 620,
-            description: 'A team focused on identifying waste issues and helping maintain a cleaner environment.',
-        },
-        {
-            id: 3,
-            image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998',
-            name: 'Clean City Squad',
-            members: 15,
-            creditPoints: 1040,
-            description: 'A community squad actively working on waste collection, cleanliness and environmental awareness.',
-        },
-        {
-            id: 4,
-            image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72',
-            name: 'Eco Force',
-            members: 10,
-            creditPoints: 735,
-            description: 'A team committed to resolving reported waste problems and encouraging responsible waste disposal.',
-        },
-    ])
+    
 
 
     const handleDelete = (id) => {
@@ -104,7 +72,7 @@ export default function SquadPage() {
                     {/* Squad Cards */}
                     <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
 
-                        {squads.map((squad) => (
+                        {squads.squad.map((squad) => (
 
                             <div
                                 key={squad.id}
@@ -174,7 +142,7 @@ export default function SquadPage() {
                                         </p>
 
                                         <p className="mt-1 text-lg font-semibold text-green-600">
-                                            {squad.creditPoints}
+                                            {squad.credit_points}
                                         </p>
 
                                     </div>

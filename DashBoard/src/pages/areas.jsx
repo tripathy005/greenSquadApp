@@ -576,7 +576,7 @@ export default function AreasPage() {
                                     >
 
                                         <h3 className="font-semibold text-gray-800">
-                                            {area.name}
+                                            {area.id}. {area.name}
                                         </h3>
 
                                         <div className="mt-3 space-y-1 text-sm text-gray-500">

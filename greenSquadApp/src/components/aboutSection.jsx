@@ -13,22 +13,22 @@ const makers = [
         name: "Aditya Narayan",
         role: "Developer",
         email: "adityaexists2002@gmail.com",
-        github: "aditya-username",
-        linkedin: "aditya-username",
+        github: "https://github.com/AdityaV8",
+        linkedin: "https://www.linkedin.com/in/aditya-narayan-02anp/",
     },
     {
         name: "Satyaprakash",
         role: "Developer",
         email: "satyaprakashtripathy05@gmail.com",
-        github: "satyaprakash-username",
-        linkedin: "satyaprakash-username",
+        github: "https://github.com/tripathy005",
+        linkedin: "https://www.linkedin.com/in/tripathy05/",
     },
     {
         name: "Soumendu",
         role: "Developer",
         email: "soumendumohanty6@gmail.com",
-        github: "soumendu-username",
-        linkedin: "soumendu-username",
+        github: "https://github.com/soumendumohanty6-eng",
+        linkedin: "https://www.linkedin.com/in/soumendu-mohanty-2697b9344/",
     },
 ];
 
@@ -145,7 +145,7 @@ const AboutSection = () => {
                             <div className="mt-6 flex justify-center gap-4">
 
                                 <a
-                                    href="#"
+                                    href={maker.github}
                                     className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D9F2D3] text-[#249138] transition hover:bg-[#249138] hover:text-white"
                                     aria-label="GitHub"
                                 >
@@ -153,7 +153,7 @@ const AboutSection = () => {
                                 </a>
 
                                 <a
-                                    href="#"
+                                    href={maker.linkedin}
                                     className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D9F2D3] text-[#249138] transition hover:bg-[#249138] hover:text-white"
                                     aria-label="LinkedIn"
                                 >

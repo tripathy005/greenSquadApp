@@ -13,7 +13,7 @@ import Posts from '../components/userPosts.jsx'
 const ProfilePage = () => {
 
     //for logout
-    const {authUser, setAuthUser} = useAuth()
+    const { authUser, setAuthUser } = useAuth()
 
     // console.log('Auth User:', authUser)
 
@@ -21,6 +21,16 @@ const ProfilePage = () => {
         ? authUser.profile_photo
         : profileimg
 
+
+    const [showEditModal, setShowEditModal] = useState(false)
+
+    const [editName, setEditName] = useState('')
+    const [editEmail, setEditEmail] = useState('')
+    const [editImage, setEditImage] = useState(profileimg)
+
+    const [imageFile, setImageFile] = useState(null)
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleLogout = () => {
 
@@ -47,19 +57,6 @@ const ProfilePage = () => {
 
     }
 
-
-
-
-
-    const [showEditModal, setShowEditModal] = useState(false)
-
-    const [editName, setEditName] = useState('')
-    const [editEmail, setEditEmail] = useState('')
-    const [editImage, setEditImage] = useState(profileimg)
-
-    const [imageFile, setImageFile] = useState(null)
-
-    const [isLoading, setIsLoading] = useState(false)
 
     const handleImageChange = (e) => {
 
@@ -163,7 +160,7 @@ const ProfilePage = () => {
 
                 <div className='mx-auto w-full'>
 
-                    {/* ================= PROFILE SECTION ================= */}
+                    {/* PROFILE SECTION  */}
 
                     <section className='w-full rounded-[15px] bg-white p-4 md:p-7 lg:px-20 xl:px-36 shadow-md md:rounded-[30px]'>
 
@@ -307,7 +304,7 @@ const ProfilePage = () => {
                     </section>
 
 
-                    {/* ================= MY POSTS SECTION ================= */}
+                    {/* MY POSTS SECTION */}
 
                     <Posts />
 

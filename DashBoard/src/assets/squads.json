@@ -1,0 +1,70 @@
+{
+    "squad": [
+        {
+            "id": 1,
+            "image": "/src/assets/squad/carbonCutters.png",
+            "name": "Carbon Cutters",
+            "rank": 1,
+            "members": 42,
+            "credit_points": 1234,
+            "posts": 156,
+            "cleanups": 98,
+            "description": "A dedicated squad working together to keep public areas clean and promote proper waste management."
+        },
+        {
+            "id": 2,
+            "image": "/src/assets/squad/cleanEarthCrew.png",
+            "name": "Clean Earth Crew",
+            "rank": 2,
+            "members": 38,
+            "credit_points": 1125,
+            "posts": 143,
+            "cleanups": 91,
+            "description": "A team focused on identifying waste issues and helping maintain a cleaner environment."
+        },
+        {
+            "id": 3,
+            "image": "/src/assets/squad/ecoCrew.png",
+            "name": "Eco Crew",
+            "rank": 3,
+            "members": 35,
+            "credit_points": 1080,
+            "posts": 137,
+            "cleanups": 86,
+            "description": "A community squad actively working on waste collection, cleanliness and environmental awareness."
+        },
+        {
+            "id": 4,
+            "image": "/src/assets/squad/energyChamps.png",
+            "name": "Energy Champs",
+            "rank": 4,
+            "members": 31,
+            "credit_points": 9750,
+            "posts": 121,
+            "cleanups": 79,
+            "description": "A team committed to resolving reported waste problems and encouraging responsible waste disposal.'"
+        },
+        {
+            "id": 5,
+            "image": "/src/assets/squad/greenCore.png",
+            "name": "Green Core",
+            "rank": 5,
+            "members": 29,
+            "credit_points": 8900,
+            "posts": 114,
+            "cleanups": 71,
+            "description": "A team committed to resolving reported waste problems and encouraging responsible waste disposal."
+        },
+        {
+            "id": 6,
+            "image": "/src/assets/squad/urbanGreen.png",
+            "name": "Urban Green",
+            "rank": 6,
+            "members": 26,
+            "credit_points": 8200,
+            "posts": 103,
+            "cleanups": 65,
+            "description": "A team committed to resolving reported waste problems and encouraging responsible waste disposal."
+        }
+    ]
+}
