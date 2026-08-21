@@ -1,16 +1,49 @@
-# React + Vite
+🚀 Installation
+Prerequisites
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Make sure you have installed:
 
-Currently, two official plugins are available:
+Node.js
+npm
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Check installation:
 
-## React Compiler
+                    node -v
+                    npm -v
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. If node is not installed in your system:
+Download and install Node use the official Node installer
+https://nodejs.org/en/download
 
-## Expanding the ESLint configuration
+3. Navigate to the first frontend application
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+                    cd .\DashBoard\
+
+4. Install dependencies
+
+                    npm install 
+
+                    or
+
+                    npm i
+
+5. Create the environment file
+
+    Create a file named:  .env
+
+    Example:
+    VITE_API_BASE_URL=http://127.0.0.1:8000
+
+    Important .env Rule
+    For Vite applications, environment variables must start with:   VITE_
+
+    # for crypto-js SECRET_KEY:
+
+    VITE_STORAGE_SECRET_KEY=<YOUR SECRET_KEY >
+
+6. Start the application
+
+                        npm run dev
+
+                The application will run on the URL shown in your terminal, usually:
+                http://localhost:6999
