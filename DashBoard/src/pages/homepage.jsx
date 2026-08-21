@@ -14,19 +14,12 @@ export default function HomePage() {
   ] = useAuth()
 
 
-  // ============================
-  // ISSUES
-  // ============================
+  
   const [issues, setIssues] = useState([])
 
   const [loading, setLoading] = useState(true)
 
-  const [filter, setFilter] = useState('all')
-
-
-  // ============================
-  // CLEANUP MODAL
-  // ============================
+  
   const [selectedIssue, setSelectedIssue] = useState(null)
 
   const [cleanupImage, setCleanupImage] = useState(null)
@@ -34,9 +27,7 @@ export default function HomePage() {
   const [submitting, setSubmitting] = useState(false)
 
 
-  // ============================
-  // GET ALL ISSUES
-  // ============================
+  
   const fetchIssues = async () => {
 
     try {
@@ -49,7 +40,7 @@ export default function HomePage() {
       )
 
 
-      // Admin and Superintendent use different APIs
+      
       const apiUrl =
         userRole?.toLowerCase() === 'admin'
           ? '/api/government/admin/posts/'
@@ -71,7 +62,7 @@ export default function HomePage() {
       const data = await response.json()
 
 
-      // console.log('Issues:', data)
+      
 
 
       if (!response.ok) {
@@ -84,7 +75,7 @@ export default function HomePage() {
       }
 
 
-      // Supports normal array and paginated response
+      
       if (Array.isArray(data)) {
 
         setIssues(data)
@@ -120,9 +111,7 @@ export default function HomePage() {
   }
 
 
-  // ============================
-  // FETCH ON PAGE LOAD
-  // ============================
+  
   useEffect(() => {
 
     if (userRole) {
@@ -134,9 +123,7 @@ export default function HomePage() {
   }, [userRole])
 
 
-  // ============================
-  // OPEN CLEANUP MODAL
-  // ============================
+  
   const openCleanupModal = (issue) => {
 
     setSelectedIssue(issue)
@@ -146,9 +133,7 @@ export default function HomePage() {
   }
 
 
-  // ============================
-  // CLOSE CLEANUP MODAL
-  // ============================
+ 
   const closeCleanupModal = () => {
 
     if (submitting) {
@@ -162,9 +147,7 @@ export default function HomePage() {
   }
 
 
-  // ============================
-  // SUBMIT CLEANUP IMAGE
-  // ============================
+  
   const handleSolve = async () => {
 
     if (!selectedIssue) {
@@ -193,7 +176,7 @@ export default function HomePage() {
       )
 
 
-      // Create multipart form data
+      
       const formData = new FormData()
 
 
@@ -244,13 +227,12 @@ export default function HomePage() {
       )
 
 
-      // Close modal
       setSelectedIssue(null)
 
       setCleanupImage(null)
 
 
-      // Refresh issues
+      
       await fetchIssues()
 
 
@@ -274,49 +256,7 @@ export default function HomePage() {
   }
 
 
-  // ============================
-  // FILTER ISSUES
-  // ============================
-  // const filteredIssues = issues.filter((issue) => {
-
-  //   /*
-  //     Backend may return either:
-
-  //     is_resolved
-
-  //     OR
-
-  //     solved
-
-  //     We support both.
-  //   */
-
-  //   const isSolved =
-  //     issue.is_resolved ?? issue.solved ?? false
-
-
-  //   if (filter === 'solved') {
-
-  //     return isSolved
-
-  //   }
-
-
-  //   if (filter === 'unsolved') {
-
-  //     return !isSolved
-
-  //   }
-
-
-  //   return true
-
-  // })
-
-
-  // ============================
-  // FORMAT DATE
-  // ============================
+  
   const formatDate = (date) => {
 
     if (!date) {
@@ -351,16 +291,12 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#F5F7F5]">
 
 
-      {/* ============================
-          NAVBAR
-      ============================ */}
+      {/* NAVBAR*/}
 
       <Navbar />
 
 
-      {/* ============================
-          BODY
-      ============================ */}
+      {/* BODY*/}
 
       <div className="flex">
 
@@ -371,9 +307,7 @@ export default function HomePage() {
         <main className="flex-1 p-4 md:p-8">
 
 
-          {/* ============================
-              HEADER
-          ============================ */}
+          {/* HEADER*/}
 
           <div className="mb-8">
 
@@ -388,9 +322,7 @@ export default function HomePage() {
           </div>
 
 
-          {/* ============================
-              FILTERS
-          ============================ */}
+          {/*FILTERS*/}
 
           {/* <div className="mb-6 flex flex-wrap gap-3">
 
@@ -434,9 +366,7 @@ export default function HomePage() {
           </div> */}
 
 
-          {/* ============================
-              LOADING
-          ============================ */}
+          {/* LOADING*/}
 
           {loading && (
 
@@ -451,9 +381,7 @@ export default function HomePage() {
           )}
 
 
-          {/* ============================
-              ISSUE CARDS
-          ============================ */}
+          {/* ISSUE CARDS*/}
 
           {!loading && issues.length > 0 && (
 
@@ -469,15 +397,7 @@ export default function HomePage() {
                   false
 
 
-                /*
-                  Supports possible backend field names.
-
-                  Based on your previous Post API,
-                  image may come directly as "image"
-                  or inside media.
-                */
-
-                const issueImage =
+              const issueImage =
                   issue.image ||
                   issue.media?.[0]?.image ||
                   issue.post_media?.[0]?.image ||
@@ -673,7 +593,7 @@ export default function HomePage() {
 
                             <p className="text-sm text-gray-700">
 
-                              {garbageVolume}
+                              {issue.waste_volume}
 
                             </p>
 
@@ -686,9 +606,7 @@ export default function HomePage() {
                       </div>
 
 
-                      {/* ============================
-                          SOLVE BUTTON
-                      ============================ */}
+                      {/*SOLVE BUTTON*/}
 
                       <div className="mt-6">
 
@@ -729,9 +647,7 @@ export default function HomePage() {
           )}
 
 
-          {/* ============================
-              EMPTY STATE
-          ============================ */}
+          {/* EMPTY STATE*/}
 
           {!loading && issues.length === 0 && (
 
@@ -762,9 +678,7 @@ export default function HomePage() {
       </div>
 
 
-      {/* ==================================
-          CLEANUP MODAL
-      ================================== */}
+      {/* CLEANUP MODAL*/}
 
       {selectedIssue && (
 
