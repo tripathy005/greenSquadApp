@@ -20,7 +20,6 @@ const LoginPage = () => {
     const { setAuthUser } = useAuth()
 
 
-
     const handleLogin = async (e) => {
 
         e.preventDefault()

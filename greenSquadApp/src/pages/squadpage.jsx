@@ -125,11 +125,11 @@ function SquadPage() {
             description: editDescription,
             image: editImage
         })
-        console.log("Saved changes:", {
-            name: editName,
-            description: editDescription,
-            image: editImage
-        })
+        // console.log("Saved changes:", {
+        //     name: editName,
+        //     description: editDescription,
+        //     image: editImage
+        // })
 
         setShowEditModal(false)
     }

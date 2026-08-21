@@ -51,10 +51,10 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                 name: "geolocation",
             });
 
-            console.log(
-                "Location permission:",
-                permission.state
-            );
+            // console.log(
+            //     "Location permission:",
+            //     permission.state
+            // );
 
             if (permission.state === "denied") {
 
@@ -274,7 +274,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
             const createData = await createResponse.json()
 
-            console.log('Create post response:', createData)
+            // console.log('Create post response:', createData)
 
 
 
@@ -381,7 +381,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
 
             const resolveData = await resolveResponse.json()
 
-            console.log('Resolve response:', resolveData)
+            // console.log('Resolve response:', resolveData)
 
 
             // if form data not posted
