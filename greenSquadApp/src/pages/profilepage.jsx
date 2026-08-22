@@ -73,9 +73,9 @@ const ProfilePage = () => {
 
     const handleEdit = () => {
 
-        setEditName(user?.full_name || '')
-        setEditEmail(user?.email || '')
-        setEditImage(user?.profile_photo || profileimg)
+        setEditName(authUser?.full_name || '')
+        setEditEmail(authUser?.email || '')
+        setEditImage(authUser?.profile_photo || profileimg)
 
         setImageFile(null)
 
