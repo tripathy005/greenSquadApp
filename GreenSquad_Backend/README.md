@@ -149,7 +149,7 @@ http://127.0.0.1:8000/admin/
 Use the superuser credentials created during setup to access the Django Admin panel.
 
 Project Structure
-GreenSquad_Backend/
+```GreenSquad_Backend/
 │
 ├── .venv/
 ├── .env
@@ -170,7 +170,7 @@ GreenSquad_Backend/
     ├── serializers.py
     ├── views.py
     ├── urls.py
-    └── ...
+    └── ...```
 Important Notes
 
 Python 3.12 is mandatory for this project.
