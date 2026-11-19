@@ -1,8 +1,8 @@
 .env
 .venv
 config\media\posts\
-config\media\profile_photos
-\
+config\media\profile_photos\
+
 __pycache__/
 *.py[cod]
 *$py.class
