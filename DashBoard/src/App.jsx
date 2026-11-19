@@ -31,7 +31,7 @@ const AppRoutes = () => {
             <Route
                 path="/"
                 element={
-                    authUser
+                    authUser && (userRole === 'admin' || userRole === 'superintendent')
                         ? <HomePage />
                         : <Navigate to="/login" />
                 }

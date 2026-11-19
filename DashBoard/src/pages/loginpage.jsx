@@ -67,6 +67,39 @@ const LoginPage = () => {
                 return
             }
 
+             // Get logged-in user profile
+            const profileResponse = await fetch(
+                '/api/auth/profile/',
+                {
+                    method: 'GET',
+
+                    headers: {
+                        'Content-Type': 'application/json',
+
+                        'Authorization': `Bearer ${data.access}`,
+                    },
+                }
+            )
+            
+            const userData = await profileResponse.json()
+
+
+            if (!profileResponse.ok) {
+
+                toast.error(
+                    userData.detail || 'Unable to get user information'
+                )
+
+                return
+            }
+
+            if(userData.role === 'citizen') {
+                toast.error('You are not authorized to access this application')
+                setTimeout(() => {
+                }, 2000);
+                
+                return
+            }
 
             // Save JWT tokens
             localStorage.setItem(
@@ -80,50 +113,15 @@ const LoginPage = () => {
             )
 
 
-            // Get logged-in user profile
-            const profileResponse = await fetch(
-                '/api/auth/profile/',
-                {
-                    method: 'GET',
-
-                    headers: {
-                        'Content-Type': 'application/json',
-
-                        'Authorization': `Bearer ${data.access}`,
-                    },
-                }
-            )
-
-
-            const userData = await profileResponse.json()
-
-
-            if (!profileResponse.ok) {
-
-                toast.error(
-                    userData.detail || 'Unable to get user information'
-                )
-
-                return
-            }
-
-
-            // Encrypt user data
-            const encryptedUserData = encryptData(
-                userData
-            )
-
-
             // Store encrypted user data
             localStorage.setItem(
                 'user_info',
-                encryptedUserData
+                encryptData(userData)
             )
 
 
             // Get role for current React session
             setUserRole(userData.role)
-
 
             // Set authentication
             setAuthUser(true)

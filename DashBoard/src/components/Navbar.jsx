@@ -14,7 +14,6 @@ export default function Navbar() {
 
     // Decrypt user data safely
     const user = decryptData(encryptedUser)
-    console.log(user)
 
     // Get role safely
     const role = user?.role || ''
